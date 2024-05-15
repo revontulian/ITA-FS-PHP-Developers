@@ -15,6 +15,7 @@ class TaskController extends Controller
     $allTasks = $this->taskModel->fetchAll();
     $this->view->allTasks = $allTasks;
   }
+
   public function createAction()
   {
     if ($this->getRequest()->isPost()) {
