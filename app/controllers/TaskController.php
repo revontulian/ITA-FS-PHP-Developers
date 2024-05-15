@@ -42,3 +42,5 @@ class TaskController extends Controller
     }
   }
 }
+
+//TODO Crear una redirección al index con afterFilters (sabia sugerencia de Amanda)
