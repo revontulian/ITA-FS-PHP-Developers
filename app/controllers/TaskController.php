@@ -16,6 +16,17 @@ class TaskController extends Controller
     $this->view->allTasks = $allTasks;
   }
 
+  public function searchAction()
+  {
+    if ($this->getRequest()->isPost()) {
+      $term = $this->_getParam('search');
+      $allTasks = $this->taskModel->search($term);
+      $this->view->allTasks = $allTasks;
+    } else {
+      header('Location: /');
+    }
+  }
+
   public function createAction()
   {
     if ($this->getRequest()->isPost()) {

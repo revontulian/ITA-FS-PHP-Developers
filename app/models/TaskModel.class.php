@@ -93,7 +93,7 @@ class Task extends Model
   {
     $results = [];
     foreach ($this->tasks as $task) {
-      if (strcasecmp($term, $task->name) === 0) {
+      if (stripos($task->name, $term) !== false) {
         $results[] = $task;
       }
     }
