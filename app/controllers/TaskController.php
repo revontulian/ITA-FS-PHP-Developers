@@ -13,6 +13,9 @@ class TaskController extends Controller
   public function indexAction()
   {
     $allTasks = $this->taskModel->fetchAll();
+
+    usort($allTasks, [$this, 'compareCreatedTimeDesc']);
+
     $this->view->allTasks = $allTasks;
   }
 
@@ -33,7 +36,7 @@ class TaskController extends Controller
       $name = $this->_getParam('name');
       $username = $this->_getParam('username');
 
-      if (empty($name) || empty($username)) {
+    if (empty($name) || empty($username)) {
         echo "El nom de la tasca i el nom d'usuari són necessaris.";
         return;
       }
@@ -58,5 +61,10 @@ class TaskController extends Controller
       header('Location: /');
       exit();
     }
+  }
+
+  function compareCreatedTimeDesc($task1, $task2)
+  {
+    return strtotime($task2->create_time) - strtotime($task1->create_time);
   }
 }
