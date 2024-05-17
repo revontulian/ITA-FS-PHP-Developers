@@ -6,7 +6,7 @@ class TaskController extends Controller
 {
 
 
-  public function __construct(private $taskModel = new Task)
+  public function __construct(private $taskModel = new Task, private array $actionsToRedirect = [])
   {
   }
 
@@ -44,12 +44,21 @@ class TaskController extends Controller
       ];
 
       if ($this->taskModel->save($taskData)) {
-        header('Location: /');
+        $this->actionsToRedirect[] = 'create';
       } else {
         echo "Error en desar la tasca.";
       }
     } else {
       $this->view;
+    }
+  }
+  public function afterFilters()
+  {
+    parent::afterFilters();
+
+    if (in_array($this->_action, $this->actionsToRedirect)) {
+      header('Location: /');
+      exit();
     }
   }
 }
