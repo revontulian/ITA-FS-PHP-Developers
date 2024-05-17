@@ -54,13 +54,9 @@ class TaskController extends Controller
   }
   public function afterFilters()
   {
-    parent::afterFilters();
-
     if (in_array($this->_action, $this->actionsToRedirect)) {
       header('Location: /');
       exit();
     }
   }
 }
-
-//TODO Crear una redirección al index con afterFilters (sabia sugerencia de Amanda)
