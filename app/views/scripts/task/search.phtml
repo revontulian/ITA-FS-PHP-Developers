@@ -2,25 +2,13 @@
 
 $allTasks = $this->allTasks;
 
-
+arsort($allTasks);
 
 ?>
 
 <div class="container mx-auto">
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
-      <div class="my-4">
-        <form action="/task/search" method="post" class="relative">
-          <label for="table-search-tasks" class="sr-only">Search</label>
-          <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-            </svg>
-          </div>
-          <input type="text" name="search" id="table-search-tasks" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for tasks by description">
-          <button type="submit" class="absolute inset-y-0 right-0 px-4 py-2 text-sm text-white bg-blue-500 hover:bg-blue-600 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Search</button>
-        </form>
-      </div>
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -39,6 +27,7 @@ $allTasks = $this->allTasks;
             <th scope="col" class="px-6 py-3">
               Completed Time
             </th>
+
             <th scope="col" class="px-6 py-3">
               Status
             </th>
@@ -71,7 +60,6 @@ $allTasks = $this->allTasks;
               </td>
               <td class="px-6 py-4">
                 <a href="/task/destroy/<?php echo $task->id; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar Tarea</a>
-                <a href="/task/update/<?php echo $task->id; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar Tarea</a>
               </td>
             </tr>
           <?php endforeach; ?>

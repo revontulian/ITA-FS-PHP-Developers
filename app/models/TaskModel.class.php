@@ -88,4 +88,15 @@ class Task extends Model
 
     return $result !== false;
   }
+
+  public function search(string $term): array
+  {
+    $results = [];
+    foreach ($this->tasks as $task) {
+      if (stripos($task->name, $term) !== false) {
+        $results[] = $task;
+      }
+    }
+    return $results;
+  }
 }
