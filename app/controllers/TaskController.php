@@ -55,6 +55,51 @@ class TaskController extends Controller
       $this->view;
     }
   }
+
+  public function updateAction()
+{
+    if ($this->getRequest()->isPost()) {
+        $taskId = $this->_getParam('id');
+        $name = $this->_getParam('name');
+        $username = $this->_getParam('username');
+        $completed_time = $this->_getParam('completed_time');
+        $status = $this->_getParam('status');
+
+        if (empty($taskId)) {
+            echo "ID de tarea no proporcionado.";
+            return;
+        }
+    
+        $taskDetail = $this->taskModel->fetchOne($taskId);
+       
+        if (!$taskDetail) {
+            echo "Task no encontrada.";
+            return;
+        }
+
+        $newData =[
+        'id'=> $taskId,
+        'name' => $name,
+        'username' => $username,
+        'completed_time' => $completed_time,
+        'status'=> $status
+      ];
+
+       if ($this->taskModel->update($newData)) {
+            echo "Tarea actualizada correctamente.";
+            $this->actionsToRedirect[] = 'update';
+        } else {
+            echo "Error al actualizar la tarea.";
+        }
+       
+        $this->view->taskDetail = $taskDetail;
+    } else {
+        $id = $this->_getParam('id'); 
+        $taskDetail = $this->taskModel->fetchOne($id);
+        $this->view->taskDetail = $taskDetail;
+    }
+}
+
   public function afterFilters()
   {
     if (in_array($this->_action, $this->actionsToRedirect)) {
@@ -62,6 +107,7 @@ class TaskController extends Controller
       exit();
     }
   }
+
 
   function compareCreatedTimeDesc($task1, $task2)
   {

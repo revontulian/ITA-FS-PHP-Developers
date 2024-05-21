@@ -39,7 +39,6 @@ $allTasks = $this->allTasks;
             <th scope="col" class="px-6 py-3">
               Completed Time
             </th>
-
             <th scope="col" class="px-6 py-3">
               Status
             </th>
@@ -72,6 +71,7 @@ $allTasks = $this->allTasks;
               </td>
               <td class="px-6 py-4">
                 <a href="/task/destroy/<?php echo $task->id; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar Tarea</a>
+                <a href="/task/update/<?php echo $task->id; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar Tarea</a>
               </td>
             </tr>
           <?php endforeach; ?>
