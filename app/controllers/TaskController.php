@@ -100,6 +100,21 @@ class TaskController extends Controller
     }
 }
 
+  public function deleteAction (){
+
+    if ($this->getRequest()->isPost()) {
+      $taskId = $this->_getParam('id');
+
+      if ($this->taskModel->delete($taskId)){
+        echo "Tarea eliminada correctamente.";
+        $this->actionsToRedirect[] = 'delete';
+        return $this->render('index');
+      } else {
+        echo "Ha habido un error.";
+      }
+    }
+  }
+
   public function afterFilters()
   {
     if (in_array($this->_action, $this->actionsToRedirect)) {
