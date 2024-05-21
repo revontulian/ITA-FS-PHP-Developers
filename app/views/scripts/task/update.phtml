@@ -1,0 +1,51 @@
+<?php
+// $taskDetail debería contener la información de la tarea que quieres editar
+$taskDetail = $this->taskDetail;
+//var_dump($taskDetail);
+?>
+
+<!--
+    <form method="post">
+  <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
+
+  <label per="name">Nom de la Tasca:</label>
+  <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>"><br>
+
+  <label per="username">Nom d'Usuari:</label>
+  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
+
+  <label per="username">Estat de la tasca:</label>
+  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
+
+  <label per="username">Completed time:</label>
+  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
+  <input type="submit" value="Editar">
+</form>
+-->
+<form method="post" class="space-y-4">
+  <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
+
+  <div>
+    <label for="name" class="block text-sm font-medium text-gray-700">Nom de la Tasca:</label>
+    <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+  </div>
+
+  <div>
+    <label for="username" class="block text-sm font-medium text-gray-700">Nom d'Usuari:</label>
+    <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+  </div>
+
+  <div>
+    <label for="status" class="block text-sm font-medium text-gray-700">Estat de la tasca:</label>
+    <input type="text" id="status" name="status" required value="<?php echo $taskDetail->status; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+  </div>
+
+  <div>
+    <label for="completed_time" class="block text-sm font-medium text-gray-700">Completed time:</label>
+    <input type="text" id="completed_time" name="completed_time" required value="<?php echo $taskDetail->completed_time; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+  </div>
+
+  <div>
+    <input type="submit" value="Editar" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+  </div>
+</form>

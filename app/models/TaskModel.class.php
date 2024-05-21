@@ -59,13 +59,13 @@ class Task extends Model
     return $result !== false;
   }
 
-  public function update($data = array())
+  public function update($data = array()): bool
   {
     foreach ($this->tasks as $task) {
       if ($task->id == $data['id']) {
         $task->name = $data['name'];
         $task->username = $data['username'];
-        $task->create_time = $data['create_time'];
+        $task->completed_time = $data['completed_time'];
         $task->status = $data['status'];
 
         $result = file_put_contents($this->taskFile, json_encode($this->tasks));
