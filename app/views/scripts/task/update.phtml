@@ -1,27 +1,7 @@
 <?php
-// $taskDetail debería contener la información de la tarea que quieres editar
 $taskDetail = $this->taskDetail;
-//var_dump($taskDetail);
 ?>
 
-<!--
-    <form method="post">
-  <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
-
-  <label per="name">Nom de la Tasca:</label>
-  <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>"><br>
-
-  <label per="username">Nom d'Usuari:</label>
-  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
-
-  <label per="username">Estat de la tasca:</label>
-  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
-
-  <label per="username">Completed time:</label>
-  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
-  <input type="submit" value="Editar">
-</form>
--->
 <div class="fixed inset-0 bg-gray-500 bg-opacity-50 overflow-y-auto h-screen w-screen px-4 md:px-8">
   <div class="relative z-10 mx-auto max-w-sm rounded-md shadow-lg bg-white p-4 mt-16"> <form method="post" class="space-y-4">
       <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
@@ -90,5 +70,3 @@ $taskDetail = $this->taskDetail;
       </div>
     </form>
   </div>
-
-
