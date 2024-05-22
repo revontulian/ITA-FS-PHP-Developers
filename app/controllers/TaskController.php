@@ -105,24 +105,13 @@ class TaskController extends Controller
     echo "task delete";
     if ($this->getRequest()->isPost()) {
       $id = $this->_getParam('id');
-       
-
-    //$taskDetail = $this->taskModel->fetchOne($taskId);
-    //$this->view->taskDetail = $taskDetail;
-
-    if ($this->taskModel->delete($id)) {
-      echo "Tarea eliminada correctamente.";
-      header('Location:/');
-      /*
-      TO DO: xq ovarios no funciona aqui??
-      $this->actionsToRedirect[] = 'update'; 
-     */
-    } else {
-      echo "Ha habido un error.";
+      if ($this->taskModel->delete($id)) {
+        $this->actionsToRedirect[] = 'delete';
+      } else {
+        echo "Ha habido un error.";
+      }
     }
-    exit();
   }
-}
 
   public function afterFilters()
   {
