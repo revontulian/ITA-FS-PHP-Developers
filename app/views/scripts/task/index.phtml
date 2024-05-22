@@ -70,9 +70,11 @@ $allTasks = $this->allTasks;
                 <?php echo $task->status; ?>
               </td>
               <td class="px-6 py-4">
-              
-                <a href="/task/delete/<?php echo $task->id; ?>"onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?');" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar Tarea</a>
-                
+                <a href="#" onclick="event.preventDefault(); if(confirm('Are you sure? No hay vuelta atrás!')) { document.getElementById('delete-form-<?php echo $task->id; ?>').submit(); }" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar Tarea</a>
+
+                <form id="delete-form-<?php echo $task->id; ?>" action="/task/delete/<?php echo $task->id; ?>" method="post" style="display: none;">
+                  <input type="hidden" name="id" value="<?php echo $task->id; ?>">
+                </form>
                 <a href="/task/update/<?php echo $task->id; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar Tarea</a>
               </td>
             </tr>
