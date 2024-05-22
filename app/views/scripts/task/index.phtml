@@ -96,11 +96,16 @@ $allTasks = $this->allTasks;
                 <?php echo $task->status; ?>
               </td>
               <td class="px-6 py-4">
+
                 <div class="flex items-center space-x-2">
+                 <a href="#" onclick="event.preventDefault(); if(confirm('Are you sure? No hay vuelta atrás!')) { document.getElementById('delete-form-<?php echo $task->id; ?>').submit(); }" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar Tarea</a>
                   <a href="/task/delete/<?php echo $task->id; ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                   <img width="25" height="25" src="https://img.icons8.com/windows/32/7e22ce/waste.png" alt="waste"/>
                       <path d="M 21.857422 7 C 20.282422 7 19 8.2824219 19 9.8574219 L 19 13 L 10.5 13 C 10.224 13 10 13.224 10 13.5 C 10 13.776 10.224 14 10.5 14 L 12.925781 14 L 14.292969 38.607422 C 14.399969 40.509422 15.974906 42 17.878906 42 L 32.121094 42 C 34.025094 42 35.601031 40.509422 35.707031 38.607422 L 37.074219 14 L 39.5 14 C 39.776 14 40 13.776 40 13.5 C 40 13.224 39.776 13 39.5 13 L 31 13 L 31 9.8574219 C 31 8.2824219 29.717578 7 28.142578 7 L 21.857422 7 z M 21.857422 8 L 28.142578 8 C 29.166578 8 30 8.8334219 30 9.8574219 L 30 13 L 20 13 L 20 9.8574219 C 20 8.8334219 20.832422 8 21.857422 8 z M 25 19 C 25.276 19 25.5 19.224 25.5 19.5 L 25.5 35.431641 C 25.5 35.707641 25.276 35.931641 25 35.931641 C 24.724 35.931641 24.5 35.707641 24.5 35.431641 L 24.5 19.5 C 24.5 19.224 24.724 19 25 19 z M 19.169922 19.001953 C 19.435922 18.962953 19.6775 19.206422 19.6875 19.482422 L 20.242188 35.482422 C 20.252188 35.758422 20.036719 35.991 19.761719 36 L 19.742188 36 C 19.473188 36 19.252188 35.787578 19.242188 35.517578 L 18.6875 19.517578 C 18.6775 19.241578 18.894922 19.010953 19.169922 19.001953 z M 30.830078 19.001953 C 31.105078 19.010953 31.3225 19.241578 31.3125 19.517578 L 30.757812 35.517578 C 30.747812 35.787578 30.525812 36 30.257812 36 L 30.238281 36 C 29.963281 35.991 29.747812 35.758422 29.757812 35.482422 L 30.3125 19.482422 C 30.3225 19.206422 30.545078 18.981953 30.830078 19.001953 z"></path>
                     </svg>
+                    <form id="delete-form-<?php echo $task->id; ?>" action="/task/delete/<?php echo $task->id; ?>" method="post" style="display: none;">
+                  <input type="hidden" name="id" value="<?php echo $task->id; ?>">
+                    </form>
                   </a>
                   <a href=/task/update/<?php echo $task->id; ?> data-modal-target="editTask" data-modal-toggle="editTask" class="edit-task-link">
                     <img width="22" height="22" viewBox="0 0 50 50" src="https://img.icons8.com/forma-regular-filled/24/4D4D4D/edit-file.png" alt="edit-file" />
