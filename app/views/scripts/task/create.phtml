@@ -4,11 +4,11 @@
       <h1>Crea una nova tasca</h1>
 
       <div class="relative shadow-md rounded-md pt-5"> <label for="name" class="block text-sm font-medium text-gray-700 absolute top-0 px-2">Nom de la Tasca:</label>
-        <input type="text" id="name" name="name" required class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 pl-10">
+        <input type="text" id="name" name="name" required minlength="3" maxlength="100" class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 pl-10">
       </div>
 
       <div class="relative shadow-md rounded-md pt-5"> <label for="username" class="block text-sm font-medium text-gray-700 absolute top-0 px-2">Nom d'Usuari:</label>
-        <input type="text" id="username" name="username" required class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 pl-10">
+        <input type="text" id="username" name="username" required minlength="2" maxlength="100" class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 pl-10">
       </div>
 
       <div class="relative shadow-md rounded-md pt-5"> <label for="created_time" class="block text-sm font-medium text-gray-700 absolute top-0 px-2">Created time:</label>
@@ -20,7 +20,7 @@
         </select>
       </div>
 
-      <div class="flex justify-center">  
+      <div class="flex justify-center">
         <input type="submit" value="Desar" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
       </div>
     </form>

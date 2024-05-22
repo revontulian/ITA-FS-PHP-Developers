@@ -8,12 +8,12 @@ $taskDetail = $this->taskDetail;
 
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Nom de la Tasca:</label>
-        <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+        <input type="text" id="name" name="name" required minlength="3" maxlength="100" value="<?php echo $taskDetail->name; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
       </div>
 
       <div>
         <label for="username" class="block text-sm font-medium text-gray-700">Nom d'Usuari:</label>
-        <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+        <input type="text" id="username" name="username" required minlength="2" maxlength="100" value="<?php echo $taskDetail->username; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
       </div>
 
       <div>
