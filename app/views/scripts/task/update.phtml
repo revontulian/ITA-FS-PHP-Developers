@@ -1,51 +1,76 @@
 <?php
-// $taskDetail debería contener la información de la tarea que quieres editar
 $taskDetail = $this->taskDetail;
-//var_dump($taskDetail);
 ?>
 
-<!--
-    <form method="post">
-  <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
+<div class="fixed inset-0 bg-gray-500 bg-opacity-50 overflow-y-auto h-screen w-screen px-4 md:px-8">
+  <div class="relative z-10 mx-auto max-w-sm rounded-md shadow-lg bg-white p-4 mt-16">
+    <form method="post" class="space-y-4">
+      <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
 
-  <label per="name">Nom de la Tasca:</label>
-  <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>"><br>
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Nom de la Tasca:</label>
+        <input type="text" id="name" name="name" required minlength="3" maxlength="100" value="<?php echo $taskDetail->name; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+      </div>
 
-  <label per="username">Nom d'Usuari:</label>
-  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700">Nom d'Usuari:</label>
+        <input type="text" id="username" name="username" required minlength="2" maxlength="100" value="<?php echo $taskDetail->username; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+      </div>
 
-  <label per="username">Estat de la tasca:</label>
-  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
+      <div>
+        <label for="status" class="block text-sm font-medium text-gray-700">Estat de la tasca:</label>
+        <select id="status" name="status" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+          <option value="Pendent" <?php if ($taskDetail->status == "Pendent") echo 'selected'; ?>>Pendent</option>
+          <option value="En procés" <?php if ($taskDetail->status == "En procés") echo 'selected'; ?>>En procés</option>
+          <option value="Completada" <?php if ($taskDetail->status == "Completada") echo 'selected'; ?>>Completada</option>
+        </select>
+      </div>
 
-  <label per="username">Completed time:</label>
-  <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>"><br>
-  <input type="submit" value="Editar">
-</form>
--->
-<form method="post" class="space-y-4">
-  <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
+      <div class="flex justify-around w-full">
+        <input type="submit" value="Editar" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 
-  <div>
-    <label for="name" class="block text-sm font-medium text-gray-700">Nom de la Tasca:</label>
-    <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+        <a href="/" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-400 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300">Cancelar</a>
+      </div>
+    </form>
+
   </div>
 
-  <div>
-    <label for="username" class="block text-sm font-medium text-gray-700">Nom d'Usuari:</label>
-    <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-  </div>
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-50 overflow-y-auto h-screen w-screen px-4 md:px-8">
+    <div class="relative z-10 mx-auto max-w-sm rounded-md shadow-2xl bg-white p-4 mt-16">
+      <form method="post" class="space-y-4">
+        <input type="hidden" name="id" value="<?php echo $taskDetail->id; ?>">
 
-  <div>
-    <label for="status" class="block text-sm font-medium text-gray-700">Estat de la tasca:</label>
-    <input type="text" id="status" name="status" required value="<?php echo $taskDetail->status; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-  </div>
+        <div class="relative shadow-md rounded-md">
+          <label for="name" class="block text-sm font-medium text-gray-700 absolute top-1/2 -mt-5 px-2">Nom de la Tasca:</label>
+          <input type="text" id="name" name="name" required value="<?php echo $taskDetail->name; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+        </div>
 
-  <div>
-    <label for="completed_time" class="block text-sm font-medium text-gray-700">Completed time:</label>
-    <input type="text" id="completed_time" name="completed_time" required value="<?php echo $taskDetail->completed_time; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-  </div>
+        <div class="relative shadow-md rounded-md">
+          <label for="username" class="block text-sm font-medium text-gray-700 absolute top-1/2 -mt-5 px-2">Nom d'Usuari:</label>
+          <input type="text" id="username" name="username" required value="<?php echo $taskDetail->username; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+        </div>
 
-  <div>
-    <input type="submit" value="Editar" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-  </div>
-</form>
+        <div class="relative shadow-md rounded-md">
+          <label for="status" class="block text-sm font-medium text-gray-700 absolute top-1/2 -mt-5 px-2">Estat de la tasca:</label>
+          <select id="status" name="status" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            <option value="Pendent" <?php if ($taskDetail->status == "Pendent") echo 'selected'; ?>>Pendent</option>
+            <option value="En procés" <?php if ($taskDetail->status == "En procés") echo 'selected'; ?>>En procés</option>
+            <option value="Completada" <?php if ($taskDetail->status == "Completada") echo 'selected'; ?>>Completada</option>
+          </select>
+        </div>
+
+        <div class="relative shadow-md rounded-md flex items-center">
+          <label for="completed_time" class="block text-sm font-medium text-gray-700 absolute top-1/2 -mt-5 px-2">Completed time:</label>
+          <input type="text" id="completed_time" name="completed_time" required value="<?php echo $taskDetail->completed_time; ?>" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+          <button id="calendarButton" class="ml-2 p-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 10l-2 2-4-4 2-2 4-4 2 2zM12 10l-2 2-4-4 2-2 4-4 2 2z" />
+            </svg>
+          </button>
+        </div>
+
+        <div>
+          <input type="submit" value="Editar" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-900 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        </div>
+      </form>
+    </div>
