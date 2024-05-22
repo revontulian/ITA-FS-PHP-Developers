@@ -6,14 +6,28 @@ class TaskController extends Controller
 {
 
 
-  public function __construct(private $taskModel = new Task)
+  public function __construct(private $taskModel = new Task, private array $actionsToRedirect = [])
   {
   }
 
   public function indexAction()
   {
     $allTasks = $this->taskModel->fetchAll();
+
+    usort($allTasks, [$this, 'compareCreatedTimeDesc']);
+
     $this->view->allTasks = $allTasks;
+  }
+
+  public function searchAction()
+  {
+    if ($this->getRequest()->isPost()) {
+      $term = $this->_getParam('search');
+      $allTasks = $this->taskModel->search($term);
+      $this->view->allTasks = $allTasks;
+    } else {
+      header('Location: /');
+    }
   }
 
   public function createAction()
@@ -22,7 +36,7 @@ class TaskController extends Controller
       $name = $this->_getParam('name');
       $username = $this->_getParam('username');
 
-      if (empty($name) || empty($username)) {
+    if (empty($name) || empty($username)) {
         echo "El nom de la tasca i el nom d'usuari són necessaris.";
         return;
       }
@@ -33,7 +47,7 @@ class TaskController extends Controller
       ];
 
       if ($this->taskModel->save($taskData)) {
-        header('Location: /');
+        $this->actionsToRedirect[] = 'create';
       } else {
         echo "Error en desar la tasca.";
       }
@@ -86,46 +100,17 @@ class TaskController extends Controller
     }
 }
 
-/*
-  public function updateAction()
-{
-    if ($this->getRequest()->isPost()) {
-        // Si es POST, actualizar la tarea
-        $taskId = $this->_getParam('id'); // Obtener el ID de la tarea del POST
-        $name = $this->_getParam('name'); // Recuperar el nombre del formulario
-        $username = $this->_getParam('username'); // Recuperar el nombre de usuario del formulario
-
-        if (empty($name) || empty($username)) {
-            echo "El nombre de la tarea y el nombre de usuario son necesarios.";
-            return;
-        }
-
-        // Construir los datos para la actualización
-        $taskData = [
-            'id' => $taskId,
-            'name' => $name,
-            'username' => $username
-        ];
-
-        if ($this->taskModel->update($taskData)) {
-            echo "Tarea actualizada con éxito.";
-            header('Location: /'); // Redirige después de actualizar
-            exit; // Asegúrate de terminar el script después de la redirección
-        } else {
-            echo "Error al actualizar la tarea.";
-        }
-    } else {
-        // Si no es POST, mostrar la vista de edición
-        $id = $this->_getParam('id'); // Obtener el ID de la URL
-        $taskDetail = $this->taskModel->fetchOne($id);
-
-        if ($taskDetail) {
-            $this->view->taskDetail = $taskDetail; // Pasar la tarea a la vista
-        } else {
-            throw new Exception("Tarea no encontrada.");
-        }
+  public function afterFilters()
+  {
+    if (in_array($this->_action, $this->actionsToRedirect)) {
+      header('Location: /');
+      exit();
     }
-}*/
-}
+  }
 
-//TODO Crear una redirección al index con afterFilters (sabia sugerencia de Amanda)
+
+  function compareCreatedTimeDesc($task1, $task2)
+  {
+    return strtotime($task2->create_time) - strtotime($task1->create_time);
+  }
+}
