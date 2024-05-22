@@ -61,12 +61,18 @@ class Task extends Model
 
   public function update($data = array()): bool
   {
+
+    $currentDateTime = date('Y-m-d H:i:s');
+
     foreach ($this->tasks as $task) {
       if ($task->id == $data['id']) {
         $task->name = $data['name'];
         $task->username = $data['username'];
-        $task->completed_time = $data['completed_time'];
         $task->status = $data['status'];
+
+        if ($task->status == "Completada"){
+          $task->completed_time = $currentDateTime;
+        }
 
         $result = file_put_contents($this->taskFile, json_encode($this->tasks));
 
