@@ -2,4 +2,5 @@
 
 class ModelCRUD extends Model {
     
+    
 }
