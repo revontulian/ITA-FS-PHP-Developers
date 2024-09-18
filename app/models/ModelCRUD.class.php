@@ -5,6 +5,9 @@ class ModelCRUD extends Model {
     protected string $dbRoute = ROOT_PATH . '\app\dataBase\data.json'; 
     
     public function __construct() {
-        $this->loadtask();
+        $this->loadTask();
+    }
+    public function loadTask(){
+        $this->alltask = json_decode(file_get_contents($dbRoute), true) ?? [];
     }
 }
