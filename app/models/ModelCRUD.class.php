@@ -18,6 +18,7 @@ class ModelCRUD extends Model {
             'status' => 'pending',
             'startTime' => $data['starTime'],
             'deadLine' => $data['deadLine'],
+            'user' => $data['user'],
         ];
         $this->allTask[] = $task;
         file_put_contents($this->dataRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
@@ -32,5 +33,17 @@ class ModelCRUD extends Model {
             }
         }
         return null;
+    }
+    public function update($data){
+        foreach($this->alltask as $task){
+            if($task['id'] == $data['id']){
+                $data['title'] = $task['title'];
+                $data['status'] = $task['status'];
+                $data['starTime'] = $task['starTime'];
+                $data['deadLine'] = $task['deadLine'];
+                $data['user'] = $task['user'];
+            }
+        }
+        file_put_contents($this->dataRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
     }
 }
