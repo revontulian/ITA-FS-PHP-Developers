@@ -11,5 +11,25 @@ class TaskController extends Controller{
         $allTask = $this->modelTask->fetchAll();
         $this->view->allTask = $allTask;
     }
+    public function crearAction(){
+        if($_SERVER["REQUEST_METHOD"]=== "POST"){
+            
+            $title = $_POST['title'];
+            $status = $_POST['status'];
+            $startTime = $_POST['starTime'];
+            $deadLine = $_POST['deadLine'];
+            $user = $_POST['user'];
 
+            $data = [
+                'title' => $title,
+                'status' => $status,
+                'startTime' => $starTime,
+                'deadLine' => $deadLine,
+                'user' => $user,
+            ];
+        $this->modelTask->create($data);
+        header('Location: ' . WEB_ROOT . '/index');
+        exit;
+        }
+    }
 }

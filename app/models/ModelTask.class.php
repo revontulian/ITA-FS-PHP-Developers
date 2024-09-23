@@ -15,7 +15,7 @@ class ModelTask extends Model {
         $task = [
             'id' => $id,
             'title' => $data['title'],
-            'status' => 'pending',
+            'status' => $data['status'],
             'startTime' => $data['starTime'],
             'deadLine' => $data['deadLine'],
             'user' => $data['user'],
