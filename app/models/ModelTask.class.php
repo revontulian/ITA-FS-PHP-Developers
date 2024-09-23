@@ -1,14 +1,14 @@
 <?php
 
-class ModelCRUD extends Model {
+class ModelTask extends Model {
     protected array $allTask;
     protected string $dbRoute = ROOT_PATH . '\app\dataBase\data.json'; 
     
     public function __construct() {
         $this->loadTask();
     }
-    public function loadTask(){
-        $this->allTask = json_decode(file_get_contents($dbRoute), true) ?? [];
+    private function loadTask(){
+        $this->allTask = json_decode(file_get_contents($this->dbRoute), true) ?? [];
     }
     public function create(array $data){
         $id = count($this->allTask)+ 1;
