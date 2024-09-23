@@ -64,4 +64,11 @@ class TaskController extends Controller{
         $this->view->task = $taskupdate;
         }
     }
+    public function deleteAction(){
+        $url = explode('/',$SERVER['REQUEST_URI']);
+        $taskId = end($url);
+        $this->modelTask->delete($taskId);
+        header('Location: ' . WEB_ROOT . '/index');
+        exit;
+    }
 }
