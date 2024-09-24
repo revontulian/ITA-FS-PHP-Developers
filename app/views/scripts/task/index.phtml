@@ -9,24 +9,24 @@ $allTask = $this-> allTask;
     <title>Tabla de tareas</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"  rel="stylesheet" />
 </head>
-<body class="bg-purple-800">
-    <section class="h-screen flex justify-center items-center">>
+<body>
+<section class="bg-center bg-no-repeat bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
     <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-black md:text-5xl lg:text-6xl">Tabla de Tareas</h1>
-        <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">sitio donde podras ver todas tus tareas </p>
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">Tabla de tareas</h1>
+        <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Crea y gestiona las tareas de tu evento</p>
         <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-            <span class="flex items-center text-2xl font-bold text-gray-900 dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>
+            <span class="flex items-center text-2xl font-bold text-white dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>
             <a href="<?php echo WEB_ROOT ?>/create"> Crear </a> </span>
-            <span class="flex items-center text-2xl font-bold text-gray-900 dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-purple-500 rounded-full me-1.5 flex-shrink-0"></span>
+            <span class="flex items-center text-2xl font-bold text-white dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-purple-500 rounded-full me-1.5 flex-shrink-0"></span>
             <a href="<?php echo WEB_ROOT ?>/update"> Editar </a> </span>
-            <span class="flex items-center text-2xl font-bold text-gray-900 dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-indigo-500 rounded-full me-1.5 flex-shrink-0"></span>
-            <a href="<?php echo WEB_ROOT ?>/delete"> Borrar </a> </span>
+            <span class="flex items-center text-2xl font-bold text-white dark:text-white me-3"><span class="flex w-2.5 h-2.5 bg-indigo-500 rounded-full me-1.5 flex-shrink-0"></span>
+            <a href="<?php echo WEB_ROOT ?>/delete"> Eliminar </a> </span>
             
 </div> 
   
-<table id="default-table" class="table-auto border-collapse bg-white rounded-lg shadow-lg">
+<table id="default-table" class="table-auto border-collapse bg-white rounded-lg shadow-lg mx-auto mt-4">
 <thead>
-                <tr class="bg-gray-200">
+                    <tr class="bg-gray-200">
                     <th class="px-4 py-2">ID</th>
                     <th class="px-4 py-2">Título</th>
                     <th class="px-4 py-2">Estado</th>
