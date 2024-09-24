@@ -16,14 +16,14 @@ class TaskController extends Controller{
             
             $title = $_POST['title'];
             $status = $_POST['status'];
-            $startTime = $_POST['starTime'];
+            $starTime = $_POST['starTime'];
             $deadLine = $_POST['deadLine'];
             $user = $_POST['user'];
 
             $data = [
                 'title' => $title,
                 'status' => $status,
-                'startTime' => $starTime,
+                'starTime' => $starTime,
                 'deadLine' => $deadLine,
                 'user' => $user,
             ];
@@ -41,7 +41,7 @@ class TaskController extends Controller{
             $id = $_POST['id'];
             $title = $_POST['title'];
             $status = $_POST['status'];
-            $startTime = $_POST['starTime'];
+            $starTime = $_POST['starTime'];
             $deadLine = $_POST['deadLine'];
             $user = $_POST['user'];
 
@@ -49,7 +49,7 @@ class TaskController extends Controller{
                 'id' =>$id,
                 'title' => $title,
                 'status' => $status,
-                'startTime' => $starTime,
+                'starTime' => $starTime,
                 'deadLine' => $deadLine,
                 'user' => $user,
             ];
@@ -74,24 +74,18 @@ class TaskController extends Controller{
        if($_SERVER["REQUEST_METHOD"]=== "POST"){
             
         $id = $_POST['id'];
-        
         $task = $this->modelTask->fetchId($id);
-        
-        
         if (!$task) {
             echo "La tarea no existe.";
             exit;
         }
-    
         
         $deleted = $this->modelTask->delete($taskId);
-    
         if ($deleted) {
             echo "Tarea eliminada correctamente.";
         } else {
             echo "No se pudo eliminar la tarea.";
         }
-    
         header('Location: ' . WEB_ROOT . '/index');
         exit;
     }
