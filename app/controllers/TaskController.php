@@ -8,10 +8,12 @@ class TaskController extends Controller{
     $this->modelTask = new ModelTask();
    }
     public function indexAction (){
+        
         $allTask = $this->modelTask->fetchAll();
         $this->view->allTask = $allTask;
     }
     public function createAction(){
+        var_dump(WEB_ROOT);
         if($_SERVER["REQUEST_METHOD"]=== "POST"){
             
             $title = $_POST['title'];
