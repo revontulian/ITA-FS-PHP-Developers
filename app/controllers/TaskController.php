@@ -54,13 +54,12 @@ class TaskController extends Controller{
                 'user' => $user,
             ];
         $this->modelTask->update($data);
-        header('Location: ' . WEB_ROOT . '/index');
-        exit;
-        } else {
-        $taskupdate = $this->modelTask->fetchId($taskId);
+        $taskupdate = $this->modelTask->fetchId($id);
         if(!$taskupdate){
             die('tarea no encontrada y tus nalgas tampoco ');
-        }
+        header('Location: ' . WEB_ROOT . '/index');
+        exit;
+        } 
         $this->view->task = $taskupdate;
         }
     }
