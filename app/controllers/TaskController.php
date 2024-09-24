@@ -34,7 +34,7 @@ class TaskController extends Controller{
     }
     public function updateAction(){
 
-        $url = explode('/',$SERVER['REQUEST_URI']);
+        $url = explode('/',$_SERVER['REQUEST_URI']);
         $taskId = end($url);
         if($_SERVER["REQUEST_METHOD"]=== "POST"){
             
@@ -59,7 +59,7 @@ class TaskController extends Controller{
         } else {
         $taskupdate = $this->modelTask->fetchId($taskId);
         if(!$taskupdate){
-            die('tarea no encontrada');
+            die('tarea no encontrada y tus nalgas tampoco ');
         }
         $this->view->task = $taskupdate;
         }
