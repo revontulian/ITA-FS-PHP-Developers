@@ -34,8 +34,8 @@ class TaskController extends Controller{
     }
     public function updateAction(){
 
-        $url = explode('/',$_SERVER['REQUEST_URI']);
-        $taskId = end($url);
+        //$url = explode('/',$_SERVER['REQUEST_URI']);
+        //$taskId = end($url);
         if($_SERVER["REQUEST_METHOD"]=== "POST"){
             
             $id = $_POST['id'];
@@ -53,21 +53,48 @@ class TaskController extends Controller{
                 'deadLine' => $deadLine,
                 'user' => $user,
             ];
-        $this->modelTask->update($data);
+        
         $taskupdate = $this->modelTask->fetchId($id);
         if(!$taskupdate){
             die('tarea no encontrada y tus nalgas tampoco ');
         header('Location: ' . WEB_ROOT . '/index');
         exit;
-        } 
-        $this->view->task = $taskupdate;
+        } else{
+            $this->modelTask->update($data);
+            header('Location: ' . WEB_ROOT . '/index');
+        exit;
+        }
         }
     }
     public function deleteAction(){
-        $url = explode('/',$SERVER['REQUEST_URI']);
-        $taskId = end($url);
-        $this->modelTask->delete($taskId);
+        // Obtener el ID de la tarea desde la URL
+        //$url = explode('/', $_SERVER['REQUEST_URI']);
+       // $taskId = end($url);
+    
+       if($_SERVER["REQUEST_METHOD"]=== "POST"){
+            
+        $id = $_POST['id'];
+        
+        $task = $this->modelTask->fetchId($id);
+        
+        
+        if (!$task) {
+            echo "La tarea no existe.";
+            exit;
+        }
+    
+        
+        $deleted = $this->modelTask->delete($taskId);
+    
+        if ($deleted) {
+            echo "Tarea eliminada correctamente.";
+        } else {
+            echo "No se pudo eliminar la tarea.";
+        }
+    
         header('Location: ' . WEB_ROOT . '/index');
         exit;
     }
+}
+
 }
