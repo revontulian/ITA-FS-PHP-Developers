@@ -34,49 +34,62 @@ class TaskController extends Controller{
         exit;
         }
     }
-    public function updateAction()
-{
-    // Paso 1: Mostrar un formulario para ingresar el ID si no se ha enviado aún
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id'])) {
-        $taskId = $_POST['task_id'];
-        
-        // Paso 2: Buscar la tarea en la base de datos
-        $task = $this->modelTask->fetchId($taskId);
-        
-        if ($task) {
-            // Mostrar el formulario de edición con los datos de la tarea
-            $this->view->task = $task;  // Pasar la tarea a la vista para mostrarla
-            $this->view->render('task/update');
-        } else {
-            // Mostrar mensaje de error si la tarea no existe
-            echo "No existe una tarea con el ID proporcionado.";
+    public function updateIdAction() {
+        // Si el formulario de ID es enviado
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $taskId = $_POST['taskId'];
+    
+            // Verifica que el ID exista en las tareas
+            $task = $this->modelTask->fetchId($taskId); // Método para obtener la tarea por ID
+    
+            if ($task) {
+                // Si la tarea existe, redirige a la vista de actualización
+                header('Location: ' . WEB_ROOT . '/update/' . $taskId);
+                exit;
+            } else {
+                // Si no existe, muestra un mensaje de error
+                $this->view->error = "La tarea con el ID $taskId no existe.";
+            }
         }
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'])) {
-        // Paso 4: Guardar los datos editados
-        $taskId = $_POST['id'];
-        $data = [
-            'title' => $_POST['title'],
-            'status' => $_POST['status'],
-            'startTime' => $_POST['startTime'],
-            'deadLine' => $_POST['deadLine'],
-            'user' => $_POST['user'],
-        ];
-        
-        $updated = $this->modelTask->update($taskId, $data);
-        
-        if ($updated) {
-            // Redirigir al índice si se ha editado con éxito
-            header('Location: ' . WEB_ROOT . '/index?message=TaskUpdated');
-            exit;
-        } else {
-            // Si hubo un error al guardar los datos
-            echo "Error al actualizar la tarea.";
-        }
-    } else {
-        // Mostrar el formulario de ID si no se ha hecho aún
-        $this->view->render('task/updateId');
+    
+        // Muestra la vista para pedir el ID
+        //$this->view->render('task/updateId.phtml');
     }
-}
+    public function updateAction($taskId) {
+        // Obtener la tarea por ID
+        $task = $this->modelTask->fetchId($taskId);
+    
+        if (!$task) {
+            // Si la tarea no existe, redirige o muestra un error
+            $this->view->error = "La tarea con el ID $taskId no existe.";
+            header('Location: ' . WEB_ROOT . '/updateId');
+            exit;
+        }
+    
+        // Si el formulario de actualización es enviado
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $updatedData = [
+                'title' => $_POST['title'],
+                'status' => $_POST['status'],
+                'startTime' => $_POST['startTime'],
+                'deadLine' => $_POST['deadLine'],
+                'user' => $_POST['user'],
+            ];
+    
+            // Actualizar la tarea
+            $this->modelTask->update($taskId, $updatedData);
+    
+            // Redirigir al index después de la actualización
+            header('Location: ' . WEB_ROOT . '/index');
+            exit;
+        }
+    
+        // Pasar los datos de la tarea a la vista
+        $this->view->task = $task;
+        $this->view->render('task/update.phtml');
+    }
+    
+    
 
     public function deleteAction()
     {
