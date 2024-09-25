@@ -46,17 +46,16 @@ class ModelTask extends Model {
         }
         file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
     }
-    public function delete($data){
-        $delete = false;
-        foreach($this->allTask as $task){
-            if($task['id'] == $data['id']){
-                unset($this->allTask[$task]);
-                $delete = true;   
+    public function delete($id)
+    {
+        foreach ($this->allTask as $key => $task) {
+            if ($task['id'] == $id) {
+                unset($this->allTask[$key]);
+                file_put_contents($this->dbRoute, json_encode($this->allTask, JSON_PRETTY_PRINT));
+                return true; 
             }
         }
-        if ($delete){
-        file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
-        }
-        return $delete;
+        return false;  
     }
+    
 }

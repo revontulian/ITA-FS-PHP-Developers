@@ -69,29 +69,36 @@ class TaskController extends Controller{
         }
         }
     }
-    public function deleteAction(){
-        // Obtener el ID de la tarea desde la URL
-        //$url = explode('/', $_SERVER['REQUEST_URI']);
-       // $taskId = end($url);
+    public function deleteAction()
+    {
+        // Verificar si se ha enviado un formulario con el ID para eliminar
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Obtener el ID del formulario
+            $taskId = $_POST['task_id'];
     
-       if($_SERVER["REQUEST_METHOD"]=== "POST"){
-            
-        $id = $_POST['id'];
-        $task = $this->modelTask->fetchId($id);
-        if (!$task) {
-            echo "La tarea no existe.";
-            exit;
+            // Validar si existe la tarea en la base de datos
+            $task = $this->modelTask->fetchId($taskId);  // Suponiendo que el modelo tiene un método `find` para buscar por ID
+    
+            if ($task) {
+                // Si la tarea existe, proceder a eliminarla
+                $deleted = $this->modelTask->delete($taskId);  // Método delete devuelve true si se elimina con éxito
+    
+                if ($deleted) {
+                    // Redireccionar o mostrar mensaje de éxito
+                    header('Location: ' . WEB_ROOT . '/index');
+                    exit;
+                } else {
+                    // Si hubo un error al eliminar
+                    echo "Error al eliminar la tarea.";
+                }
+            } else {
+                // Mostrar mensaje de error si la tarea no existe
+                echo "No existe una tarea con el ID proporcionado.";
+            }
         }
+    
         
-        $deleted = $this->modelTask->delete($taskId);
-        if ($deleted) {
-            echo "Tarea eliminada correctamente.";
-        } else {
-            echo "No se pudo eliminar la tarea.";
-        }
-        header('Location: ' . WEB_ROOT . '/index');
-        exit;
     }
+    
 }
 
-}
