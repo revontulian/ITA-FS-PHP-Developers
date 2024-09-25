@@ -34,65 +34,68 @@ class TaskController extends Controller{
         exit;
         }
     }
-    public function updateAction(){
-
-        $url = explode('/',$_SERVER['REQUEST_URI']);
-        $taskId = end($url);  
+    public function updateAction()
+{
+    // Paso 1: Mostrar un formulario para ingresar el ID si no se ha enviado aún
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id'])) {
+        $taskId = $_POST['task_id'];
         
-        if($_SERVER["REQUEST_METHOD"]=== "POST"){
-            
-            $id = $_POST['id'];
-            $title = $_POST['title'];
-            $status = $_POST['status'];
-            $starTime = $_POST['starTime'];
-            $deadLine = $_POST['deadLine'];
-            $user = $_POST['user'];
-
-            $data = [
-                'id' =>$id,
-                'title' => $title,
-                'status' => $status,
-                'starTime' => $starTime,
-                'deadLine' => $deadLine,
-                'user' => $user,
-            ];
+        // Paso 2: Buscar la tarea en la base de datos
+        $task = $this->modelTask->fetchId($taskId);
         
-        $taskupdate = $this->modelTask->fetchId($id);
-        if(!$taskupdate){
-            die('tarea no encontrada y tus nalgas tampoco ');
-        header('Location: ' . WEB_ROOT . '/index');
-        exit;
-        } else{
-            $this->modelTask->update($data);
-            header('Location: ' . WEB_ROOT . '/index');
-        exit;
+        if ($task) {
+            // Mostrar el formulario de edición con los datos de la tarea
+            $this->view->task = $task;  // Pasar la tarea a la vista para mostrarla
+            $this->view->render('task/edit');
+        } else {
+            // Mostrar mensaje de error si la tarea no existe
+            echo "No existe una tarea con el ID proporcionado.";
         }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'])) {
+        // Paso 4: Guardar los datos editados
+        $taskId = $_POST['id'];
+        $data = [
+            'title' => $_POST['title'],
+            'status' => $_POST['status'],
+            'startTime' => $_POST['startTime'],
+            'deadLine' => $_POST['deadLine'],
+            'user' => $_POST['user'],
+        ];
+        
+        $updated = $this->modelTask->update($taskId, $data);
+        
+        if ($updated) {
+            // Redirigir al índice si se ha editado con éxito
+            header('Location: ' . WEB_ROOT . '/index?message=TaskUpdated');
+            exit;
+        } else {
+            // Si hubo un error al guardar los datos
+            echo "Error al actualizar la tarea.";
         }
+    } else {
+        // Mostrar el formulario de ID si no se ha hecho aún
+        $this->view->render('task/edit_id_form');
     }
+}
+
     public function deleteAction()
     {
-        // Verificar si se ha enviado un formulario con el ID para eliminar
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Obtener el ID del formulario
+          
             $taskId = $_POST['task_id'];
-    
-            // Validar si existe la tarea en la base de datos
-            $task = $this->modelTask->fetchId($taskId);  // Suponiendo que el modelo tiene un método `find` para buscar por ID
+            $task = $this->modelTask->fetchId($taskId);  
     
             if ($task) {
-                // Si la tarea existe, proceder a eliminarla
-                $deleted = $this->modelTask->delete($taskId);  // Método delete devuelve true si se elimina con éxito
-    
+                
+                $deleted = $this->modelTask->delete($taskId); 
+            
                 if ($deleted) {
-                    // Redireccionar o mostrar mensaje de éxito
                     header('Location: ' . WEB_ROOT . '/index');
                     exit;
                 } else {
-                    // Si hubo un error al eliminar
                     echo "Error al eliminar la tarea.";
                 }
             } else {
-                // Mostrar mensaje de error si la tarea no existe
                 echo "No existe una tarea con el ID proporcionado.";
             }
         }
