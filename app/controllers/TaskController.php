@@ -13,7 +13,7 @@ class TaskController extends Controller{
         $this->view->allTask = $allTask;
     }
     public function createAction(){
-        var_dump(WEB_ROOT);
+        
         if($_SERVER["REQUEST_METHOD"]=== "POST"){
             
             $title = $_POST['title'];
@@ -36,8 +36,9 @@ class TaskController extends Controller{
     }
     public function updateAction(){
 
-        //$url = explode('/',$_SERVER['REQUEST_URI']);
-        //$taskId = end($url);
+        $url = explode('/',$_SERVER['REQUEST_URI']);
+        $taskId = end($url);  
+        
         if($_SERVER["REQUEST_METHOD"]=== "POST"){
             
             $id = $_POST['id'];

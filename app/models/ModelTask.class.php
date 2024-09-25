@@ -16,12 +16,12 @@ class ModelTask extends Model {
             'id' => $id,
             'title' => $data['title'],
             'status' => $data['status'],
-            'startTime' => $data['starTime'],
+            'starTime' => $data['starTime'],
             'deadLine' => $data['deadLine'],
             'user' => $data['user'],
         ];
         $this->allTask[] = $task;
-        file_put_contents($this->dataRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
+        file_put_contents($this->dbRoute, json_encode($this->allTask, JSON_PRETTY_PRINT));
     }
     public function fetchAll(){
         return $this->allTask;
@@ -44,7 +44,7 @@ class ModelTask extends Model {
                 $data['user'] = $task['user'];
             }
         }
-        file_put_contents($this->dataRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
+        file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
     }
     public function delete($data){
         $delete = false;
@@ -55,7 +55,7 @@ class ModelTask extends Model {
             }
         }
         if ($delete){
-        file_put_contents($this->dataRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
+        file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
         }
         return $delete;
     }
