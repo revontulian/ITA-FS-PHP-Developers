@@ -46,7 +46,7 @@ class TaskController extends Controller{
         if ($task) {
             // Mostrar el formulario de edición con los datos de la tarea
             $this->view->task = $task;  // Pasar la tarea a la vista para mostrarla
-            $this->view->render('task/edit');
+            $this->view->render('task/update');
         } else {
             // Mostrar mensaje de error si la tarea no existe
             echo "No existe una tarea con el ID proporcionado.";
@@ -74,7 +74,7 @@ class TaskController extends Controller{
         }
     } else {
         // Mostrar el formulario de ID si no se ha hecho aún
-        $this->view->render('task/edit_id_form');
+        $this->view->render('task/updateId');
     }
 }
 

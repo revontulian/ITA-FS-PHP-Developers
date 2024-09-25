@@ -34,18 +34,22 @@ class ModelTask extends Model {
         }
         return null;
     }
-    public function update($data){
-        foreach($this->allTask as $task){
-            if($task['id'] == $data['id']){
-                $data['title'] = $task['title'];
-                $data['status'] = $task['status'];
-                $data['starTime'] = $task['starTime'];
-                $data['deadLine'] = $task['deadLine'];
-                $data['user'] = $task['user'];
+    public function update($id, $data){
+        
+            foreach ($this->allTask as $key => $task) {
+                if ($task['id'] == $id) {
+                    // Actualizar los datos de la tarea
+                    $this->allTask[$key] = array_merge($task, $data);
+                    
+                    // Guardar los cambios en el archivo
+                    file_put_contents($this->dbRoute, json_encode($this->allTask, JSON_PRETTY_PRINT));
+                    
+                    return true;  // Retornar verdadero si se ha actualizado con éxito
+                }
             }
+            return false;  // Retornar falso si no se encuentra el ID
         }
-        file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
-    }
+        
     public function delete($id)
     {
         foreach ($this->allTask as $key => $task) {
