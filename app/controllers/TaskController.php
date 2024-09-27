@@ -30,6 +30,7 @@ class TaskController extends Controller{
                 'user' => $user,
             ];
         $this->modelTask->create($data);
+        
         header('Location: ' . WEB_ROOT . '/index');
         exit;
         }

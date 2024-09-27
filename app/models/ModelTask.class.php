@@ -46,10 +46,13 @@ class ModelTask extends Model {
                 $task['starTime'] = $data['starTime'];
                 $task['deadLine'] = $data['deadLine'];
                 $task['user'] = $data['user'];
+                break;
                 
             }
         }
-        file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
+            
+        file_put_contents($this->dbRoute, json_encode($this->allTask, JSON_PRETTY_PRINT));
+        
     }
 
         
