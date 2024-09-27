@@ -61,26 +61,37 @@ class TaskController extends Controller{
         
         $url_parts = explode('/', $_SERVER['REQUEST_URI']);
         $taskId = end($url_parts);
-        var_dump($taskId);
+        
         $task = $this->modelTask->fetchId($taskId);
-        var_dump($task);
+        
         $this->view->task = $task;
-
+       
         // Si el formulario de actualización es enviado
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $updatedData = [
-                'title' => $_POST['title'],
-                'status' => $_POST['status'],
-                'startTime' => $_POST['startTime'],
-                'deadLine' => $_POST['deadLine'],
-                'user' => $_POST['user'],
-            ];
-    
+            
+                $id = $taskId;
+                $title = $_POST['title'];
+                $status = $_POST['status'];
+                $starTime = $_POST['starTime'];
+                $deadLine = $_POST['deadLine'];
+                $user = $_POST['user'];
+            
+
+                $updateData = [
+                    'id' => $id,
+                    'title' => $title,
+                    'status' => $status,
+                    'starTime' => $starTime,
+                    'deadLine' => $deadLine,
+                    'user' => $user
+                    
+                ];
+                
             // Actualizar la tarea
-            $this->modelTask->update($taskId, $updatedData);
+            $this->modelTask->update($updateData);
     
             // Redirigir al index después de la actualización
-            header('Location: ' . WEB_ROOT . '/index');
+            header('Location: ' . WEB_ROOT . '/');
             exit;
         }
     

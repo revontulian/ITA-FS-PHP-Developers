@@ -34,15 +34,19 @@ class ModelTask extends Model {
         }
         return null;
     }
-    public function update($id, $data){
+    public function update($data){
         
         foreach($this->allTask as $task){
+            
+              
             if($task['id'] == $data['id']){
-                $data['title'] = $task['title'];
-                $data['status'] = $task['status'];
-                $data['starTime'] = $task['starTime'];
-                $data['deadLine'] = $task['deadLine'];
-                $data['user'] = $task['user'];
+                
+                $task['title'] = $data['title'];
+                $task['status'] = $data['status'];
+                $task['starTime'] = $data['starTime'];
+                $task['deadLine'] = $data['deadLine'];
+                $task['user'] = $data['user'];
+                
             }
         }
         file_put_contents($this->dbRoute, json_encode($this->allTasks, JSON_PRETTY_PRINT));
