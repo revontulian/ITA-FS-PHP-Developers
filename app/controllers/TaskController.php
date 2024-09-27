@@ -35,37 +35,37 @@ class TaskController extends Controller{
         }
     }
     public function updateIdAction() {
-        // Si el formulario de ID es enviado
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $taskId = $_POST['taskId'];
+            $taskId = $_POST['task_id']; 
     
             // Verifica que el ID exista en las tareas
-            $task = $this->modelTask->fetchId($taskId); // Método para obtener la tarea por ID
+            $task = $this->modelTask->fetchIdBool($taskId); // Método para obtener la tarea por ID
     
             if ($task) {
+                
                 // Si la tarea existe, redirige a la vista de actualización
                 header('Location: ' . WEB_ROOT . '/update/' . $taskId);
                 exit;
+                
             } else {
+                echo "error";
                 // Si no existe, muestra un mensaje de error
                 $this->view->error = "La tarea con el ID $taskId no existe.";
             }
         }
     
-        // Muestra la vista para pedir el ID
+         //Muestra la vista para pedir el ID
         //$this->view->render('task/updateId.phtml');
     }
-    public function updateAction($taskId) {
-        // Obtener la tarea por ID
+    public function updateAction() {
+        
+        $url_parts = explode('/', $_SERVER['REQUEST_URI']);
+        $taskId = end($url_parts);
+        var_dump($taskId);
         $task = $this->modelTask->fetchId($taskId);
-    
-        if (!$task) {
-            // Si la tarea no existe, redirige o muestra un error
-            $this->view->error = "La tarea con el ID $taskId no existe.";
-            header('Location: ' . WEB_ROOT . '/updateId');
-            exit;
-        }
-    
+        var_dump($task);
+        $this->view->task = $task;
+
         // Si el formulario de actualización es enviado
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updatedData = [
@@ -85,8 +85,8 @@ class TaskController extends Controller{
         }
     
         // Pasar los datos de la tarea a la vista
-        $this->view->task = $task;
-        $this->view->render('task/update.phtml');
+        //$this->view->task = $task;
+        //$this->view->render('task/update.phtml');
     }
     
     

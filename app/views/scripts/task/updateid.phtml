@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar tarea</title>
+    <title>Editar Id tarea</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"  rel="stylesheet" />
 </head>
 <body>
@@ -16,7 +16,8 @@
 
 <form action="<?php echo WEB_ROOT; ?>/updateId" method="POST">
     <label for="task_id">Ingrese el ID de la tarea a editar:</label>
-    <input type="number" name="task_id" id="task_id" required />
+    <input type="number" name="task_id" value="<?php echo $task['id']; ?>" required />
+    <a href="<?php echo WEB_ROOT ?>/update/<?php echo $task['id']; ?>">
     <button type="submit">Editar tarea</button>
 </form>
 
