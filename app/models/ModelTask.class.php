@@ -36,7 +36,7 @@ class ModelTask extends Model {
     }
     public function update($data){
         
-        foreach($this->allTask as $task){
+        foreach($this->allTask as &$task){
             
               
             if($task['id'] == $data['id']){
@@ -50,7 +50,7 @@ class ModelTask extends Model {
                 
             }
         }
-            
+        
         file_put_contents($this->dbRoute, json_encode($this->allTask, JSON_PRETTY_PRINT));
         
     }
