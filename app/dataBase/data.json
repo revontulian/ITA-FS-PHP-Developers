@@ -2,9 +2,25 @@
     {
         "id": 1,
         "title": "teoria git flow ",
-        "status": "En proceso",
+        "status": "Terminado",
         "starTime": "2024-09-30",
         "deadLine": "2024-10-01",
         "user": "sergio"
+    },
+    {
+        "id": 2,
+        "title": "Spring3 ",
+        "status": "En proceso",
+        "starTime": "2024-10-10",
+        "deadLine": "2024-10-21",
+        "user": "SergitheGOAT"
+    },
+    {
+        "id": 3,
+        "title": "Spring 4",
+        "status": "Pendiente",
+        "starTime": "2024-01-01",
+        "deadLine": "2024-01-01",
+        "user": "Karajiton"
     }
 ]
