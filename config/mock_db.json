@@ -1,0 +1,74 @@
+{
+  "tasks": [
+    {
+      "title": "Buy groceries",
+      "description": "Purchase fruits, vegetables, and dairy products.",
+      "tags": ["shopping", "grocery", "weekend"],
+      "start_time": 1700380800,
+      "end_time": 1700384400,
+      "created_by": "John Doe",
+      "state": "pending",
+      "id": "1"
+    },
+    {
+      "title": "Complete project report",
+      "description": "Write and submit the final report for the project.",
+      "tags": ["work", "report", "urgent"],
+      "start_time": 1700391600,
+      "end_time": 1700398800,
+      "created_by": "Jane Smith",
+      "state": "ongoing",
+      "id": "2"
+    },
+    {
+      "title": "Doctor appointment",
+      "description": "Visit the doctor for a routine check-up.",
+      "tags": ["health", "appointment", "personal"],
+      "start_time": 1700470800,
+      "end_time": 1700474400,
+      "created_by": "John Doe",
+      "state": "done",
+      "id": "3"
+    },
+    {
+      "title": "Team meeting",
+      "description": "Discuss project progress and upcoming tasks with the team.",
+      "tags": ["work", "meeting", "team"],
+      "start_time": 1700560800,
+      "end_time": 1700564400,
+      "created_by": "Alice Brown",
+      "state": "pending",
+      "id": "4"
+    },
+    {
+      "title": "Go to the gym",
+      "description": "Workout session focusing on strength training.",
+      "tags": ["health", "fitness", "exercise"],
+      "start_time": 1700647200,
+      "end_time": 1700650800,
+      "created_by": "John Doe",
+      "state": "ongoing",
+      "id": "5"
+    },
+    {
+      "title": "Pick up package",
+      "description": "Pick up the package from the post office.",
+      "tags": ["errands", "shopping", "delivery"],
+      "start_time": 1700733600,
+      "end_time": 1700737200,
+      "created_by": "Emma White",
+      "state": "pending",
+      "id": "6"
+    },
+    {
+      "title": "Read book",
+      "description": "Read the new book for leisure.",
+      "tags": ["personal", "reading", "leisure"],
+      "start_time": 1700820000,
+      "end_time": 1700823600,
+      "created_by": "John Doe",
+      "state": "done",
+      "id": "7"
+    }
+  ]
+}
