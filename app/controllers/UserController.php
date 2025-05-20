@@ -65,4 +65,54 @@ class UserController extends ApplicationController
         header('Location: ' . WEB_ROOT . '/login');
         exit;
     }
+
+    public function editAction()
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: ' . WEB_ROOT . '/login');
+            exit;
+        }
+
+        $user = $_SESSION['user'];
+        $this->view->error = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $name = $_POST['name'] ?? '';
+            $surname = $_POST['surname'] ?? '';
+            $date_of_birth = $_POST['date_of_birth'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $confirm = $_POST['confirm_password'] ?? '';
+
+            if ($password !== $confirm) {
+                $this->view->error = 'Passwords do not match.';
+            } else {
+                $userModel = new ModelUser();
+                $newData = [
+                    'email' => $email,
+                    'name' => $name,
+                    'surname' => $surname,
+                    'date_of_birth' => $date_of_birth
+                ];
+                if (!empty($password)) {
+                    $newData['password'] = $password;
+                }
+                $userModel->updateUser($user['id'], $newData);
+
+                // AGGIORNA LA SESSIONE CON I NUOVI DATI
+                $updatedUsers = $userModel->getAll();
+                foreach ($updatedUsers as $u) {
+                    if ($u['id'] === $user['id']) {
+                        $_SESSION['user'] = $u;
+                        break;
+                    }
+                }
+
+                header('Location: ' . WEB_ROOT . '/profile');
+                exit;
+            }
+        }
+
+        $this->view->user = $_SESSION['user'];
+    }
 }

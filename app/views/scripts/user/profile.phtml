@@ -11,6 +11,7 @@
                 <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($user['date_of_birth'] ?? ''); ?></p>
             </div>
             <div class="mt-4">
+                <a href="<?php echo $this->baseUrl(); ?>/edit-profile" class="btn btn-secondary">Edit Profile</a>
                 <a href="<?php echo $this->baseUrl(); ?>/logout" class="btn btn-danger">Logout</a>
             </div>
         </div>

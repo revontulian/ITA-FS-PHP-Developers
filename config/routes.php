@@ -10,9 +10,11 @@
  * '/calendar' => 'calendar#index'
  */
 $routes = array(
-    '/test' => 'test#index',
+    '/' => 'user#login',
     '/login' => 'user#login',
     '/register' => 'user#register',
     '/logout' => 'user#logout',
-    '/profile' => 'user#profile'
+    '/profile' => 'user#profile',
+    '/edit-profile' => 'user#edit',
+    '/test' => 'test#index',
 );
