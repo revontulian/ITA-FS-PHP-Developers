@@ -1,0 +1,49 @@
+<div class="auth-container">
+    <h2>Create a new account</h2>
+    
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger">
+            <?php echo $error; ?>
+        </div>
+    <?php endif; ?>
+    
+    <form method="POST" action="<?php echo $this->baseUrl(); ?>/register">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="surname">Surname</label>
+            <input type="text" id="surname" name="surname" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date_of_birth">Date of Birth</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+        
+        <p class="text-center">
+            Already have an account? <a href="<?php echo $this->baseUrl(); ?>/login">Login</a>
+        </p>
+    </form>
+</div>
