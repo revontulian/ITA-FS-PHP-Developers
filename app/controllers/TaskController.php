@@ -1,13 +1,21 @@
 <?php
 
-    class  TodoListController extends Controller{
+    class  TaskController extends Controller{
 
         public function checkTask(): void{
 
             if($_SERVER['REQUEST_METHOD'] !== 'POST'){
                 //Verificar que sea una petición POST
-                echo json_encode(["Metodo no permitido"]);
+                echo "Metodo no permitido";
                 exit(); 
+            }
+
+            function test_input($data): string {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+            }  
 
 
              // campos obligatorios
@@ -16,31 +24,25 @@
             exit();
 
             }
-            if($_SERVER['REQUEST_METHOD'] === 'POST'){
+                // NO HACE FALTA UN IF FILTRO PORQUE EL PRIMER IF YA LO HACE
                 $nameTask = test_input($_POST["nameTask"]);
-                $status = test_input($_POST["status"]);
+                $taskStatus = TaskStatus::from(test_input($_POST["status"]));;
                 $description = test_input($_POST["description"]);
-                $startDate = test_input($_POST["startDate"]);
-                $endDate = test_input($_POST["endDate"]);
+                $startDate = new DateTimeImmutable(test_input($_POST["startDate"]));
+                $endDate = new DateTimeImmutable(test_input($_POST["endDate"]));
 
-            }
+
+            
             //SAVE THE INFORMATION USER.JSON
-            $taskModel= new ModelUser();
+            $taskModel= new TaskModel("task.json");
             $task = $taskModel->addTask($nameTask, $taskStatus, $startDate, $description, $endDate);
             header('Location: ' . WEB_ROOT . '/tasks?success=Nota creada correctamente');
 
 
-            function test_input($data) {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
-
-            }
         
        
         
     }
 }
-    }
+    
 ?>
