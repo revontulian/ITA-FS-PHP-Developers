@@ -23,11 +23,11 @@
             return [];
         }
         $json = file_get_contents($this->file);
-        $task = json_decode($json, true);
+        $tasks = json_decode($json, true);
         return is_array($tasks) ? $tasks : [];
     }
 
-    public function addTask( string $nameTask, TaskStatus $TaskStatus, DateTimeImmutable  $startTime,
+    public function addTask( string $nameTask, TaskStatus $taskStatus, DateTimeImmutable  $startTime,
      string $description,  DateTimeImmutable  $endDate):bool{
 
         //filtar si exite 
@@ -42,8 +42,9 @@
 
 
           $newtasks= [
+            'id' => uniqid(),
             'nameTask' => $nameTask,
-            'TaskStatus' => $status->value,// the enum 
+            'TaskStatus' => $taskStatus->value,// the enum 
             'startDate' => $startTime->format('Y-m-d'),// date
             'description' => $description,
             'endDate' => $endDate->format('Y-m-d')// data
