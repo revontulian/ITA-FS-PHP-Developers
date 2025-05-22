@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 class ModelUser
 {
-    private string $file;
+    private JsonCRUD $crud;
 
     public function __construct()
     {
-        $this->file = __DIR__ . '/../../lib/data/users.json';
+        $this->crud = new JsonCRUD(ROOT_PATH . '/lib/data/users.json');
     }
 
     /**
@@ -16,12 +16,7 @@ class ModelUser
      */
     public function getAll(): array
     {
-        if (!file_exists($this->file)) {
-            return [];
-        }
-        $json = file_get_contents($this->file);
-        $users = json_decode($json, true);
-        return is_array($users) ? $users : [];
+        return $this->crud->read();
     }
 
     /**
@@ -35,28 +30,20 @@ class ModelUser
      */
     public function addUser(string $email, string $password, string $name, string $surname, string $date_of_birth): bool
     {
-        $users = $this->getAll();
-
         // Check if email already exists
-        foreach ($users as $user) {
+        foreach ($this->crud->read() as $user) {
             if ($user['email'] === $email) {
                 return false;
             }
         }
-
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $newUser = [
-            'id' => uniqid(),
+        $this->crud->create([
             'email' => $email,
             'password' => $hashedPassword,
             'name' => $name,
             'surname' => $surname,
             'date_of_birth' => $date_of_birth
-        ];
-
-        $users[] = $newUser;
-        file_put_contents($this->file, json_encode($users, JSON_PRETTY_PRINT));
+        ]);
         return true;
     }
 
@@ -68,8 +55,7 @@ class ModelUser
      */
     public function checkLogin(string $email, string $password): array|false
     {
-        $users = $this->getAll();
-        foreach ($users as $user) {
+        foreach ($this->crud->read() as $user) {
             if ($user['email'] === $email && password_verify($password, $user['password'])) {
                 return $user;
             }
@@ -84,8 +70,7 @@ class ModelUser
      */
     public function emailExists(string $email): bool
     {
-        $users = $this->getAll();
-        foreach ($users as $user) {
+        foreach ($this->crud->read() as $user) {
             if ($user['email'] === $email) {
                 return true;
             }
@@ -101,26 +86,17 @@ class ModelUser
      */
     public function updateUser(string $id, array $newData): bool
     {
-        $users = $this->getAll();
-        $updated = false;
-        foreach ($users as &$user) {
-            if ($user['id'] === $id) {
-                // Update only provided fields
-                foreach (['email', 'name', 'surname', 'date_of_birth'] as $field) {
-                    if (isset($newData[$field])) {
-                        $user[$field] = $newData[$field];
-                    }
-                }
-                if (!empty($newData['password'])) {
-                    $user['password'] = password_hash($newData['password'], PASSWORD_DEFAULT);
-                }
-                $updated = true;
-                break;
-            }
-        }
-        if ($updated) {
-            file_put_contents($this->file, json_encode($users, JSON_PRETTY_PRINT));
-        }
-        return $updated;
+        $user = $this->crud->update($id, $newData);
+        return $user !== null;
+    }
+
+    /**
+     * Delete a user.
+     * @param string $id
+     * @return bool
+     */
+    public function deleteUser(string $id): bool
+    {
+        return $this->crud->delete($id);
     }
 }

@@ -13,6 +13,18 @@
             <div class="mt-4">
                 <a href="<?php echo $this->baseUrl(); ?>/edit-profile" class="btn btn-secondary">Edit Profile</a>
                 <a href="<?php echo $this->baseUrl(); ?>/logout" class="btn btn-danger">Logout</a>
+                <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteModal').style.display='block'">Delete Account</button>
+            </div>
+
+           
+            <div id="deleteModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+                <div style="background:#fff; margin:10% auto; padding:20px; width:300px; border-radius:8px; text-align:center;">
+                    <p>Are you sure you want to delete your account?</p>
+                    <form method="POST" action="<?php echo $this->baseUrl(); ?>/delete-account">
+                        <button type="submit" class="btn btn-danger">Yes, delete</button>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('deleteModal').style.display='none'">No, cancel</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

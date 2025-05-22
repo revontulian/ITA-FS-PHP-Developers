@@ -115,4 +115,18 @@ class UserController extends ApplicationController
 
         $this->view->user = $_SESSION['user'];
     }
+
+    public function deleteAction()
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: ' . WEB_ROOT . '/login');
+            exit;
+        }
+        $user = $_SESSION['user'];
+        $userModel = new ModelUser();
+        $userModel->deleteUser($user['id']); // Usa il metodo delete di JsonCRUD
+        session_destroy();
+        header('Location: ' . WEB_ROOT . '/login');
+        exit;
+    }
 }
