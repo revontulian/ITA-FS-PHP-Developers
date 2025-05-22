@@ -16,8 +16,8 @@ $routes = array(
     '/logout' => 'user#logout',
     '/profile' => 'user#profile',
 
-    //task 
-    '/tasks' => 'task#index',
-    '/tasksCreate' =>'task#createTask'
-
+    //task routes
+    '/tasks' => 'task#view', // <--- CAMBIA index POR view
+    '/tasks/view' => 'task#view',
+    '/tasks/create' => 'task#create'  
 );

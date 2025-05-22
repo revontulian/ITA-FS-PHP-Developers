@@ -1,4 +1,3 @@
-
 [
     {
         "id": "682c6de23cefd",
@@ -7,6 +6,13 @@
         "name": "alex",
         "surname": "pasquero",
         "date_of_birth": "1996-11-17"
+    },
+    {
+        "id": "682f7be10be44",
+        "email": "lacereza7@gmail.com",
+        "password": "$2y$10$8ypc3oD5x83pj6rr4anVY.KV\/q\/tVDEAczh4Gu4vyyiDkNIUBE2le",
+        "name": "Sandra",
+        "surname": "G",
+        "date_of_birth": "2025-04-30"
     }
-  
 ]

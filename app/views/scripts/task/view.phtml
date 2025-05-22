@@ -1,0 +1,20 @@
+<div class="container">
+    <?php if (is_array($this->tasks) && count($this->tasks) > 0): //mira que haya tascas, y que contando todas las tascas seas mayor que cero?> 
+        <?php foreach ($this->tasks as $task): ?>
+            <div class="card" style="margin-bottom:20px;">
+                <div class="card-body">
+                    <h4 class="card-title"><?= htmlspecialchars($task['nameTask'] ?? 'Sin nombre') ?></h4>
+                    <div class="task-info">
+                        <p><strong>Estado:</strong> <?= htmlspecialchars($task['taskStatus'] ?? 'No definido') ?></p>
+                        <p><strong>Descripción:</strong> <?= htmlspecialchars($task['description'] ?? 'Sin descripción') ?></p>
+                        <p><strong>Fecha inicio:</strong> <?= htmlspecialchars($task['startDate'] ?? 'No definida') ?></p>
+                        <p><strong>Fecha fin:</strong> <?= htmlspecialchars($task['endDate'] ?? 'No definida') ?></p>
+                        <p><strong>Prioridad:</strong> <?= htmlspecialchars($task['provity'] ?? 'No definida') ?></p>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="info-message">No hay tareas registradas.</p>
+    <?php endif; ?>
+</div>

@@ -1,48 +1,66 @@
 <?php
 
-    class  TaskController extends Controller{
+class TaskController extends Controller
+{
+    private TaskModel $taskModel; 
 
-        public function checkTask(): void{
+    public function init(): void 
+    {
+        parent::init(); // Llama al init() del controlador padre
+        $this->taskModel = new TaskModel();
 
-            if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-                //Verificar que sea una petición POST
-                echo "Metodo no permitido";
-                exit(); 
+    }
+    public function viewAction(): void
+    {
+        $tasks = $this->taskModel->getAll();
+        $this->view->tasks = $tasks;
+    }
+
+    
+
+    public function createAction(): void
+    {
+        $this->view->tasks = $this->taskModel->getAll();
+        $this->view->error = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nameTask = $_POST['nameTask'] ?? '';
+            $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
+            $description = $_POST['description'] ?? '';
+            $startDate = $_POST['startDate'] ?? '';
+            $endDate = $_POST['endDate'] ?? '';
+            $provity = (int)($_POST['provity'] ?? 1);
+
+            // Convierte el string a enum TaskStatus
+            $taskStatus = TaskStatus::from($taskStatusStr);
+
+            // Asegúrate de crear los objetos DateTimeImmutable correctamente
+            $startDateObj = new DateTimeImmutable($startDate);
+            $endDateObj = $endDate ? new DateTimeImmutable($endDate) : $startDateObj;
+
+            // Validación de campos obligatorios
+            if (empty($nameTask) || empty($startDate)) {
+                $this->view->error = "Todos los campos son obligatorios.";
+                return;
             }
 
-            function test_input($data): string {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
-            }  
+            $success = $this->taskModel->addTask(
+                $nameTask,
+                $taskStatus,
+                $startDateObj,
+                $description,
+                $endDateObj,
+                $provity
+            );
 
-
-             // campos obligatorios
-            if(empty($_POST["nameTask"])|| empty("TaskStatus")){
-            $erroObligation = "Campos obligatorios";
-            exit();
-
+            if ($success) {
+                $_SESSION['success'] = "Tarea creada exitosamente";
+                header('Location: ' . WEB_ROOT . '/tasks/create');
+                exit();
+            } else {
+                $this->view->error = "La tarea ya existe.";
             }
-                // NO HACE FALTA UN IF FILTRO PORQUE EL PRIMER IF YA LO HACE
-                $nameTask = test_input($_POST["nameTask"]);
-                $taskStatus = TaskStatus::from(test_input($_POST["status"]));;
-                $description = test_input($_POST["description"]);
-                $startDate = new DateTimeImmutable(test_input($_POST["startDate"]));
-                $endDate = new DateTimeImmutable(test_input($_POST["endDate"]));
-
-
-            
-            //SAVE THE INFORMATION USER.JSON
-            $taskModel= new TaskModel("task.json");
-            $task = $taskModel->addTask($nameTask, $taskStatus, $startDate, $description, $endDate);
-            header('Location: ' . WEB_ROOT . '/tasks?success=Nota creada correctamente');
-
-
-        
-       
-        
+        }
     }
 }
-    
 ?>
