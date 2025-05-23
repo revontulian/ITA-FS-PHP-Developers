@@ -15,6 +15,11 @@ $routes = array(
     '/register' => 'user#register',
     '/logout' => 'user#logout',
     '/profile' => 'user#profile',
+
+    //task 
+    '/tasks/view' => 'task#view',
+    '/tasks/create' => 'task#create'  
+
     '/edit-profile' => 'user#edit',
     '/delete-account' => 'user#delete',
     '/test' => 'test#index',

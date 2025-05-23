@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The task creat</title>
+</head>
+ <section class="create-form">
+        <h1>Crear Nueva Tarea</h1>
+        <form action="<?php echo $this->baseUrl();?>/tasks/create" method="POST">
+            <div class="form-group">
+                <label for="nameTask">Task Name*</label>
+                <input type="text" id="nameTask" name="nameTask" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="taskStatus">Status</label>
+                <select id="taskStatus" name="taskStatus" class="form-control">
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date*</label>
+                <input type="date" id="startDate" name="startDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date*</label>
+                <input type="date" id="endDate" name="endDate" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="provity">Prioridad</label>
+                <input type="number" id="provity" name="provity" class="form-control" value="1" min="1" max="5">
+            </div>
+
+            <button type="submit">Create Task</button>
+        </form>
+
+</body>
+</html>
