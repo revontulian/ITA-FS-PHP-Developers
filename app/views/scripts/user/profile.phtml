@@ -1,31 +1,34 @@
 <?php $user = $this->user ?? null; ?>
-<div class="profile-container">
-    <h2>Your Profile</h2>
-    <div class="card">
-        <div class="card-body">
-            <div class="user-info">
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
-                <p><strong>Password (hashed):</strong> <?php echo htmlspecialchars($user['password'] ?? ''); ?></p>
-                <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'] ?? ''); ?></p>
-                <p><strong>Surname:</strong> <?php echo htmlspecialchars($user['surname'] ?? ''); ?></p>
-                <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($user['date_of_birth'] ?? ''); ?></p>
-            </div>
-            <div class="mt-4">
-                <a href="<?php echo $this->baseUrl(); ?>/edit-profile" class="btn btn-secondary">Edit Profile</a>
-                <a href="<?php echo $this->baseUrl(); ?>/logout" class="btn btn-danger">Logout</a>
-                <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteModal').style.display='block'">Delete Account</button>
-            </div>
-
-           
-            <div id="deleteModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
-                <div style="background:#fff; margin:10% auto; padding:20px; width:300px; border-radius:8px; text-align:center;">
-                    <p>Are you sure you want to delete your account?</p>
-                    <form method="POST" action="<?php echo $this->baseUrl(); ?>/delete-account">
-                        <button type="submit" class="btn btn-danger">Yes, delete</button>
-                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('deleteModal').style.display='none'">No, cancel</button>
-                    </form>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 to-blue-400">
+    <div class="w-full max-w-xl bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">Your Profile</h2>
+        <div class="space-y-4">
+            <p><span class="font-semibold">Email:</span> <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
+            <p><span class="font-semibold">Name:</span> <?php echo htmlspecialchars($user['name'] ?? ''); ?></p>
+            <p><span class="font-semibold">Surname:</span> <?php echo htmlspecialchars($user['surname'] ?? ''); ?></p>
+            <p><span class="font-semibold">Date of Birth:</span> <?php echo htmlspecialchars($user['date_of_birth'] ?? ''); ?></p>
+        </div>
+        <div class="flex justify-between mt-8">
+            <a href="<?php echo $this->baseUrl(); ?>/edit-profile" class="bg-blue-400 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded">Edit Profile</a>
+            <a href="<?php echo $this->baseUrl(); ?>/logout" class="bg-red-400 hover:bg-red-500 text-white font-semibold px-4 py-2 rounded">Logout</a>
+            <button type="button" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded" onclick="document.getElementById('deleteModal').style.display='block'">Delete Account</button>
+        </div>
+        <div id="deleteModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+            <div class="bg-white mx-auto mt-40 p-6 rounded shadow-lg w-80 text-center">
+                <p class="mb-4">Are you sure you want to delete your account?</p>
+                <form method="POST" action="<?php echo $this->baseUrl(); ?>/delete-account">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded mr-2">Yes, delete</button>
+                    <button type="button" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded" onclick="document.getElementById('deleteModal').style.display='none'">No, cancel</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
+</body>
+</html>

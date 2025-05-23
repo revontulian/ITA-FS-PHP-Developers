@@ -1,36 +1,46 @@
 <?php $user = $this->user ?? null; ?>
-<div class="edit-profile-container">
-    <h2>Edit Profile</h2>
-    <?php if (!empty($this->error)): ?>
-        <div class="alert alert-danger"><?php echo $this->error; ?></div>
-    <?php endif; ?>
-    <form method="POST" action="<?php echo $this->baseUrl(); ?>/edit-profile">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="surname">Surname</label>
-            <input type="text" id="surname" name="surname" value="<?php echo htmlspecialchars($user['surname']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="date_of_birth">Date of Birth</label>
-            <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($user['date_of_birth']); ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="password">New Password (leave blank to keep current)</label>
-            <input type="password" id="password" name="password">
-        </div>
-        <div class="form-group">
-            <label for="confirm_password">Confirm New Password</label>
-            <input type="password" id="confirm_password" name="confirm_password">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile - TO DO LIST APP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 to-blue-400">
+    <div class="w-full max-w-xl bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
+        <?php if (!empty($this->error)): ?>
+            <div class="mb-4 p-2 bg-red-200 text-red-800 rounded"><?php echo $this->error; ?></div>
+        <?php endif; ?>
+        <form method="POST" action="<?php echo $this->baseUrl(); ?>/edit-profile" class="space-y-4">
+            <div>
+                <label class="block font-semibold mb-1" for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" class="w-full border-2 border-blue-400 rounded px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block font-semibold mb-1" for="name">Name</label>
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" class="w-full border-2 border-blue-400 rounded px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block font-semibold mb-1" for="surname">Surname</label>
+                <input type="text" id="surname" name="surname" value="<?php echo htmlspecialchars($user['surname']); ?>" class="w-full border-2 border-blue-400 rounded px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block font-semibold mb-1" for="date_of_birth">Date of Birth</label>
+                <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($user['date_of_birth']); ?>" class="w-full border-2 border-blue-400 rounded px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block font-semibold mb-1" for="password">New Password (leave blank to keep current)</label>
+                <input type="password" id="password" name="password" class="w-full border-2 border-blue-400 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block font-semibold mb-1" for="confirm_password">Confirm New Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="w-full border-2 border-blue-400 rounded px-3 py-2">
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-2 rounded">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
