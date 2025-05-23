@@ -17,7 +17,7 @@ $routes = array(
     '/profile' => 'user#profile',
 
     //task 
-    '/tasks' => 'task#index',
-    '/tasksCreate' =>'task#createTask'
+    '/tasks/view' => 'task#view',
+    '/tasks/create' => 'task#create'  
 
 );
