@@ -10,7 +10,7 @@
  * '/calendar' => 'calendar#index'
  */
 $routes = array(
-    '/test' => 'test#index',
+    '/' => 'user#login',
     '/login' => 'user#login',
     '/register' => 'user#register',
     '/logout' => 'user#logout',
@@ -20,4 +20,7 @@ $routes = array(
     '/tasks/view' => 'task#view',
     '/tasks/create' => 'task#create'  
 
+    '/edit-profile' => 'user#edit',
+    '/delete-account' => 'user#delete',
+    '/test' => 'test#index',
 );
