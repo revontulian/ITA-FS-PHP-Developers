@@ -1,20 +1,60 @@
-<div class="container">
-    <?php if (is_array($this->tasks) && count($this->tasks) > 0): //mira que haya tascas, y que contando todas las tascas seas mayor que cero?> 
-        <?php foreach ($this->tasks as $task): ?>
-            <div class="card" style="margin-bottom:20px;">
-                <div class="card-body">
-                    <h4 class="card-title"><?= htmlspecialchars($task['nameTask'] ?? 'Sin nombre') ?></h4>
-                    <div class="task-info">
-                        <p><strong>Estado:</strong> <?= htmlspecialchars($task['taskStatus'] ?? 'No definido') ?></p>
-                        <p><strong>Descripción:</strong> <?= htmlspecialchars($task['description'] ?? 'Sin descripción') ?></p>
-                        <p><strong>Fecha inicio:</strong> <?= htmlspecialchars($task['startDate'] ?? 'No definida') ?></p>
-                        <p><strong>Fecha fin:</strong> <?= htmlspecialchars($task['endDate'] ?? 'No definida') ?></p>
-                        <p><strong>Prioridad:</strong> <?= htmlspecialchars($task['provity'] ?? 'No definida') ?></p>
-                    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+  <header>
+ 
+</header>
+    <aside class="fixed top-0 left-0 h-screen w-80 bg-gradient-to-b from-[#BFE3F9] via-[#9ACCE6] to-[#6097BA]">
+        <h1 class="font-sans text-2xl font-semibold text-black text-center mt-10 border-b-4 border-black pb-2">
+            Lista de Tareas
+        </h1>   
+    </aside>
+    
+    <main class="ml-[22rem] min-h-screen border-4 border-[#BFE3F9] rounded-lg m-6 p-2 bg-white">
+        <div class="px-8 py-6">
+            <?php if (is_array($this->tasks) && count($this->tasks) > 0): ?>
+                <div class="space-y-4">
+                    <?php foreach ($this->tasks as $task): ?>
+                        <div class="flex items-center justify-between border-b border-black pb-2 m-2">
+                            <div class="flex-grow">
+                                <h4>
+                                    <?= htmlspecialchars($task['nameTask'] ?? 'Sin nombre') . " " 
+                                    . htmlspecialchars($task['descriptionTask'] ?? 'Sin descripción')  ?>
+                                </h4>
+                            </div>
+                            <div class="flex space-x-2">
+                                <div class="w-20 h-16 border-4 border-[#BFE3F9] flex items-center justify-center rounded">
+                                    <h2> 
+                                        <?= htmlspecialchars($task['startDate'] ?? '') ?>
+                                    </h2>
+                                </div>
+                                <div class="w-20 h-16 border-4 border-[#BFE3F9] flex items-center justify-center rounded">
+                                    <h2> 
+                                        <?= htmlspecialchars($task['endDate'] ?? '') ?>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
+               
+            <?php else: ?>
+                <p class="text-center text-gray-500 py-10">No hay tareas registradas.</p>
+                
+            <?php endif; ?>
+            <div class="mt-8 flex justify-center">
+                <a href="/task/create" class="bg-[#BFE3F9] hover:bg-[#9ACCE6] text-black font-bold py-2 px-4 rounded">
+                   +
+                </a>
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p class="info-message">No hay tareas registradas.</p>
-    <?php endif; ?>
-</div>
+        </div>
+    </main>
+</body>
+</html>

@@ -62,5 +62,26 @@ class TaskController extends Controller
             }
         }
     }
+    public function deleteAction(string $id): void{
+        $this->view->tasks = $this->taskModel->getAll();
+        $this->view->error = '';
+        $success = $this->taskModel->deleteTaskId();
+
+         if ($success) {
+                $_SESSION['success'] = "Tarea eliminado correctamente";
+                header('Location: ' . WEB_ROOT . '/tasks/delate');
+                exit();
+            } else {
+                $this->view->error = "no ha sido eleminada";
+            }
+
+
+
+
+
+      
+
+    }
+    
 }
 ?>
