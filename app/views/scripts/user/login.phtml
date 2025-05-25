@@ -15,11 +15,25 @@
         <!-- Right side (Login Form) -->
         <div class="w-1/2 flex flex-col justify-center p-8">
             <h2 class="text-2xl font-bold mb-6 text-center">Create Account</h2>
-            <?php if (!empty($error)): ?>
-                <div class="mb-4 p-2 bg-red-200 text-red-800 rounded">
-                    <?php echo $error; ?>
+            
+            <?php if (!empty($this->successMessage)): ?>
+                <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">
+                    <?php echo htmlspecialchars($this->successMessage); ?>
                 </div>
             <?php endif; ?>
+
+            <?php if (!empty($this->errorMessage)): ?>
+                <div class="mb-4 p-3 bg-red-200 text-red-800 rounded">
+                    <?php echo htmlspecialchars($this->errorMessage); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($error)): ?>
+                <div class="mb-4 p-2 bg-red-200 text-red-800 rounded">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
+            
             <form method="POST" action="<?php echo $this->baseUrl(); ?>/login" class="space-y-6">
                 <div>
                     <label class="block font-semibold mb-2" for="email">Email</label>

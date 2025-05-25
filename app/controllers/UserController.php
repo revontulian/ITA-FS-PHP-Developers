@@ -6,127 +6,140 @@ class UserController extends ApplicationController
 {
     public function loginAction()
     {
-        $this->view->error = '';
+        $this->requireLogout(); // Evita che utenti loggati vedano il login
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
+            $email = $this->sanitizeInput($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
+
+            if (!$this->isValidEmail($email)) {
+                $this->view->error = 'Please enter a valid email address.';
+                return;
+            }
+
             $userModel = new ModelUser();
             $user = $userModel->checkLogin($email, $password);
+            
             if ($user) {
                 $_SESSION['user'] = $user;
-                header('Location: ' . WEB_ROOT . '/profile');
-                exit;
+                $this->redirectWithMessage('/profile', 'Welcome back!');
             } else {
-                $this->view->error = 'Email o password non validi.';
+                $this->view->error = 'Invalid email or password.';
             }
         }
     }
 
     public function registerAction()
     {
-        $this->view->error = '';
+        $this->requireLogout(); // Evita che utenti loggati vedano la registrazione
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
+            $email = $this->sanitizeInput($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
-            $name = $_POST['name'] ?? '';
-            $surname = $_POST['surname'] ?? '';
+            $name = $this->sanitizeInput($_POST['name'] ?? '');
+            $surname = $this->sanitizeInput($_POST['surname'] ?? '');
             $date_of_birth = $_POST['date_of_birth'] ?? '';
 
+            // Validazioni
+            if (!$this->isValidEmail($email)) {
+                $this->view->error = 'Please enter a valid email address.';
+                return;
+            }
+            
             if ($password !== $confirm) {
-                $this->view->error = 'Le password non coincidono.';
+                $this->view->error = 'Passwords do not match.';
                 return;
             }
 
             $userModel = new ModelUser();
             if ($userModel->emailExists($email)) {
-                $this->view->error = 'Email già registrata.';
+                $this->view->error = 'Email already registered.';
                 return;
             }
 
             $userModel->addUser($email, $password, $name, $surname, $date_of_birth);
-            header('Location: ' . WEB_ROOT . '/login');
-            exit;
+            $this->redirectWithMessage('/login', 'Account created successfully! Please login.');
         }
     }
 
     public function profileAction()
     {
-        if (!isset($_SESSION['user'])) {
-            header('Location: ' . WEB_ROOT . '/login');
-            exit;
-        }
-        $this->view->user = $_SESSION['user'];
+        $this->requireLogin(); // Protegge la pagina
+        $this->view->user = $this->getCurrentUser();
     }
 
     public function logoutAction()
     {
+        $this->requireLogin(); // Assicurati che sia loggato prima del logout
+        
         session_destroy();
-        header('Location: ' . WEB_ROOT . '/login');
-        exit;
+        $this->redirectWithMessage('/login', 'You have been logged out successfully.');
     }
 
     public function editAction()
     {
-        if (!isset($_SESSION['user'])) {
-            header('Location: ' . WEB_ROOT . '/login');
-            exit;
-        }
-
-        $user = $_SESSION['user'];
-        $this->view->error = '';
-
+        $this->requireLogin();
+        $user = $this->getCurrentUser();
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $name = $_POST['name'] ?? '';
-            $surname = $_POST['surname'] ?? '';
+            $email = $this->sanitizeInput($_POST['email'] ?? '');
+            $name = $this->sanitizeInput($_POST['name'] ?? '');
+            $surname = $this->sanitizeInput($_POST['surname'] ?? '');
             $date_of_birth = $_POST['date_of_birth'] ?? '';
             $password = $_POST['password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
 
-            if ($password !== $confirm) {
-                $this->view->error = 'Passwords do not match.';
-            } else {
-                $userModel = new ModelUser();
-                $newData = [
-                    'email' => $email,
-                    'name' => $name,
-                    'surname' => $surname,
-                    'date_of_birth' => $date_of_birth
-                ];
-                if (!empty($password)) {
-                    $newData['password'] = $password;
-                }
-                $userModel->updateUser($user['id'], $newData);
-
-                // AGGIORNA LA SESSIONE CON I NUOVI DATI
-                $updatedUsers = $userModel->getAll();
-                foreach ($updatedUsers as $u) {
-                    if ($u['id'] === $user['id']) {
-                        $_SESSION['user'] = $u;
-                        break;
-                    }
-                }
-
-                header('Location: ' . WEB_ROOT . '/profile');
-                exit;
+            // Validazioni
+            if (!$this->isValidEmail($email)) {
+                $this->view->error = 'Please enter a valid email address.';
+                return;
             }
-        }
 
-        $this->view->user = $_SESSION['user'];
+            if (!empty($password) && $password !== $confirm) {
+                $this->view->error = 'Passwords do not match.';
+                return;
+            }
+
+            $userModel = new ModelUser();
+            $newData = [
+                'email' => $email,
+                'name' => $name,
+                'surname' => $surname,
+                'date_of_birth' => $date_of_birth
+            ];
+            
+            // ✅ Cripta la password se fornita
+            if (!empty($password)) {
+                $newData['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+            
+            $userModel->updateUser($user['id'], $newData);
+
+            // Aggiorna la sessione
+            $updatedUsers = $userModel->getAll();
+            foreach ($updatedUsers as $u) {
+                if ($u['id'] === $user['id']) {
+                    $_SESSION['user'] = $u;
+                    break;
+                }
+            }
+
+            $this->redirectWithMessage('/profile', 'Profile updated successfully!');
+        }
+        
+        $this->view->user = $this->getCurrentUser();
     }
 
     public function deleteAction()
     {
-        if (!isset($_SESSION['user'])) {
-            header('Location: ' . WEB_ROOT . '/login');
-            exit;
-        }
-        $user = $_SESSION['user'];
+        $this->requireLogin(); // Usa il metodo di ApplicationController
+        
+        $user = $this->getCurrentUser();
         $userModel = new ModelUser();
-        $userModel->deleteUser($user['id']); // Usa il metodo delete di JsonCRUD
+        $userModel->deleteUser($user['id']);
+        
         session_destroy();
-        header('Location: ' . WEB_ROOT . '/login');
-        exit;
+        $this->redirectWithMessage('/login', 'Account deleted successfully.');
     }
 }
