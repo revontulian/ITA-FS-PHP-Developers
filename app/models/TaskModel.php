@@ -9,7 +9,7 @@ class TaskModel {
 
     public function __construct() {
 
-     $this->crud = new JsonCRUD(ROOT_PATH . '/lib/data/task.json');
+     $this->crud = new JsonCRUD('task.json');
         
     }
 
@@ -22,8 +22,7 @@ class TaskModel {
         TaskStatus $taskStatus, 
         DateTimeImmutable $startTime,
         string $description, 
-        DateTimeImmutable $endDate,
-        int $provity =-1
+        DateTimeImmutable $endDate
         ): bool {
         $crud = $this->getAll();
        
@@ -39,8 +38,7 @@ class TaskModel {
             'taskStatus' => $taskStatus->value,
             'startDate' => $startTime->format('Y-m-d'),
             'description' => $description,
-            'endDate' => $endDate->format('Y-m-d'),
-            'provity' => $provity ]);
+            'endDate' => $endDate->format('Y-m-d') ]);
         return true;
 
        
@@ -48,7 +46,7 @@ class TaskModel {
         
     }
 
-    public function viewTask(): ?array {
+    public function view(): ?array {
         $crud = $this->getAll();
         foreach ($crud as $task) {
             return $task; 
@@ -63,10 +61,11 @@ class TaskModel {
     /**
      * Update user data.
      * @param string $id
-     * @param array $newData (nameTask, taskStatus, startDate, description, endDate, provity)
+     * @param array $newData (nameTask, taskStatus, startDate, description, endDate )
      * @return bool
      */
   
+
     public function updateTaskid(string $id,array $newData):bool{
         $task =$this->crud->update($id, $newData);
         if ($task) {
@@ -79,5 +78,19 @@ class TaskModel {
         
         return $this->crud->delete($id);
     }
+    public function filterStatus(TaskStatus $taskStatus){ 
+        $crud =$this->getAll();
+      switch ($crud){
+        case 1:
+            foreach($crud as $task){
+                if($taskStatus==='pending'){
+                    return $task;
+                }
+            }
+            break;
+        }
+        
+    }
+
 }
 ?>

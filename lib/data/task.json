@@ -1,20 +1,10 @@
 [
     {
-        "nameTask": "zxzxZ",
+        "nameTask": "funciona",
         "taskStatus": "pending",
-        "startDate": "2025-05-01",
-        "description": "",
-        "endDate": "2025-05-01",
-        "provity": 1,
-        "id": "6833bddd50304"
-    },
-    {
-        "nameTask": "2",
-        "taskStatus": "pending",
-        "startDate": "2025-05-15",
-        "description": "aaaaa",
-        "endDate": "2025-05-15",
-        "provity": 1,
-        "id": "6833bde52a007"
+        "startDate": "2025-04-28",
+        "description": "tarea modificada",
+        "endDate": "2025-04-28",
+        "id": "68343787d4d02"
     }
 ]

@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Tarea</title>
-</head>
-<body>
+
     <section class="create-form">
         <h1>Crear Nueva Tarea</h1>
         <form action="<?php echo $this->baseUrl(); ?>/tasks/create" method="POST">
@@ -38,13 +30,8 @@
                 <label for="endDate">Fecha de fin</label>
                 <input type="date" id="endDate" name="endDate" class="form-control">
             </div>
-            <div class="form-group">
-                <label for="provity">Prioridad</label>
-                <input type="number" id="provity" name="provity" class="form-control" value="1" min="1" max="5">
-            </div>
+           
 
             <button type="submit">Crear Tarea</button>
         </form>
     </section>
-</body>
-</html>

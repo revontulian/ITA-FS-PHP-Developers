@@ -10,10 +10,13 @@ class TaskController extends Controller
         $this->taskModel = new TaskModel();
 
     }
-    public function viewAction(): void
+    public function mainPageAction(): void
     {
         $tasks = $this->taskModel->getAll();
         $this->view->tasks = $tasks;
+        
+
+
     }
 
     
@@ -28,8 +31,7 @@ class TaskController extends Controller
             $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
             $description = $_POST['description'] ?? '';
             $startDate = $_POST['startDate'] ?? '';
-            $endDate = $_POST['endDate'] ?? '';
-            $provity = (int)($_POST['provity'] ?? 1);
+            $endDate = $_POST['endDate'] ?? ''; 
 
             $taskStatus = TaskStatus::from($taskStatusStr);
 
@@ -47,13 +49,13 @@ class TaskController extends Controller
                 $startDateObj,
                 $description,
                 $endDateObj,
-                $provity
+               
                 
             );
 
             if ($success) {
                 $_SESSION['success'] = "Tarea creada exitosamente";
-                header('Location: ' . WEB_ROOT . '/tasks/view');
+                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
                 // Redirige a la vista de tareas
                 exit();
             } else {
@@ -70,7 +72,7 @@ class TaskController extends Controller
         $success = $this->taskModel->deleteTaskId($id);
          if ($success) {
                 $_SESSION['success'] = "Tarea eliminado correctamente";
-                header('Location: ' . WEB_ROOT . '/tasks/view');
+                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
                 exit();
             } else {
                 $this->view->error = "no ha sido eleminada";
@@ -102,7 +104,7 @@ class TaskController extends Controller
             $description = $_POST['description'] ?? '';
             $startDate = $_POST['startDate'] ?? '';
             $endDate = $_POST['endDate'] ?? '';
-            $provity = (int)($_POST['provity'] ?? 1);
+          
 
             $taskStatus = TaskStatus::from($taskStatusStr);
             $startDateObj = new DateTimeImmutable($startDate);
@@ -119,20 +121,23 @@ class TaskController extends Controller
                 'startDate' => $startDateObj->format('Y-m-d'),
                 'description' => $description,
                 'endDate' => $endDateObj->format('Y-m-d'),
-                'provity' => $provity
-
+               
             ];
             $success = $this->taskModel->updateTaskid($id, $newTask);
 
             if ($success) {
                 echo $_SESSION['success'] = "Tarea actualizada exitosamente";
-                header('Location: ' . WEB_ROOT . '/tasks/view');
+                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
                 exit();
             } else {
                  echo $this->view->error = "Error al actualizar la tarea.";
             }
 
         }
+    }
+    public function filterStatusAction(): void{
+       $task = $this->taskModel-> filterStatus( $taskStatus);
+       
     }
     
 }
