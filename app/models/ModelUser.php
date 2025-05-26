@@ -7,7 +7,7 @@ class ModelUser
 
     public function __construct()
     {
-        $this->crud = new JsonCRUD(ROOT_PATH . '/lib/data/users.json');
+        $this->crud = new JsonCRUD('users.json');
     }
 
     /**
@@ -86,6 +86,11 @@ class ModelUser
      */
     public function updateUser(string $id, array $newData): bool
     {
+        // Se c'è una password da aggiornare, criptala
+        if (isset($newData['password']) && !empty($newData['password'])) {
+            $newData['password'] = password_hash($newData['password'], PASSWORD_DEFAULT);
+        }
+        
         $user = $this->crud->update($id, $newData);
         return $user !== null;
     }
