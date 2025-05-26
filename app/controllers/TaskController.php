@@ -63,10 +63,7 @@ class TaskController extends ApplicationController
             }
         }
     }
-  
 
-
-    public function deleteAction(): void{
         
     
     public function deleteAction(): void
@@ -121,8 +118,6 @@ class TaskController extends ApplicationController
                 'taskStatus' => $taskStatus->value,
                 'startDate' => $startDateObj->format('Y-m-d'),
                 'description' => $description,
-                'endDate' => $endDateObj->format('Y-m-d')
-                
                 'endDate' => $endDateObj->format('Y-m-d'),
             ];
 

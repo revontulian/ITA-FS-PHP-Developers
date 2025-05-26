@@ -14,5 +14,13 @@
         "surname": "re",
         "date_of_birth": "1111-11-11",
         "id": "683332f686178"
+    },
+    {
+        "email": "lacereza7@gmail.com",
+        "password": "$2y$10$chucU4eoXS55aMUrpW5PheDjJXXzLyKi\/uLjxV4oTjgsWRGKFpqDW",
+        "name": "Sandra",
+        "surname": "G",
+        "date_of_birth": "2025-04-29",
+        "id": "6834b3229720f"
     }
 ]
