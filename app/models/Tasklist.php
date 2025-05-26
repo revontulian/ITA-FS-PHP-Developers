@@ -45,11 +45,12 @@ class Tasklist extends Model
         return true;
     }
     
-    public function createTasklist(string $name): array
+    public function createTasklist(string $name, string $userId): array
     {
         $tasklists = $this->getAll();
         $newTasklist = [
             'id' => uniqid(),
+            'userId' => $userId,
             'name' => $name,
             'tasks' => []
         ];

@@ -5,7 +5,7 @@ require_once ROOT_PATH . '/lib/JsonCRUD.php';
 
 class TasklistController extends ApplicationController
 {
-    public function createAction(string $tasklistName): void
+    public function createAction(string $tasklistName, string $userId): void
     {
         $tasklistModel = new Tasklist();
         $jsonManager = new JsonCRUD('tasklist.json');
@@ -18,7 +18,7 @@ class TasklistController extends ApplicationController
                 return;
             } else {
                 // If it doesn't exist, proceed to create a new tasklist
-                $tasklistModel->createTasklist($tasklistName);
+                $tasklistModel->createTasklist($tasklistName, $userId);
                 header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
             }
     
