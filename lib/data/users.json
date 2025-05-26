@@ -6,7 +6,28 @@
         "password": "$2y$10$kxDtOMlXLbHiPn4KWaFPR.CLrY6reNGZEzvSOB18m2q2YVFLJk\/FO",
         "name": "alex",
         "surname": "pasquero",
+<<<<<<< Updated upstream
         "date_of_birth": "1996-11-17"
+=======
+        "date_of_birth": "1996-11-17",
+        "id": "6833247003889"
+    },
+    {
+        "email": "a@g.it",
+        "password": "$2y$10$OmdsnO13M5ZukBgvfR.SBeQrdvL7QCxSJPGJjCl7BaGcq7KisY9Pa",
+        "name": "ax",
+        "surname": "re",
+        "date_of_birth": "1111-11-11",
+        "id": "683332f686178"
+    },
+    {
+        "email": "pablo.canteria@gmail.com",
+        "password": "$2y$10$C64QbxVIuwIDOXPpjStRNuIU.KR4.yIeADoBRoOgtku99eTiyRR.6",
+        "name": "Pablo",
+        "surname": "Canteria Pastor",
+        "date_of_birth": "1988-03-26",
+        "id": "683445051b2ad"
+>>>>>>> Stashed changes
     }
   
 ]
