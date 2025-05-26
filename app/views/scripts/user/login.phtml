@@ -1,29 +1,48 @@
-<div class="auth-container">
-    <h2>TO DO LIST APP</h2>
-    
-    <?php if (!empty($error)): ?>
-        <div class="alert alert-danger">
-            <?php echo $error; ?>
+<div class="flex w-full max-w-3xl bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- Left side (TO DO) -->
+        <div class="w-1/2 bg-gradient-to-b from-blue-300 to-blue-500 flex flex-col items-center justify-center p-8">
+            <h2 class="text-2xl font-bold mb-6">TO DO</h2>
+            <div class="w-full h-40 border-2 border-dotted border-white mb-6"></div>
         </div>
-    <?php endif; ?>
-    
-    <form method="POST" action="<?php echo $this->baseUrl(); ?>/login">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" required>
-        </div>
+        <!-- Right side (Login Form) -->
+        <div class="w-1/2 flex flex-col justify-center p-8">
+            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+            
         
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+
+            <?php if (!empty($this->successMessage)): ?>
+                <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">
+                    <?php echo htmlspecialchars($this->successMessage); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($this->errorMessage)): ?>
+                <div class="mb-4 p-3 bg-red-200 text-red-800 rounded">
+                    <?php echo htmlspecialchars($this->errorMessage); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($error)): ?>
+                <div class="mb-4 p-2 bg-red-200 text-red-800 rounded">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
+            
+            <form method="POST" action="<?php echo $this->baseUrl(); ?>/login" class="space-y-6">
+                <div>
+                    <label class="block font-semibold mb-2" for="email">Email</label>
+                    <input class="w-full border-2 border-blue-400 rounded px-3 py-2" type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2" for="password">Password</label>
+                    <input class="w-full border-2 border-blue-400 rounded px-3 py-2" type="password" id="password" name="password" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-2 rounded">Login</button>
+                </div>
+                <p class="text-center">
+                    Don't have an account? <a href="<?php echo $this->baseUrl(); ?>/register" class="text-blue-600 underline">Register</a>
+                </p>
+            </form>
         </div>
-        
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Login</button>
-        </div>
-        
-        <p class="text-center">
-            Don't have an account? <a href="<?php echo $this->baseUrl(); ?>/register">Register</a>
-        </p>
-    </form>
-</div>
+    </div>
