@@ -1,30 +1,26 @@
 <?php
 
-class TaskController extends Controller
+class TaskController extends ApplicationController 
 {
     private TaskModel $taskModel; 
 
     public function init(): void 
     {
-        parent::init(); // Llama al init() del controlador padre
+        parent::init();
         $this->taskModel = new TaskModel();
-
     }
+
     public function mainPageAction(): void
     {
+        $this->requireLogin(); 
         $tasks = $this->taskModel->getAll();
         $this->view->tasks = $tasks;
-        
-
-
     }
-
-    
 
     public function createAction(): void
     {
+        $this->requireLogin();
         $this->view->tasks = $this->taskModel->getAll();
-        $this->view->error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nameTask = $_POST['nameTask'] ?? '';
@@ -34,12 +30,11 @@ class TaskController extends Controller
             $endDate = $_POST['endDate'] ?? ''; 
 
             $taskStatus = TaskStatus::from($taskStatusStr);
-
             $startDateObj = new DateTimeImmutable($startDate);
             $endDateObj = $endDate ? new DateTimeImmutable($endDate) : $startDateObj;
 
             if (empty($nameTask) || empty($startDate)) {
-                $this->view->error = "Todos los campos son obligatorios.";
+                $this->view->error = "All fields are required.";
                 return;
             }
 
@@ -48,55 +43,47 @@ class TaskController extends Controller
                 $taskStatus,
                 $startDateObj,
                 $description,
-                $endDateObj,
-               
-                
+                $endDateObj
             );
 
             if ($success) {
-                $_SESSION['success'] = "Tarea creada exitosamente";
-                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
-                // Redirige a la vista de tareas
-                exit();
+                $this->redirect('/tasks/mainPage');  
             } else {
-                $this->view->error = "La tarea ya existe.";
+                $this->view->error = "Task already exists.";
             }
         }
     }
     
-    public function deleteAction(): void{
-        
+    public function deleteAction(): void
+    {
+        $this->requireLogin();
         $id = $this->_getParam('id');
-        $this->view->error = '';
 
         $success = $this->taskModel->deleteTaskId($id);
-         if ($success) {
-                $_SESSION['success'] = "Tarea eliminado correctamente";
-                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
-                exit();
-            } else {
-                $this->view->error = "no ha sido eleminada";
-            }
-            
-
+        if ($success) {
+            $this->redirect('/tasks/mainPage');  
+        } else {
+            $this->view->error = "Task could not be deleted.";
+        }
     }
     
     public function updateAction(): void
     {
-       echo $id = $this->_getParam('id');
+        $this->requireLogin();
+        $id = $this->_getParam('id');
+        
         if (!$id) {
-            echo $this->view->error = "ID de tarea no proporcionado.";
+            $this->view->error = "Task ID not provided.";
             return;
         }
+
         $task = $this->taskModel->getTaskById($id);
         if (!$task) {
-            echo $this->view->error = "Tarea no encontrada.";
-           
+            $this->view->error = "Task not found.";
             return;
         }
+
         $this->view->task = $task;
-        
-        $this->view->error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nameTask = $_POST['nameTask'] ?? '';
@@ -104,45 +91,31 @@ class TaskController extends Controller
             $description = $_POST['description'] ?? '';
             $startDate = $_POST['startDate'] ?? '';
             $endDate = $_POST['endDate'] ?? '';
-          
 
             $taskStatus = TaskStatus::from($taskStatusStr);
             $startDateObj = new DateTimeImmutable($startDate);
             $endDateObj = $endDate ? new DateTimeImmutable($endDate) : $startDateObj;
 
             if (empty($nameTask) || empty($startDate)) {
-                $this->view->error = "Todos los campos son obligatorios.";
+                $this->view->error = "All fields are required.";
                 return;
             }
-          
+
             $newTask = [
                 'nameTask' => $nameTask,
                 'taskStatus' => $taskStatus->value,
                 'startDate' => $startDateObj->format('Y-m-d'),
                 'description' => $description,
                 'endDate' => $endDateObj->format('Y-m-d'),
-               
             ];
+
             $success = $this->taskModel->updateTaskid($id, $newTask);
 
             if ($success) {
-                echo $_SESSION['success'] = "Tarea actualizada exitosamente";
-                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
-                exit();
+                $this->redirect('/tasks/mainPage');  
             } else {
-                 echo $this->view->error = "Error al actualizar la tarea.";
+                $this->view->error = "Error updating task.";
             }
-
         }
     }
-    public function filterStatusAction(): void{
-<<<<<<< HEAD
-       $task = $this->taskModel-> filterStatus( $taskStatus);
-=======
-       $task = $this->taskModel-> filterStatus($taskStatus);
->>>>>>> feature/tasklist-creation
-       
-    }
-    
 }
-?>

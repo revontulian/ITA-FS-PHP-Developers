@@ -6,6 +6,30 @@
         <h1 class="font-sans text-2xl font-semibold text-black text-center mt-10 border-b-4 border-black pb-2">
              List of Tasks
         </h1>   
+
+        <!-- BOTTOM LEFT-->
+        <div class="absolute bottom-6 left-6 flex space-x-4">
+            <!--  ICON USER  -->
+            <a href="<?php echo $this->baseUrl(); ?>/profile" 
+               class="bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-all duration-200 group"
+               title="View Profile">
+               
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+</svg>
+
+            </a>
+
+            <!-- Icon Logout -->
+            <a href="<?php echo $this->baseUrl(); ?>/logout" 
+               class="bg-red-500 hover:bg-red-600 p-3 rounded-full shadow-lg transition-all duration-200 group"
+               title="Logout"
+               onclick="return confirm('Are you sure you want to logout?')">
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"></path>
+                </svg>
+            </a>
+        </div>
     </aside>
     
     <main class="ml-[22rem] min-h-screen border-4 border-[#BFE3F9] rounded-lg m-6 p-2 bg-white">

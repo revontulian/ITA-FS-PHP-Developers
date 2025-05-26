@@ -4,12 +4,6 @@
         "password": "$2y$10$3ULMvj74i\/YYV8kmvrZRJ.O1J0e3WMOAa5jC3PN4.MFn9z4ZezgX2",
         "name": "alex",
         "surname": "pasquero",
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-        "date_of_birth": "1996-11-17"
-=======
->>>>>>> feature/tasklist-creation
         "date_of_birth": "1996-11-17",
         "id": "6833247003889"
     },
@@ -20,17 +14,5 @@
         "surname": "re",
         "date_of_birth": "1111-11-11",
         "id": "683332f686178"
-<<<<<<< HEAD
-=======
-    },
-    {
-        "email": "pablo.canteria@gmail.com",
-        "password": "$2y$10$C64QbxVIuwIDOXPpjStRNuIU.KR4.yIeADoBRoOgtku99eTiyRR.6",
-        "name": "Pablo",
-        "surname": "Canteria Pastor",
-        "date_of_birth": "1988-03-26",
-        "id": "683445051b2ad"
->>>>>>> Stashed changes
->>>>>>> feature/tasklist-creation
     }
 ]
