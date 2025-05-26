@@ -7,38 +7,47 @@
 class ApplicationController extends Controller 
 {
     /**
-     * Metodo chiamato prima di ogni action
+     * Method called before every action
      */
     public function init()
     {
         parent::init();
         
-        // Passa sempre i messaggi di successo/errore alle viste
-        $this->view->successMessage = $this->getSuccessMessage();
-        $this->view->errorMessage = $this->getErrorMessage();
+        // Pass flash messages to the view WITHOUT deleting them
+        $this->view->successMessage = $_SESSION['success_message'] ?? null;
+        $this->view->errorMessage = $_SESSION['error_message'] ?? null;
+        
+        // Mark messages to be deleted on the next request
+        if (isset($_SESSION['success_message'])) {
+            $_SESSION['_delete_success_next'] = true;
+        }
+        if (isset($_SESSION['error_message'])) {
+            $_SESSION['_delete_error_next'] = true;
+        }
+        
+        //  Delete messages marked in the PREVIOUS request
+        if (isset($_SESSION['_delete_success_next']) && $_SESSION['_delete_success_next'] === true) {
+            unset($_SESSION['success_message']);
+            unset($_SESSION['_delete_success_next']);
+        }
+        if (isset($_SESSION['_delete_error_next']) && $_SESSION['_delete_error_next'] === true) {
+            unset($_SESSION['error_message']);
+            unset($_SESSION['_delete_error_next']);
+        }
     }
 
-    // === METODI DI AUTENTICAZIONE ===
+    // === REST OF THE METHODS ===
     
-    /**
-     * Controlla se l'utente è loggato
-     */
     protected function isLoggedIn(): bool
     {
         return isset($_SESSION['user']) && !empty($_SESSION['user']);
     }
 
-    /**
-     * Ottiene l'utente corrente dalla sessione
-     */
     protected function getCurrentUser(): ?array
     {
         return $_SESSION['user'] ?? null;
     }
 
-    /**
-     * Reindirizza se l'utente NON è loggato
-     */
     protected function requireLogin(string $redirectTo = '/login'): void
     {
         if (!$this->isLoggedIn()) {
@@ -47,9 +56,6 @@ class ApplicationController extends Controller
         }
     }
 
-    /**
-     * Reindirizza se l'utente È GIÀ loggato
-     */
     protected function requireLogout(string $redirectTo = '/profile'): void
     {
         if ($this->isLoggedIn()) {
@@ -58,74 +64,28 @@ class ApplicationController extends Controller
         }
     }
 
-    // === MESSAGGI DI FEEDBACK ===
-    
-    /**
-     * Imposta un messaggio di successo
-     */
-    protected function setSuccessMessage(string $message): void
-    {
-        $_SESSION['success_message'] = $message;
-    }
-
-    /**
-     * Ottiene e cancella il messaggio di successo
-     */
-    protected function getSuccessMessage(): ?string
-    {
-        $message = $_SESSION['success_message'] ?? null;
-        unset($_SESSION['success_message']);
-        return $message;
-    }
-
-    /**
-     * Imposta un messaggio di errore
-     */
-    protected function setErrorMessage(string $message): void
-    {
-        $_SESSION['error_message'] = $message;
-    }
-
-    /**
-     * Ottiene e cancella il messaggio di errore
-     */
-    protected function getErrorMessage(): ?string
-    {
-        $message = $_SESSION['error_message'] ?? null;
-        unset($_SESSION['error_message']);
-        return $message;
-    }
-
-    // === VALIDAZIONE ===
-    
-    /**
-     * Valida che l'email sia corretta
-     */
     protected function isValidEmail(string $email): bool
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
-    // === UTILITY ===
-    
-    /**
-     * Sanifica l'input dell'utente
-     */
     protected function sanitizeInput(string $input): string
     {
         return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
     }
 
     /**
-     * Redirect con messaggio
+     * REDIRECT with message - SIMPLE VERSION
      */
     protected function redirectWithMessage(string $url, string $message, bool $isSuccess = true): void
     {
+        // ✅ Set the new message (do NOT delete here)
         if ($isSuccess) {
-            $this->setSuccessMessage($message);
+            $_SESSION['success_message'] = $message;
         } else {
-            $this->setErrorMessage($message);
+            $_SESSION['error_message'] = $message;
         }
+        
         header('Location: ' . WEB_ROOT . $url);
         exit;
     }

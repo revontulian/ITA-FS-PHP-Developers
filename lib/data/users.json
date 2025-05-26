@@ -6,5 +6,13 @@
         "surname": "pasquero",
         "date_of_birth": "1996-11-17",
         "id": "6833247003889"
+    },
+    {
+        "email": "a@g.it",
+        "password": "$2y$10$OmdsnO13M5ZukBgvfR.SBeQrdvL7QCxSJPGJjCl7BaGcq7KisY9Pa",
+        "name": "ax",
+        "surname": "re",
+        "date_of_birth": "1111-11-11",
+        "id": "683332f686178"
     }
 ]

@@ -7,7 +7,7 @@ class ModelUser
 
     public function __construct()
     {
-        $this->crud = new JsonCRUD(ROOT_PATH . '/lib/data/users.json');
+        $this->crud = new JsonCRUD('users.json');
     }
 
     /**

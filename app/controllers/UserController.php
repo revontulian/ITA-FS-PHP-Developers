@@ -6,14 +6,15 @@ class UserController extends ApplicationController
 {
     public function loginAction()
     {
-        $this->requireLogout(); // Evita che utenti loggati vedano il login
+        $this->requireLogout(); // No Logger user can go in Login
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $this->sanitizeInput($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
             if (!$this->isValidEmail($email)) {
-                $this->view->error = 'Please enter a valid email address.';
+                
+                $this->view->errorMessage = 'Please enter a valid email address.';
                 return;
             }
 
@@ -24,14 +25,15 @@ class UserController extends ApplicationController
                 $_SESSION['user'] = $user;
                 $this->redirectWithMessage('/profile', 'Welcome back!');
             } else {
-                $this->view->error = 'Invalid email or password.';
+              
+                $this->view->errorMessage = 'Invalid email or password.';
             }
         }
     }
 
     public function registerAction()
     {
-        $this->requireLogout(); // Evita che utenti loggati vedano la registrazione
+        $this->requireLogout(); 
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $this->sanitizeInput($_POST['email'] ?? '');
@@ -43,46 +45,46 @@ class UserController extends ApplicationController
 
             // Validazioni
             if (!$this->isValidEmail($email)) {
-                $this->view->error = 'Please enter a valid email address.';
+                $this->view->errorMessage = 'Please enter a valid email address.';
                 return;
             }
             
             if ($password !== $confirm) {
-                $this->view->error = 'Passwords do not match.';
+                $this->view->errorMessage = 'Passwords do not match.';
                 return;
             }
 
             $userModel = new ModelUser();
             if ($userModel->emailExists($email)) {
-                $this->view->error = 'Email already registered.';
+                $this->view->errorMessage = 'Email already registered.';
                 return;
             }
 
             $userModel->addUser($email, $password, $name, $surname, $date_of_birth);
-            $this->redirectWithMessage('/login', 'Account created successfully! Please login.');
         }
     }
 
     public function profileAction()
     {
-        $this->requireLogin(); // Protegge la pagina
+        $this->requireLogin(); 
         $this->view->user = $this->getCurrentUser();
     }
 
     public function logoutAction()
     {
-        $this->requireLogin(); // Assicurati che sia loggato prima del logout
+        $this->requireLogin(); 
         
         session_destroy();
-        $this->redirectWithMessage('/login', 'You have been logged out successfully.');
     }
 
     public function editAction()
     {
         $this->requireLogin();
-        $user = $this->getCurrentUser();
+    
+        $this->view->user = $this->getCurrentUser();
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user = $this->getCurrentUser(); // Per le operazioni interne
             $email = $this->sanitizeInput($_POST['email'] ?? '');
             $name = $this->sanitizeInput($_POST['name'] ?? '');
             $surname = $this->sanitizeInput($_POST['surname'] ?? '');
@@ -90,15 +92,15 @@ class UserController extends ApplicationController
             $password = $_POST['password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
 
-            // Validazioni
+            // Validation 
             if (!$this->isValidEmail($email)) {
-                $this->view->error = 'Please enter a valid email address.';
-                return;
+                $this->view->errorMessage = 'Please enter a valid email address.';
+                return; 
             }
 
             if (!empty($password) && $password !== $confirm) {
-                $this->view->error = 'Passwords do not match.';
-                return;
+                $this->view->errorMessage = 'Passwords do not match.';
+                return; 
             }
 
             $userModel = new ModelUser();
@@ -109,7 +111,6 @@ class UserController extends ApplicationController
                 'date_of_birth' => $date_of_birth
             ];
             
-            // ✅ Cripta la password se fornita
             if (!empty($password)) {
                 $newData['password'] = password_hash($password, PASSWORD_DEFAULT);
             }
@@ -124,22 +125,18 @@ class UserController extends ApplicationController
                     break;
                 }
             }
-
-            $this->redirectWithMessage('/profile', 'Profile updated successfully!');
         }
-        
-        $this->view->user = $this->getCurrentUser();
     }
 
     public function deleteAction()
     {
-        $this->requireLogin(); // Usa il metodo di ApplicationController
+        $this->requireLogin(); // require method from ApplicationController.php
         
         $user = $this->getCurrentUser();
         $userModel = new ModelUser();
         $userModel->deleteUser($user['id']);
         
         session_destroy();
-        $this->redirectWithMessage('/login', 'Account deleted successfully.');
+       
     }
 }
