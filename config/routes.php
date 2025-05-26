@@ -18,4 +18,9 @@ $routes = array(
     '/edit-profile' => 'user#edit',
     '/delete-account' => 'user#delete',
     '/test' => 'test#index',
+
+    '/tasks/mainPage' => 'task#mainPage',
+    '/tasks/create' => 'task#create',
+    '/tasks/delete/:id' => 'task#delete',
+    '/tasks/update/:id' => 'task#update',
 );
