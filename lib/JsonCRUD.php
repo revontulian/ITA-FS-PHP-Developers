@@ -5,7 +5,7 @@ class JsonCRUD
 
     public function __construct($filename)
     {
-        $this->file = $filename;
+        $this->file = ROOT_PATH . '/lib/data/' . $filename;
         if (!file_exists($this->file)) {
             file_put_contents($this->file, json_encode([]));
         }
