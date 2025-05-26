@@ -136,7 +136,11 @@ class TaskController extends Controller
         }
     }
     public function filterStatusAction(): void{
+<<<<<<< HEAD
        $task = $this->taskModel-> filterStatus( $taskStatus);
+=======
+       $task = $this->taskModel-> filterStatus($taskStatus);
+>>>>>>> feature/tasklist-creation
        
     }
     
