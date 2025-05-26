@@ -17,7 +17,10 @@ $routes = array(
     '/profile' => 'user#profile',
 
     //task routes
-    '/tasks' => 'task#view', // <--- CAMBIA index POR view
+    '/tasks' => 'task#view', 
     '/tasks/view' => 'task#view',
-    '/tasks/create' => 'task#create'  
+    '/tasks/create' => 'task#create',
+    '/tasks/delete/:id'=> 'task#delete',
+    '/tasks/update/:id' => 'task#update',
+    
 );
