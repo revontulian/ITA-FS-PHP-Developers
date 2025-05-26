@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once ROOT_PATH . '/lib/JsonCRUD.php';
 
-class TasklistController extends Controller
+class TasklistController extends ApplicationController
 {
     public function createAction(string $tasklistName): void
     {
@@ -19,7 +19,7 @@ class TasklistController extends Controller
             } else {
                 // If it doesn't exist, proceed to create a new tasklist
                 $tasklistModel->createTasklist($tasklistName);
-                header('Location: ' . WEB_ROOT . '/index.php?controller=Tasklist&action=index');
+                header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
             }
     
         } else {
@@ -35,7 +35,7 @@ class TasklistController extends Controller
         $tasklists = $tasklistModel->getTasklistsById($tasklistId);
         if ($tasklistId && $tasklists) {
             $jsonManager->update($tasklistId, $_POST);
-            header('Location: ' . WEB_ROOT . '/index.php?controller=Tasklist&action=index');
+            header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
         } else {
             echo "Tasklist not found.";
         }
@@ -56,6 +56,6 @@ class TasklistController extends Controller
                 }
             }
         }
-        header('Location: ' . WEB_ROOT . '/index.php?controller=Tasklist&action=index');
+        header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
     }
 }
