@@ -1,0 +1,37 @@
+
+    <section class="create-form">
+        <h1>Crear Nueva Tarea</h1>
+        <form action="<?php echo $this->baseUrl(); ?>/tasks/create" method="POST">
+            <div class="form-group">
+                <label for="nameTask">Nombre de la tarea*</label>
+                <input type="text" id="nameTask" name="nameTask" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="taskStatus">Estado</label>
+                <select id="taskStatus" name="taskStatus" class="form-control">
+                    <option value="pending">Pendiente</option>
+                    <option value="in_progress">En Progreso</option>
+                    <option value="completed">Completada</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea id="description" name="description" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Fecha de inicio*</label>
+                <input type="date" id="startDate" name="startDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">Fecha de fin</label>
+                <input type="date" id="endDate" name="endDate" class="form-control">
+            </div>
+           
+
+            <button type="submit">Crear Tarea</button>
+        </form>
+    </section>

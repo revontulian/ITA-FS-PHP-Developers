@@ -1,67 +1,96 @@
 <?php
 
-    declare(strict_types=1);
+declare(strict_types=1);
+require_once __DIR__ . '/TaskStatus.php';
 
-   enum TaskStatus: string {
-        case PENDING = 'pending';
-        case IN_PROGRESS = 'in_progress';
-        case COMPLETED = 'completed';
-    }
 
-    Class TaskModel  {
+class TaskModel {
+    private JsonCRUD $crud;
+
+    public function __construct() {
+
+     $this->crud = new JsonCRUD('task.json');
         
-    private string $file;
-
-    public function __construct(string $file) {
-        
-        $this->file = $file;
     }
 
     public function getAll(): array {
-
-         if (!file_exists($this->file)) {
-            return [];
-        }
-        $json = file_get_contents($this->file);
-        $task = json_decode($json, true);
-        return is_array($tasks) ? $tasks : [];
+        return $this->crud->read();
     }
 
-    public function addTask( string $nameTask, TaskStatus $TaskStatus, DateTimeImmutable  $startTime,
-     string $description,  DateTimeImmutable  $endDate):bool{
+    public function addTask(
+        string $nameTask, 
+        TaskStatus $taskStatus, 
+        DateTimeImmutable $startTime,
+        string $description, 
+        DateTimeImmutable $endDate
+        ): bool {
+        $crud = $this->getAll();
+       
 
-        //filtar si exite 
-        $tasks = $this->getAll();
-
-
-        foreach($tasks as $task){
-            if($task['nameTask'] === $nameTask){
+        foreach($crud as $task) {
+            if($task['nameTask'] === $nameTask) {
                 return false;
             }
         }
 
-
-          $newtasks= [
+        $this-> crud->create( [
             'nameTask' => $nameTask,
-            'TaskStatus' => $status->value,// the enum 
-            'startDate' => $startTime->format('Y-m-d'),// date
+            'taskStatus' => $taskStatus->value,
+            'startDate' => $startTime->format('Y-m-d'),
             'description' => $description,
-            'endDate' => $endDate->format('Y-m-d')// data
-        ];
-
-        $taks[] =$newtasks;// lo almacenada en la array
-        
-        //guarda en el archibo json
-        file_put_contents($this->file, json_encode($taks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
+            'endDate' => $endDate->format('Y-m-d') ]);
         return true;
 
-     }
-
+       
+        
+        
     }
 
+    public function view(): ?array {
+        $crud = $this->getAll();
+        foreach ($crud as $task) {
+            return $task; 
+            }
+    }
 
-   
+    public function getTaskbyId(string $id):?array {
+      return $this->crud->read($id);
+    }
 
+       
+    /**
+     * Update user data.
+     * @param string $id
+     * @param array $newData (nameTask, taskStatus, startDate, description, endDate )
+     * @return bool
+     */
+  
 
+    public function updateTaskid(string $id,array $newData):bool{
+        $task =$this->crud->update($id, $newData);
+        if ($task) {
+            return true; 
+        }
+        return false;
+    }
+
+    public function deleteTaskId(string $id): bool {
+        
+        return $this->crud->delete($id);
+    }
+    public function filterStatus(TaskStatus $taskStatus){ 
+        $crud =$this->getAll();
+      switch ($crud){
+        case 1:
+            foreach($crud as $task){
+                if($taskStatus==='pending'){
+                    return $task;
+                }
+            }
+            break;
+        }
+        
+    }
+
+}
 ?>
