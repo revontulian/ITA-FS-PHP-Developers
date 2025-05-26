@@ -6,14 +6,13 @@ class UserController extends ApplicationController
 {
     public function loginAction()
     {
-        $this->requireLogout(); // No Logger user can go in Login
+        $this->requireLogout('/tasks/mainPage');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $this->sanitizeInput($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
             if (!$this->isValidEmail($email)) {
-                
                 $this->view->errorMessage = 'Please enter a valid email address.';
                 return;
             }
@@ -23,9 +22,8 @@ class UserController extends ApplicationController
             
             if ($user) {
                 $_SESSION['user'] = $user;
-                $this->redirectWithMessage('/profile', 'Welcome back!');
+                $this->redirect('/tasks/mainPage'); // ✅ Pulito e consistente
             } else {
-              
                 $this->view->errorMessage = 'Invalid email or password.';
             }
         }
@@ -43,7 +41,7 @@ class UserController extends ApplicationController
             $surname = $this->sanitizeInput($_POST['surname'] ?? '');
             $date_of_birth = $_POST['date_of_birth'] ?? '';
 
-            // Validazioni
+            // Validations
             if (!$this->isValidEmail($email)) {
                 $this->view->errorMessage = 'Please enter a valid email address.';
                 return;
@@ -61,6 +59,7 @@ class UserController extends ApplicationController
             }
 
             $userModel->addUser($email, $password, $name, $surname, $date_of_birth);
+            $this->redirect('/login');  // ✅ Redirect semplice
         }
     }
 
@@ -73,8 +72,8 @@ class UserController extends ApplicationController
     public function logoutAction()
     {
         $this->requireLogin(); 
-        
         session_destroy();
+        $this->redirect('/login');  // ✅ Redirect semplice
     }
 
     public function editAction()
@@ -92,7 +91,7 @@ class UserController extends ApplicationController
             $password = $_POST['password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
 
-            // Validation 
+            // Validations
             if (!$this->isValidEmail($email)) {
                 $this->view->errorMessage = 'Please enter a valid email address.';
                 return; 
@@ -117,7 +116,7 @@ class UserController extends ApplicationController
             
             $userModel->updateUser($user['id'], $newData);
 
-            // Aggiorna la sessione
+            // Update session
             $updatedUsers = $userModel->getAll();
             foreach ($updatedUsers as $u) {
                 if ($u['id'] === $user['id']) {
@@ -125,6 +124,8 @@ class UserController extends ApplicationController
                     break;
                 }
             }
+
+            $this->redirect('/profile');  // ✅ Redirect semplice
         }
     }
 
@@ -137,6 +138,6 @@ class UserController extends ApplicationController
         $userModel->deleteUser($user['id']);
         
         session_destroy();
-       
+        $this->redirect('/login');  // ✅ Redirect semplice
     }
 }
