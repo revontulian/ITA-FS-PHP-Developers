@@ -12,12 +12,16 @@ class TasklistController extends Controller
         $tasklists = $jsonManager->read();
         $tasklistName = $_POST['name'] ?? null;
         if ($tasklistName) {
-            $newTasklist = [
-                'id' => uniqid(),
-                'name' => $tasklistName,
-            ];
-            $jsonManager->create($newTasklist);
-            header('Location: ' . WEB_ROOT . '/index.php?controller=Tasklist&action=index');
+            // Check if the tasklist name already exists
+            if (!$tasklistModel->verifyTaskListDoesNotExist($tasklistName)) {
+                echo "Tasklist with this name already exists.";
+                return;
+            } else {
+                // If it doesn't exist, proceed to create a new tasklist
+                $tasklistModel->createTasklist($tasklistName);
+                header('Location: ' . WEB_ROOT . '/index.php?controller=Tasklist&action=index');
+            }
+    
         } else {
             echo "Tasklist name is required.";
         }

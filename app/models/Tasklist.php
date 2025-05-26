@@ -45,7 +45,7 @@ class Tasklist extends Model
         return true;
     }
     
-    protected function createTasklist(string $name): array
+    public function createTasklist(string $name): array
     {
         $tasklists = $this->getAll();
         $newTasklist = [
