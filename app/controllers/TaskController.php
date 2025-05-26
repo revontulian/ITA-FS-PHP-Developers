@@ -12,8 +12,10 @@ class TaskController extends Controller
     }
     public function mainPageAction(): void
     {
+        $refresh = false;
         $tasks = $this->taskModel->getAll();
         $this->view->tasks = $tasks;
+       
         
 
 
@@ -52,10 +54,11 @@ class TaskController extends Controller
                
                 
             );
+            
 
             if ($success) {
                 $_SESSION['success'] = "Tarea creada exitosamente";
-                header('Location: ' . WEB_ROOT . '/tasks/mainPage');
+                //header('Location: ' . WEB_ROOT . '/tasks/mainPage');
                 // Redirige a la vista de tareas
                 exit();
             } else {
@@ -63,7 +66,9 @@ class TaskController extends Controller
             }
         }
     }
-    
+  
+
+
     public function deleteAction(): void{
         
         $id = $this->_getParam('id');
@@ -120,8 +125,8 @@ class TaskController extends Controller
                 'taskStatus' => $taskStatus->value,
                 'startDate' => $startDateObj->format('Y-m-d'),
                 'description' => $description,
-                'endDate' => $endDateObj->format('Y-m-d'),
-               
+                'endDate' => $endDateObj->format('Y-m-d')
+                
             ];
             $success = $this->taskModel->updateTaskid($id, $newTask);
 
@@ -135,6 +140,7 @@ class TaskController extends Controller
 
         }
     }
+
     public function filterStatusAction(): void{
        $task = $this->taskModel-> filterStatus( $taskStatus);
        
