@@ -5,41 +5,17 @@ require_once __DIR__ . '/TaskStatus.php';
 
 
 class TaskModel {
-    private string $file;
+    private JsonCRUD $crud;
 
     public function __construct() {
-        $this->file = __DIR__ . '/../../lib/data/task.json';
 
-        if (!file_exists($this->file)) {
-            file_put_contents($this->file, json_encode([]));
-            chmod($this->file, 0666); // Permisos de lectura/escritura
-        }
+     $this->crud = new JsonCRUD(ROOT_PATH . '/lib/data/task.json');
+        
     }
 
     public function getAll(): array {
-        if (!file_exists($this->file)) {
-            error_log("Archivo no encontrado: " . $this->file);
-            return [];
-        }
-        $json_data = file_get_contents($this->file);
-        if ($json_data === false) {
-            error_log("Error al leer el archivo JSON");
-            return [];
-        }
-        $tasks = json_decode($json_data, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log("Error al decodificar JSON: " . json_last_error_msg());
-            return [];
-        }
-        
-
-        if(!is_array($tasks)) {
-            error_log("El contenido del archivo no es un array");
-            return [];
-        }
-
-        return is_array($tasks) ? $tasks : [];
-}
+        return $this->crud->read();
+    }
 
     public function addTask(
         string $nameTask, 
@@ -49,71 +25,59 @@ class TaskModel {
         DateTimeImmutable $endDate,
         int $provity =-1
         ): bool {
-        $tasks = $this->getAll();
+        $crud = $this->getAll();
+       
 
-        foreach($tasks as $task) {
+        foreach($crud as $task) {
             if($task['nameTask'] === $nameTask) {
                 return false;
             }
         }
 
-        $newtasks = [
-            'id' => uniqid(),
+        $this-> crud->create( [
             'nameTask' => $nameTask,
             'taskStatus' => $taskStatus->value,
             'startDate' => $startTime->format('Y-m-d'),
             'description' => $description,
             'endDate' => $endDate->format('Y-m-d'),
-            'provity' => $provity ];
-
-        $tasks[] = $newtasks;
-        
-        file_put_contents($this->file, json_encode($tasks, JSON_PRETTY_PRINT));
+            'provity' => $provity ]);
         return true;
+
+       
+        
+        
     }
 
-    public function viewTask(string $id){
-        $tasks = $this->getAll();// Obtener todas las tareas
-        $viewTask = array_filter($tasks, fn($task) => $task['id'] === $id);
-        if(count($viewstack) === 1){
-            return reset($viewstack);
-        }
-
-        return $filtered ? reset($filtered) : null;
-
+    public function viewTask(): ?array {
+        $crud = $this->getAll();
+        foreach ($crud as $task) {
+            return $task; 
+            }
     }
-    // task valid
-    public function updateTaskid($task){
 
-        if(deleteTaskId($task["id"])) {
-            return addTask($task); 
+    public function getTaskbyId(string $id):?array {
+      return $this->crud->read($id);
+    }
+
+       
+    /**
+     * Update user data.
+     * @param string $id
+     * @param array $newData (nameTask, taskStatus, startDate, description, endDate, provity)
+     * @return bool
+     */
+  
+    public function updateTaskid(string $id,array $newData):bool{
+        $task =$this->crud->update($id, $newData);
+        if ($task) {
+            return true; 
         }
-        return false; 
-
+        return false;
     }
 
     public function deleteTaskId(string $id): bool {
-        $tasks = $this->getAll();// Obtener todas las tareas
-        $newTasks = array_filter($tasks, fn($task) => $task['id'] !== $id);
-
-        if (count($tasks) === count($newTasks)) {
-            return false; // No se encontró la tarea
-        }
-
-        file_put_contents($this->file, json_encode(array_values($newTasks), JSON_PRETTY_PRINT));
-        return true;
-    }
-    
-    public function deleteTaskByName(string $nameTask): bool {
-        $tasks = $this->getAll();// Obtener todas las tareas
-        $newTasks = array_filter($tasks, fn($task) => $task['nameTask'] !== $nameTask);
-
-        if (count($tasks) === count($newTasks)) {
-            return false; // No se encontró la tarea
-        }
-
-        file_put_contents($this->file, json_encode(array_values($newTasks), JSON_PRETTY_PRINT));
-        return true;
+        
+        return $this->crud->delete($id);
     }
 }
 ?>

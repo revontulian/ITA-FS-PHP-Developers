@@ -2,40 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Tarea</title>
+    <title>Update Task</title>
 </head>
 <body>
-    <section class="create-form">
-        <h1>Crear Nueva Tarea</h1>
-        <form action="<?php echo $this->baseUrl(); ?>/tasks/create" method="POST">
-            <div class="form-group">
-                <label for="nameTask">Nombre de la tarea*</label>
+<section class="create-form">
+    <h1>update Task</h1>
+    
+    <form action="<?php echo $this->baseUrl();?>/tasks/update/<?php echo $this->task['id'];?>" method="POST">
+      
+         <div class="form-group">
+                <label for="nameTask">Task Name*</label>
                 <input type="text" id="nameTask" name="nameTask" class="form-control" required>
             </div>
-
             <div class="form-group">
-                <label for="taskStatus">Estado</label>
+                <label for="taskStatus">Status</label>
                 <select id="taskStatus" name="taskStatus" class="form-control">
-                    <option value="pending">Pendiente</option>
-                    <option value="in_progress">En Progreso</option>
-                    <option value="completed">Completada</option>
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <label for="description">Descripción</label>
+                <label for="description">Description</label>
                 <textarea id="description" name="description" rows="4" class="form-control"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="startDate">Fecha de inicio*</label>
+                <label for="startDate">Start Date*</label>
                 <input type="date" id="startDate" name="startDate" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="endDate">Fecha de fin</label>
+                <label for="endDate">End Date*</label>
                 <input type="date" id="endDate" name="endDate" class="form-control">
             </div>
             <div class="form-group">
@@ -43,8 +42,9 @@
                 <input type="number" id="provity" name="provity" class="form-control" value="1" min="1" max="5">
             </div>
 
-            <button type="submit">Crear Tarea</button>
-        </form>
-    </section>
-</body>
+            <button type="submit">update Task</button>
+        
+    </form>
+</section>
+</body>     
 </html>
