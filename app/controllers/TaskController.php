@@ -12,11 +12,18 @@ class TaskController extends ApplicationController
 
     public function mainPageAction(): void
     {
-        $refresh = false;
-        $this->requireLogin(); 
+        //recibimos el filter  y no hay all 
+    $taskStatus = $_SESSION['taskStatus'] ?? 'all';
+    
+    if ($taskStatus === 'all') {
         $tasks = $this->taskModel->getAll();
-        $this->view->tasks = $tasks;
-       
+    } else {
+        //aplica al filtro
+            $taskStatusEnum = TaskStatus::from($taskStatus);
+            $tasks = $this->taskModel->filterStatus($taskStatusEnum);
+    }
+    $this->view->tasks = $tasks;
+    $this->view->currentStatus = $taskStatus;
         
 
 
@@ -129,24 +136,15 @@ class TaskController extends ApplicationController
         }
     }
 
-    public function filterStatusAction(): void {
-        $this->requireLogin();
-        
-        $taskStatus = $_GET['taskStatus'] ?? 'all';
-        
-        if ($taskStatus === 'all') {
-            $tasks = $this->taskModel->getAll();
-        } else {
-            $taskStatusEnum = TaskStatus::from($taskStatus);
-            $tasks = $this->taskModel->filterStatus($taskStatusEnum);
-        }
-        
-        // Renderizar la misma vista que mainPage pero con las tareas filtradas
-        $this->view->tasks = $tasks;
-        $this->view->currentStatus = $taskStatus;
-        
-        // Usar la vista de mainPage
-        $this->view->render('task/mainPage.phtml');
-    }
+public function filterStatusAction(): void 
+{
+    $this->requireLogin();
+    //hacade el paramenter
+    $taskStatus = $this->_getParam('taskStatus', 'all');
+    //lo guarda en session para pasarcelo en mianAction()
+    $_SESSION['taskStatus'] = $taskStatus;
     
+    // Redirigir a mainPage usando el método correcto
+    $this->redirect('/tasks/mainPage');
+}
 }
