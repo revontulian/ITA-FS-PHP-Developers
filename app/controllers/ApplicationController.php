@@ -12,6 +12,17 @@ class ApplicationController extends Controller
     public function init()
     {
         parent::init();
+        
+        // ✅ Passa i messaggi alla vista se esistono
+        if (isset($_SESSION['success_message'])) {
+            $this->view->successMessage = $_SESSION['success_message'];
+            unset($_SESSION['success_message']); // Rimuovi dopo averlo mostrato
+        }
+        
+        if (isset($_SESSION['error_message'])) {
+            $this->view->errorMessage = $_SESSION['error_message'];
+            unset($_SESSION['error_message']); // Rimuovi dopo averlo mostrato
+        }
     }
 
     // === REST OF THE METHODS ===
@@ -53,11 +64,31 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Simple redirect without flash messages
+     * ✅ Redirect con messaggio di successo
+     */
+    protected function redirectWithSuccess(string $url, string $message): void
+    {
+        $_SESSION['success_message'] = $message;
+        header('Location: ' . $this->view->baseUrl() . $url);
+        exit;
+    }
+
+    /**
+     * ✅ Redirect con messaggio di errore
+     */
+    protected function redirectWithError(string $url, string $message): void
+    {
+        $_SESSION['error_message'] = $message;
+        header('Location: ' . $this->view->baseUrl() . $url);
+        exit;
+    }
+
+    /**
+     * Simple redirect without messages
      */
     protected function redirect(string $url): void
     {
         header('Location: ' . $this->view->baseUrl() . $url);
-        exit();
+        exit;
     }
 }

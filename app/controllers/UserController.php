@@ -79,11 +79,10 @@ class UserController extends ApplicationController
     public function editAction()
     {
         $this->requireLogin();
-    
         $this->view->user = $this->getCurrentUser();
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = $this->getCurrentUser(); // Per le operazioni interne
+            $user = $this->getCurrentUser();
             $email = $this->sanitizeInput($_POST['email'] ?? '');
             $name = $this->sanitizeInput($_POST['name'] ?? '');
             $surname = $this->sanitizeInput($_POST['surname'] ?? '');
@@ -94,12 +93,12 @@ class UserController extends ApplicationController
             // Validations
             if (!$this->isValidEmail($email)) {
                 $this->view->errorMessage = 'Please enter a valid email address.';
-                return; 
+                return;
             }
 
             if (!empty($password) && $password !== $confirm) {
                 $this->view->errorMessage = 'Passwords do not match.';
-                return; 
+                return;
             }
 
             $userModel = new ModelUser();
@@ -110,22 +109,27 @@ class UserController extends ApplicationController
                 'date_of_birth' => $date_of_birth
             ];
             
+            // ✅ NON hashare qui, lascia che lo faccia updateUser()
             if (!empty($password)) {
-                $newData['password'] = password_hash($password, PASSWORD_DEFAULT);
+                $newData['password'] = $password; // ✅ Password in chiaro
             }
             
-            $userModel->updateUser($user['id'], $newData);
+            $success = $userModel->updateUser($user['id'], $newData);
 
-            // Update session
-            $updatedUsers = $userModel->getAll();
-            foreach ($updatedUsers as $u) {
-                if ($u['id'] === $user['id']) {
-                    $_SESSION['user'] = $u;
-                    break;
+            if ($success) {
+                // Update session
+                $updatedUsers = $userModel->getAll();
+                foreach ($updatedUsers as $u) {
+                    if ($u['id'] === $user['id']) {
+                        $_SESSION['user'] = $u;
+                        break;
+                    }
                 }
-            }
 
-            $this->redirect('/profile');  // ✅ Redirect semplice
+                $this->redirectWithSuccess('/profile', 'Profile updated successfully!');
+            } else {
+                $this->view->errorMessage = 'Error updating profile. Please try again.';
+            }
         }
     }
 
