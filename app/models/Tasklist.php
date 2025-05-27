@@ -5,10 +5,11 @@ declare(strict_types=1);
 class Tasklist extends Model
 {
     private string $file;
+    private JsonCRUD $jsonCRUD;
 
     public function __construct()
     {
-        $this->file = __DIR__ . '/../lib/data/tasklist.json';
+        $this->jsonCRUD = new JsonCRUD('tasklists.json');
     }
 
     /**
@@ -18,16 +19,14 @@ class Tasklist extends Model
 
     protected function getAll(): array
     {
-        $json = file_get_contents($this->file);
-        $tasklists = json_decode($json, true);
-        return is_array($tasklists) ? $tasklists : [];
+        return $this->jsonCRUD->read();
     }
 
-    public function getTasklistsById(string $id): ?array
+    public function getTasklistsById(string $userId): ?array
     {
         $tasklists = $this->getAll();
         foreach ($tasklists as $tasklist) {
-            if ($tasklist['id'] === $id) {
+            if ($tasklist['id'] === $userId) {
                 return $tasklist;
             }
         }
@@ -50,12 +49,13 @@ class Tasklist extends Model
         $tasklists = $this->getAll();
         $newTasklist = [
             'id' => uniqid(),
-            'userId' => $userId,
+            'userId' => $userId, // Assuming you have a way to get the current user's ID
             'name' => $name,
             'tasks' => []
         ];
         $tasklists[] = $newTasklist;
-        file_put_contents($this->file, json_encode($tasklists, JSON_PRETTY_PRINT));
+        $this->jsonCRUD->update($userId, $tasklists);
+        //file_put_contents($this->file, json_encode($tasklists, JSON_PRETTY_PRINT));
         return $newTasklist;
     }
 }

@@ -7,6 +7,7 @@ class TasklistController extends ApplicationController
 {
     public function createAction(string $tasklistName, string $userId): void
     {
+        $userId = $this->getCurrentUser['id'] ?? null;
         $tasklistModel = new Tasklist();
         $jsonManager = new JsonCRUD('tasklist.json');
         $tasklists = $jsonManager->read();
@@ -21,7 +22,6 @@ class TasklistController extends ApplicationController
                 $tasklistModel->createTasklist($tasklistName, $userId);
                 header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
             }
-    
         } else {
             echo "Tasklist name is required.";
         }
