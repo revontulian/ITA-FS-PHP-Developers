@@ -22,5 +22,21 @@
         "surname": "Canteria Pastor",
         "date_of_birth": "1988-03-26",
         "id": "6834ad9eb8f20"
+    },
+    {
+        "email": "lacereza7@gmail.com",
+        "password": "$2y$10$chucU4eoXS55aMUrpW5PheDjJXXzLyKi\/uLjxV4oTjgsWRGKFpqDW",
+        "name": "Sandra",
+        "surname": "G",
+        "date_of_birth": "2025-04-29",
+        "id": "6834b3229720f"
+    },
+    {
+        "email": "sandrapablo@gmail.com",
+        "password": "$2y$10$5UH7oYmfO4K5Os4KStauq.Y\/3JGR90\/OwTTpXU53byI9Vqs1XpCOO",
+        "name": "sandra",
+        "surname": "pablo",
+        "date_of_birth": "1996-11-17",
+        "id": "683598d35189e"
     }
 ]

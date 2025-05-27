@@ -7,7 +7,7 @@ class TasklistController extends ApplicationController
 {
     public function createAction(string $tasklistName, string $userId): void
     {
-        $userId = $this->getCurrentUser['id'] ?? null;
+        $userId = $this->getCurrentUser()['id'] ?? null;
         $tasklistModel = new Tasklist();
         $jsonManager = new JsonCRUD('tasklist.json');
         $tasklists = $jsonManager->read();
