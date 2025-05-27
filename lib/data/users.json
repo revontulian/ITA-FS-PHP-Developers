@@ -9,19 +9,26 @@
     },
     {
         "email": "a@g.it",
-        "password": "$2y$10$OmdsnO13M5ZukBgvfR.SBeQrdvL7QCxSJPGJjCl7BaGcq7KisY9Pa",
+        "password": "$2y$10$b6P0UZrus9qWFpYs4Bz07On5bQfDtZHMZX18M5fpIhQvv9C\/muxMG",
         "name": "ax",
         "surname": "re",
         "date_of_birth": "1111-11-11",
         "id": "683332f686178"
     },
     {
-
         "email": "lacereza7@gmail.com",
         "password": "$2y$10$chucU4eoXS55aMUrpW5PheDjJXXzLyKi\/uLjxV4oTjgsWRGKFpqDW",
         "name": "Sandra",
         "surname": "G",
         "date_of_birth": "2025-04-29",
         "id": "6834b3229720f"
+    },
+    {
+        "email": "sandrapablo@gmail.com",
+        "password": "$2y$10$5UH7oYmfO4K5Os4KStauq.Y\/3JGR90\/OwTTpXU53byI9Vqs1XpCOO",
+        "name": "sandra",
+        "surname": "pablo",
+        "date_of_birth": "1996-11-17",
+        "id": "683598d35189e"
     }
 ]
