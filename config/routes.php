@@ -23,5 +23,7 @@ $routes = array(
     '/tasks/create' => 'task#create',
     '/tasks/delete/:id' => 'task#delete',
     '/tasks/update/:id' => 'task#update',
+
     '/tasks/filterStatus' => 'task#filterStatus',  
+
 );
