@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Used to define the routes in the system.
@@ -24,6 +24,7 @@ $routes = array(
     '/tasks/delete/:id' => 'task#delete',
     '/tasks/update/:id' => 'task#update',
 
-    '/tasks/filterStatus' => 'task#filterStatus',  
+    '/tasks/filterStatus' => 'task#filterStatus',
+    '/tasklists/create' => 'tasklist#create',
 
 );
