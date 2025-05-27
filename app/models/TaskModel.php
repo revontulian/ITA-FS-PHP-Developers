@@ -22,10 +22,9 @@ class TaskModel {
         TaskStatus $taskStatus, 
         DateTimeImmutable $startTime,
         string $description, 
-        DateTimeImmutable $endDate
-        ): bool {
+        ?DateTimeImmutable $endDate = null
+    ): bool {
         $crud = $this->getAll();
-       
 
         foreach($crud as $task) {
             if($task['nameTask'] === $nameTask) {
@@ -33,13 +32,15 @@ class TaskModel {
             }
         }
 
-        $this-> crud->create( [
+       return $this->crud->create([
             'nameTask' => $nameTask,
             'taskStatus' => $taskStatus->value,
             'startDate' => $startTime->format('Y-m-d'),
             'description' => $description,
-            'endDate' => $endDate->format('Y-m-d') ]);
-        return true;
+            'endDate' => $endDate ? $endDate->format('Y-m-d') : null
+        ]);
+        
+       
 
        
         

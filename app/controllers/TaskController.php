@@ -32,11 +32,11 @@ class TaskController extends ApplicationController
             $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
             $description = $_POST['description'] ?? '';
             $startDate = $_POST['startDate'] ?? '';
-            $endDate = $_POST['endDate'] ?? ''; 
+            $endDate = $_POST['endDate'] ?? null; 
 
             $taskStatus = TaskStatus::from($taskStatusStr);
             $startDateObj = new DateTimeImmutable($startDate);
-            $endDateObj = $endDate ? new DateTimeImmutable($endDate) : $startDateObj;
+            $endDateObj = !empty($endDate) ? new DateTimeImmutable($endDate) : null;
 
             if (empty($nameTask) || empty($startDate)) {
                 $this->view->error = "All fields are required.";
@@ -50,13 +50,11 @@ class TaskController extends ApplicationController
                 $description,
                 $endDateObj
             );
-            
 
             if ($success) {
                 $_SESSION['success'] = "Tarea creada exitosamente";
                 //header('Location: ' . WEB_ROOT . '/tasks/mainPage');
                 // Redirige a la vista de tareas
-                exit();
                 $this->redirect('/tasks/mainPage');  
             } else {
                 $this->view->error = "Task already exists.";
@@ -131,30 +129,23 @@ class TaskController extends ApplicationController
         }
     }
 
-    public function filterStatusAction(): void 
-    {
+    public function filterStatusAction(): void {
         $this->requireLogin();
         
-        // Get filter status from GET parameters
         $taskStatus = $_GET['taskStatus'] ?? 'all';
         
-        // Get filtered tasks
         if ($taskStatus === 'all') {
             $tasks = $this->taskModel->getAll();
         } else {
-            try {
-                $taskStatusEnum = TaskStatus::from($taskStatus);
-                $tasks = $this->taskModel->filterStatus($taskStatusEnum);
-            } catch (ValueError $e) {
-                $tasks = $this->taskModel->getAll();
-            }
+            $taskStatusEnum = TaskStatus::from($taskStatus);
+            $tasks = $this->taskModel->filterStatus($taskStatusEnum);
         }
         
-        // Set view variables
+        // Renderizar la misma vista que mainPage pero con las tareas filtradas
         $this->view->tasks = $tasks;
         $this->view->currentStatus = $taskStatus;
         
-        // En lugar de hacer redirect, renderizamos la vista mainPage directamente
+        // Usar la vista de mainPage
         $this->view->render('task/mainPage.phtml');
     }
     
