@@ -131,23 +131,31 @@ class TaskController extends ApplicationController
         }
     }
 
-    public function filterStatusAction(): void{
+    public function filterStatusAction(): void 
+    {
         $this->requireLogin();
-          if( $taskStatus=$_GET['taskStatus']=== 'all'){
-            $this->redirect('/tasks/mainPage');  
-
-        }
-        $taskStatus=$_GET['taskStatus'] ?? 'pending';
-        $taskStatusEnum = TaskStatus::from($taskStatus);
-        $success = $this->taskModel->filterStatus($taskStatusEnum);
-      
-        if ($success) {
-            $this->view->tasks = $success;
+        
+        // Get filter status from GET parameters
+        $taskStatus = $_GET['taskStatus'] ?? 'all';
+        
+        // Get filtered tasks
+        if ($taskStatus === 'all') {
+            $tasks = $this->taskModel->getAll();
         } else {
-            $this->view->error = "No tasks found with the specified status.";
-            
+            try {
+                $taskStatusEnum = TaskStatus::from($taskStatus);
+                $tasks = $this->taskModel->filterStatus($taskStatusEnum);
+            } catch (ValueError $e) {
+                $tasks = $this->taskModel->getAll();
+            }
         }
-       
+        
+        // Set view variables
+        $this->view->tasks = $tasks;
+        $this->view->currentStatus = $taskStatus;
+        
+        // En lugar de hacer redirect, renderizamos la vista mainPage directamente
+        $this->view->render('task/mainPage.phtml');
     }
     
 }

@@ -81,9 +81,6 @@ class TaskModel {
     public function filterStatus(TaskStatus $taskStatus ) { 
         
         return $tasks= $this->crud->search('taskStatus', $taskStatus->value);
-    
-        
-        
     }
 
 }
