@@ -78,17 +78,11 @@ class TaskModel {
         
         return $this->crud->delete($id);
     }
-    public function filterStatus(TaskStatus $taskStatus){ 
-        $crud =$this->getAll();
-      switch ($crud){
-        case 1:
-            foreach($crud as $task){
-                if($taskStatus==='pending'){
-                    return $task;
-                }
-            }
-            break;
-        }
+    public function filterStatus(TaskStatus $taskStatus ) { 
+        
+        return $tasks= $this->crud->search('taskStatus', $taskStatus->value);
+    
+        
         
     }
 

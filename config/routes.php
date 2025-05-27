@@ -24,5 +24,6 @@ $routes = array(
     '/tasks/delete/:id' => 'task#delete',
     '/tasks/update/:id' => 'task#update',
 
-    '/tasklists/create' => 'tasklist#create',
+    '/tasks/filterStatus' => 'task#filterStatus',  
+
 );

@@ -12,9 +12,14 @@ class TaskController extends ApplicationController
 
     public function mainPageAction(): void
     {
+        $refresh = false;
         $this->requireLogin(); 
         $tasks = $this->taskModel->getAll();
         $this->view->tasks = $tasks;
+       
+        
+
+
     }
 
     public function createAction(): void
@@ -45,14 +50,21 @@ class TaskController extends ApplicationController
                 $description,
                 $endDateObj
             );
+            
 
             if ($success) {
+                $_SESSION['success'] = "Tarea creada exitosamente";
+                //header('Location: ' . WEB_ROOT . '/tasks/mainPage');
+                // Redirige a la vista de tareas
+                exit();
                 $this->redirect('/tasks/mainPage');  
             } else {
                 $this->view->error = "Task already exists.";
             }
         }
     }
+
+        
     
     public function deleteAction(): void
     {
@@ -118,4 +130,24 @@ class TaskController extends ApplicationController
             }
         }
     }
+
+    public function filterStatusAction(): void{
+        $this->requireLogin();
+          if( $taskStatus=$_GET['taskStatus']=== 'all'){
+            $this->redirect('/tasks/mainPage');  
+
+        }
+        $taskStatus=$_GET['taskStatus'] ?? 'pending';
+        $taskStatusEnum = TaskStatus::from($taskStatus);
+        $success = $this->taskModel->filterStatus($taskStatusEnum);
+      
+        if ($success) {
+            $this->view->tasks = $success;
+        } else {
+            $this->view->error = "No tasks found with the specified status.";
+            
+        }
+       
+    }
+    
 }
