@@ -41,7 +41,6 @@
                         <option value="pending">PENDIENTE</option>
                         <option value="in_progress">EN PROGRESO</option>
                         <option value="completed">COMPLETADA</option>
-                      
                     </select>
                     <input type="submit" value="Filtrar" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
                 </form>
@@ -53,11 +52,10 @@
                         <div class="flex items-center justify-between border-b border-black pb-2 m-2">
                             <div class="flex-grow">
                                  <p class="text-sm text-gray-500">
-                                Estado: <?= htmlspecialchars($task['taskStatus'] ?? '') ?>  </p>
-                                 <p class="text-sm text-gray-500">
-                                Name: <?= htmlspecialchars($task['nameTask'] ?? '') ?>  </p>
+                                Estado: <?= htmlspecialchars($task['taskStatus'] ?? 'Sin estado') ?>  </p>
                                 <h4>
-                                    <?=htmlspecialchars($task['description'] ?? 'Sin descripción')  ?>
+                                    <?= htmlspecialchars($task['nameTask'] ?? 'Sin nombre') . " " 
+                                    . htmlspecialchars($task['description'] ?? 'Sin descripción')  ?>
                                 </h4>
                                
                             </div>

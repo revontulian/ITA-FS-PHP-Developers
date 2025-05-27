@@ -132,7 +132,21 @@ class TaskController extends ApplicationController
     }
 
     public function filterStatusAction(): void{
-       $task = $this->taskModel-> filterStatus( $taskStatus);
+        $this->requireLogin();
+          if( $taskStatus=$_GET['taskStatus']=== 'all'){
+            $this->redirect('/tasks/mainPage');  
+
+        }
+        $taskStatus=$_GET['taskStatus'] ?? 'pending';
+        $taskStatusEnum = TaskStatus::from($taskStatus);
+        $success = $this->taskModel->filterStatus($taskStatusEnum);
+      
+        if ($success) {
+            $this->view->tasks = $success;
+        } else {
+            $this->view->error = "No tasks found with the specified status.";
+            
+        }
        
     }
     
