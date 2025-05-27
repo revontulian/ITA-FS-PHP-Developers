@@ -5,13 +5,12 @@ require_once ROOT_PATH . '/lib/JsonCRUD.php';
 
 class TasklistController extends ApplicationController
 {
-    public function createAction(string $tasklistName, string $userId): void
+    public function createAction(): void
     {
         $userId = $this->getCurrentUser()['id'] ?? null;
         $tasklistModel = new Tasklist();
         $jsonManager = new JsonCRUD('tasklist.json');
-        $tasklists = $jsonManager->read();
-        $tasklistName = $_POST['name'] ?? null;
+        $tasklistName = $_POST['tasklist_name'] ?? null;
         if ($tasklistName) {
             // Check if the tasklist name already exists
             if (!$tasklistModel->verifyTaskListDoesNotExist($tasklistName)) {
@@ -19,8 +18,11 @@ class TasklistController extends ApplicationController
                 return;
             } else {
                 // If it doesn't exist, proceed to create a new tasklist
-                $tasklistModel->createTasklist($tasklistName, $userId);
-                header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
+                $jsonManager->create([
+                    'name' => $tasklistName,
+                    'user_id' => $userId,
+                ]);
+                header('Location: ' . $this->view->baseUrl());
             }
         } else {
             echo "Tasklist name is required.";
