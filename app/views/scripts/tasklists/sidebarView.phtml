@@ -1,9 +1,9 @@
 <!-- Example bullet-point list -->
 <ul class="list-disc list-inside mt-6 ml-6 text-black">
-    <?php if (empty($this->tasklists)): ?>
+    <?php if (!isset($tasklists) || empty($tasklists)): ?>
         <li class="text-gray-500">No tasklists available.</li>
     <?php else: ?>
-        <?php foreach ($this->tasklists as $tasklist): ?>
+        <?php foreach ($tasklists as $tasklist): ?>
             <li class="flex items-center justify-between pr-2">
                 <span><?= htmlspecialchars($tasklist['name']) ?></span>
                 <span class="flex space-x-2 ml-2">
