@@ -5,7 +5,14 @@
     <?php else: ?>
         <?php foreach ($tasklists as $tasklist): ?>
             <li class="flex items-center justify-between pr-2">
-                <span><?= htmlspecialchars($tasklist['name']) ?></span>
+                <span>
+                    <a
+                        href="<?= $this->baseUrl() ?>/tasklist/view?id=<?= urlencode($tasklist['id']) ?>"
+                        class="hover:font-bold"
+                        title="View tasklist">
+                        <?= htmlspecialchars($tasklist['name']) ?>
+                    </a>
+                </span>
                 <span class="flex space-x-2 ml-2">
                     <!-- Edit icon -->
                     <a href="<?= $this->baseUrl() ?>/tasklist/edit?id=<?= urlencode($tasklist['id']) ?>" title="Edit">
