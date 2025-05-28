@@ -1,24 +1,20 @@
 <div class="w-full max-w-xl bg-white rounded-lg shadow-lg p-8">
         <h2 class="text-2xl font-bold mb-6 text-center">Edit Profile</h2>
         
-        <?php if (!empty($this->successMessage)): ?>
-            <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">
-                <?php echo htmlspecialchars($this->successMessage); ?>
+        <!-- MESSAGES -->
+        <?php if (!empty($this->_data['successMessage'])): ?>
+            <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                <?php echo htmlspecialchars($this->_data['successMessage']); ?>
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($this->errorMessage)): ?>
-            <div class="mb-4 p-3 bg-red-200 text-red-800 rounded">
-                <?php echo htmlspecialchars($this->errorMessage); ?>
+        <?php if (!empty($this->_data['errorMessage'])): ?>
+            <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+               <?php echo htmlspecialchars($this->_data['errorMessage']); ?>
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($error)): ?>
-            <div class="mb-4 p-2 bg-red-200 text-red-800 rounded">
-                <?php echo htmlspecialchars($error); ?>
-            </div>
-        <?php endif; ?>
-
+        <!-- FORM -->
         <form method="POST" action="<?php echo $this->baseUrl(); ?>/edit-profile" class="space-y-4">
             <div>
                 <label class="block font-semibold mb-1" for="email">Email</label>

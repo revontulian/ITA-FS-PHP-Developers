@@ -48,19 +48,22 @@ class ModelUser
     }
 
     /**
-     * Check login credentials.
+     * Check user login credentials.
      * @param string $email
      * @param string $password
-     * @return array|false
+     * @return array|null User data if login successful, null otherwise
      */
-    public function checkLogin(string $email, string $password): array|false
+    public function checkLogin(string $email, string $password): ?array
     {
-        foreach ($this->crud->read() as $user) {
+        $users = $this->crud->read();
+        
+        foreach ($users as $user) {
             if ($user['email'] === $email && password_verify($password, $user['password'])) {
                 return $user;
             }
         }
-        return false;
+        
+        return null; 
     }
 
     /**
@@ -86,7 +89,6 @@ class ModelUser
      */
     public function updateUser(string $id, array $newData): bool
     {
-        // Se c'è una password da aggiornare, criptala
         if (isset($newData['password']) && !empty($newData['password'])) {
             $newData['password'] = password_hash($newData['password'], PASSWORD_DEFAULT);
         }

@@ -22,9 +22,9 @@ class UserController extends ApplicationController
             
             if ($user) {
                 $_SESSION['user'] = $user;
-                $this->redirect('/tasks/mainPage'); // ✅ Pulito e consistente
+                $this->redirectWithSuccess('/tasks/mainPage', 'Welcome back, ' . $user['name'] . '!');
             } else {
-                $this->view->errorMessage = 'Invalid email or password.';
+                $this->view->errorMessage = 'Invalid credentials. Please check your email and password.';
             }
         }
     }
@@ -47,6 +47,11 @@ class UserController extends ApplicationController
                 return;
             }
             
+            if (strlen($password) < 6) {
+                $this->view->errorMessage = 'Password must be at least 6 characters long.';
+                return;
+            }
+            
             if ($password !== $confirm) {
                 $this->view->errorMessage = 'Passwords do not match.';
                 return;
@@ -54,12 +59,16 @@ class UserController extends ApplicationController
 
             $userModel = new ModelUser();
             if ($userModel->emailExists($email)) {
-                $this->view->errorMessage = 'Email already registered.';
+                $this->view->errorMessage = 'This email is already registered. Please use a different email.';
                 return;
             }
 
-            $userModel->addUser($email, $password, $name, $surname, $date_of_birth);
-            $this->redirect('/login');  // ✅ Redirect semplice
+            $success = $userModel->addUser($email, $password, $name, $surname, $date_of_birth);
+            if ($success) {
+                $this->redirectWithSuccess('/login', 'Account created successfully! Welcome to our platform, ' . $name . '. Please log in.');
+            } else {
+                $this->view->errorMessage = 'Error creating account. Please try again.';
+            }
         }
     }
 
@@ -71,9 +80,12 @@ class UserController extends ApplicationController
 
     public function logoutAction()
     {
-        $this->requireLogin(); 
+        $this->requireLogin();
+        $userName = $this->getCurrentUser()['name'] ?? 'User';
         session_destroy();
-        $this->redirect('/login');  // ✅ Redirect semplice
+        
+        session_start();
+        $this->redirectWithSuccess('/login', 'Goodbye, ' . $userName . '! You have been successfully logged out.');
     }
 
     public function editAction()
@@ -96,12 +108,23 @@ class UserController extends ApplicationController
                 return;
             }
 
-            if (!empty($password) && $password !== $confirm) {
-                $this->view->errorMessage = 'Passwords do not match.';
-                return;
+            if (!empty($password)) {
+                if (strlen($password) < 6) {
+                    $this->view->errorMessage = 'Password must be at least 6 characters long.';
+                    return;
+                }
+                if ($password !== $confirm) {
+                    $this->view->errorMessage = 'Passwords do not match.';
+                    return;
+                }
             }
 
             $userModel = new ModelUser();
+            if ($userModel->emailExists($email) && $email !== $user['email']) {
+                $this->view->errorMessage = 'This email is already used by another account.';
+                return;
+            }
+
             $newData = [
                 'email' => $email,
                 'name' => $name,
@@ -109,9 +132,8 @@ class UserController extends ApplicationController
                 'date_of_birth' => $date_of_birth
             ];
             
-            // ✅ NON hashare qui, lascia che lo faccia updateUser()
             if (!empty($password)) {
-                $newData['password'] = $password; // ✅ Password in chiaro
+                $newData['password'] = $password;
             }
             
             $success = $userModel->updateUser($user['id'], $newData);
@@ -126,7 +148,10 @@ class UserController extends ApplicationController
                     }
                 }
 
-                $this->redirectWithSuccess('/profile', 'Profile updated successfully!');
+                $message = !empty($password) 
+                    ? 'Profile and password updated successfully!' 
+                    : 'Profile updated successfully!';
+                $this->redirectWithSuccess('/profile', $message);
             } else {
                 $this->view->errorMessage = 'Error updating profile. Please try again.';
             }
@@ -135,13 +160,20 @@ class UserController extends ApplicationController
 
     public function deleteAction()
     {
-        $this->requireLogin(); // require method from ApplicationController.php
+        $this->requireLogin();
         
         $user = $this->getCurrentUser();
+        $userName = $user['name'] ?? 'User';
         $userModel = new ModelUser();
-        $userModel->deleteUser($user['id']);
         
-        session_destroy();
-        $this->redirect('/login');  // ✅ Redirect semplice
+        $success = $userModel->deleteUser($user['id']);
+        
+        if ($success) {
+            session_destroy();
+            session_start();
+            $this->redirectWithSuccess('/login', 'Account deleted successfully. We\'re sorry to see you go, ' . $userName . '. Thank you for using our service.');
+        } else {
+            $this->redirectWithError('/profile', 'Error deleting account. Please try again or contact support.');
+        }
     }
 }

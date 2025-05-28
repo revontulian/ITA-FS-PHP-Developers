@@ -1,48 +1,54 @@
+
 <div class="flex w-full max-w-3xl bg-white rounded-lg shadow-lg overflow-hidden">
-        <!-- Left side (TO DO) -->
-        <div class="w-1/2 bg-gradient-to-b from-blue-300 to-blue-500 flex flex-col items-center justify-center p-8">
-            <h2 class="text-2xl font-bold mb-6">TO DO</h2>
-            <div class="w-full h-40 border-2 border-dotted border-white mb-6"></div>
-        </div>
-        <!-- Right side (Login Form) -->
-        <div class="w-1/2 flex flex-col justify-center p-8">
-            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-            
-        
-
-            <?php if (!empty($this->successMessage)): ?>
-                <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">
-                    <?php echo htmlspecialchars($this->successMessage); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($this->errorMessage)): ?>
-                <div class="mb-4 p-3 bg-red-200 text-red-800 rounded">
-                    <?php echo htmlspecialchars($this->errorMessage); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($error)): ?>
-                <div class="mb-4 p-2 bg-red-200 text-red-800 rounded">
-                    <?php echo htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
-            
-            <form method="POST" action="<?php echo $this->baseUrl(); ?>/login" class="space-y-6">
-                <div>
-                    <label class="block font-semibold mb-2" for="email">Email</label>
-                    <input class="w-full border-2 border-blue-400 rounded px-3 py-2" type="email" id="email" name="email" required>
-                </div>
-                <div>
-                    <label class="block font-semibold mb-2" for="password">Password</label>
-                    <input class="w-full border-2 border-blue-400 rounded px-3 py-2" type="password" id="password" name="password" required>
-                </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-2 rounded">Login</button>
-                </div>
-                <p class="text-center">
-                    Don't have an account? <a href="<?php echo $this->baseUrl(); ?>/register" class="text-blue-600 underline">Register</a>
-                </p>
-            </form>
-        </div>
+    <!-- Left side -->
+    <div class="w-1/2 bg-gradient-to-b from-blue-300 to-blue-500 flex flex-col items-center justify-center p-8">
+        <h2 class="text-2xl font-bold mb-6">TO DO</h2>
+        <div class="w-full h-40 border-2 border-dotted border-white mb-6"></div>
     </div>
+    
+    <!-- Right side -->
+    <div class="w-1/2 flex flex-col justify-center p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+        
+        <!-- MESSAGES -->
+        <?php if (!empty($this->_data['successMessage'])): ?>
+            <div class="mb-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <?php echo htmlspecialchars($this->_data['successMessage']); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($this->_data['errorMessage'])): ?>
+            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <?php echo htmlspecialchars($this->_data['errorMessage']); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <!-- LOGIN FORM -->
+        <form method="POST" action="<?php echo $this->baseUrl(); ?>/login" class="space-y-6">
+            <div>
+                <label class="block font-semibold mb-2" for="email">Email</label>
+                <input class="w-full border-2 border-blue-400 rounded px-3 py-2" type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label class="block font-semibold mb-2" for="password">Password</label>
+                <input class="w-full border-2 border-blue-400 rounded px-3 py-2" type="password" id="password" name="password" required>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-400 hover:bg-blue-500 text-white font-semibold px-8 py-2 rounded">Login</button>
+            </div>
+            <p class="text-center">
+                Don't have an account? <a href="<?php echo $this->baseUrl(); ?>/register" class="text-blue-600 underline">Register</a>
+            </p>
+        </form>
+    </div>
+</div>

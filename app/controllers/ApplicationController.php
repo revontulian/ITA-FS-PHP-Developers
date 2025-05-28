@@ -13,20 +13,17 @@ class ApplicationController extends Controller
     {
         parent::init();
         
-        // ✅ Passa i messaggi alla vista se esistono
         if (isset($_SESSION['success_message'])) {
             $this->view->successMessage = $_SESSION['success_message'];
-            unset($_SESSION['success_message']); // Rimuovi dopo averlo mostrato
+            unset($_SESSION['success_message']);
         }
         
         if (isset($_SESSION['error_message'])) {
             $this->view->errorMessage = $_SESSION['error_message'];
-            unset($_SESSION['error_message']); // Rimuovi dopo averlo mostrato
+            unset($_SESSION['error_message']);
         }
     }
 
-    // === REST OF THE METHODS ===
-    
     protected function isLoggedIn(): bool
     {
         return isset($_SESSION['user']) && !empty($_SESSION['user']);
@@ -63,9 +60,6 @@ class ApplicationController extends Controller
         return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
     }
 
-    /**
-     * ✅ Redirect con messaggio di successo
-     */
     protected function redirectWithSuccess(string $url, string $message): void
     {
         $_SESSION['success_message'] = $message;
@@ -73,9 +67,6 @@ class ApplicationController extends Controller
         exit;
     }
 
-    /**
-     * ✅ Redirect con messaggio di errore
-     */
     protected function redirectWithError(string $url, string $message): void
     {
         $_SESSION['error_message'] = $message;
@@ -83,9 +74,6 @@ class ApplicationController extends Controller
         exit;
     }
 
-    /**
-     * Simple redirect without messages
-     */
     protected function redirect(string $url): void
     {
         header('Location: ' . $this->view->baseUrl() . $url);
