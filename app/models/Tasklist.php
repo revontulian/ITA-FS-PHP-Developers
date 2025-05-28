@@ -21,7 +21,7 @@ class Tasklist extends Model
         return $this->jsonCRUD->read();
     }
 
-    public function getTasklistsById(string $userId): array
+    public function getTasklistsByUserId(string $userId): array
     {
         $tasklists = $this->getAll();
         $userTasklists = [];
@@ -42,5 +42,10 @@ class Tasklist extends Model
             }
         }
         return true;
+    }
+
+    public function getTasklistId()
+    {
+        
     }
 }

@@ -29,6 +29,7 @@ class TasklistController extends ApplicationController
                 'name' => $tasklistName,
                 'user_id' => $userId,
             ]);
+            $this->view->tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
             header('Location: ' . $this->view->baseUrl());
 
         }
@@ -37,7 +38,7 @@ class TasklistController extends ApplicationController
     public function editAction(): void
     {
         $tasklistId = $_GET['id'] ?? null;
-        $tasklists = $this->tasklistModel->getTasklistsById($tasklistId);
+        $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
         if ($tasklistId && $tasklists) {
             $this->jsonManager->update($tasklistId, $_POST);
             header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
@@ -50,7 +51,7 @@ class TasklistController extends ApplicationController
     {
         $tasklistId = $_GET['id'] ?? null;
         if ($tasklistId) {
-            $tasklists = $this->tasklistModel->getTasklistsById($tasklistId);
+            $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
             foreach ($tasklists as $key => $tasklist) {
                 if ($tasklist['id'] === $tasklistId) {
                     unset($tasklists[$key]);
