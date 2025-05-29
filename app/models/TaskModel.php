@@ -22,28 +22,21 @@ class TaskModel {
         TaskStatus $taskStatus, 
         DateTimeImmutable $startTime,
         string $description, 
-        ?DateTimeImmutable $endDate = null
+        ?DateTimeImmutable $endDate = null,
+        ?string $currentListId=null
     ): bool {
         $crud = $this->getAll();
 
-        foreach($crud as $task) {
-            if($task['nameTask'] === $nameTask) {
-                return false;
-            }
-        }
+      
 
        return $this->crud->create([
             'nameTask' => $nameTask,
             'taskStatus' => $taskStatus->value,
             'startDate' => $startTime->format('Y-m-d'),
             'description' => $description,
-            'endDate' => $endDate ? $endDate->format('Y-m-d') : null
+            'endDate' => $endDateObj ? $endDateObj->format('Y-m-d') : null, 
+            'tasklist_id' => $currentListId 
         ]);
-        
-       
-
-       
-        
         
     }
 
@@ -79,10 +72,38 @@ class TaskModel {
         
         return $this->crud->delete($id);
     }
-    public function filterStatus(TaskStatus $taskStatus ) { 
+    
+    public function filterStatus(TaskStatus $taskStatus, string $tasklistId): array { 
+        $tasksInList = $this->getTasksByTasklistId($tasklistId);
+        $filteredTasks = [];
+
+        foreach ($tasksInList as $task) {
+            if (($task['taskStatus'] ?? null) === $taskStatus->value) {
+                $filteredTasks[] = $task;
+            }
+        }
         
-        return $tasks= $this->crud->search('taskStatus', $taskStatus->value);
+        return $filteredTasks;
     }
 
+
+    
+
+       public function getTasksByTasklistId(string $tasklistId): array
+    {
+        $allTasks = $this->getAll();
+        $tasksInList = [];
+        
+        foreach ($allTasks as $task) {
+            if (($task['tasklist_id'] ?? null) === $tasklistId) {
+                $tasksInList[] = $task;
+            }
+        }
+        
+        return $tasksInList;
+    }
+
+    
 }
+   
 ?>

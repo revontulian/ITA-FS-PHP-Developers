@@ -24,14 +24,6 @@
         "id": "6834ad9eb8f20"
     },
     {
-        "email": "lacereza7@gmail.com",
-        "password": "$2y$10$chucU4eoXS55aMUrpW5PheDjJXXzLyKi\/uLjxV4oTjgsWRGKFpqDW",
-        "name": "Sandra",
-        "surname": "G",
-        "date_of_birth": "2025-04-29",
-        "id": "6834b3229720f"
-    },
-    {
         "email": "sandrapablo@gmail.com",
         "password": "$2y$10$5UH7oYmfO4K5Os4KStauq.Y\/3JGR90\/OwTTpXU53byI9Vqs1XpCOO",
         "name": "sandra",
@@ -46,5 +38,21 @@
         "surname": "pasquero",
         "date_of_birth": "1996-11-17",
         "id": "6838395b3f078"
+    },
+    {
+        "email": "dime@gmail.como",
+        "password": "$2y$10$2Ck6LodVAgmFiG6IfdrYsu9GvBmzxN\/lIGtw5aGPiHjp\/t8Fd8xbO",
+        "name": "luna",
+        "surname": "12",
+        "date_of_birth": "2015-01-01",
+        "id": "6838ad65da233"
+    },
+    {
+        "email": "lacereza7@gmail.como",
+        "password": "$2y$10$VNqG.QN444SuCPw8Cx55keCjWV0J2Mf1GWimNhjEy\/8Hg.Fi8mAlu",
+        "name": "Sandra",
+        "surname": "G",
+        "date_of_birth": "2025-05-10",
+        "id": "6838adc6b6886"
     }
 ]

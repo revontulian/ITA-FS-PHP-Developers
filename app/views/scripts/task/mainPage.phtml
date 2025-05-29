@@ -41,6 +41,8 @@
     <main class="ml-[22rem] min-h-screen border-4 border-[#BFE3F9] rounded-lg m-6 p-2 bg-white">
         <div class="px-8 py-6">
             <form action="<?php echo $this->baseUrl() ?>/tasks/filterStatus" method="GET" class="mb-4 flex items-center space-x-4">
+                    <input type="hidden" name="listId" value="<?php echo $this->currentListId ?>">
+
                 <label for="taskStatus" class="text-blue-500 hover:underline">Filtrar tareas por estado</label>
                 <select name="taskStatus" id="taskStatus" class="border border-gray-300 rounded p-2">
                     <option value="all" <?php echo ($this->currentStatus ?? '') === 'all' ? 'selected' : ''; ?>>All</option>
