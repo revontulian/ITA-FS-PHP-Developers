@@ -38,5 +38,13 @@
         "surname": "pablo",
         "date_of_birth": "1996-11-17",
         "id": "683598d35189e"
+    },
+    {
+        "email": "alexpasquero@gmail.com",
+        "password": "$2y$10$JjCqu\/mxDPxSKcWeUgJfdelp02FlNEBJGS73PvLMjl2aJWRJvNP2S",
+        "name": "alex",
+        "surname": "pasquero",
+        "date_of_birth": "1996-11-17",
+        "id": "68382635be446"
     }
 ]

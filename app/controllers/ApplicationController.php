@@ -34,10 +34,21 @@ class ApplicationController extends Controller
         return $_SESSION['user'] ?? null;
     }
 
-    protected function requireLogin(string $redirectTo = '/login'): void
+    protected function requireLogin(): void
     {
-        if (!$this->isLoggedIn()) {
-            header('Location: ' . $this->view->baseUrl() . $redirectTo);
+        // Avvia sessione se non già attiva
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // ✅ CONTROLLO ROBUSTO
+        if (!isset($_SESSION['user']) || empty($_SESSION['user']) || !is_array($_SESSION['user'])) {
+            // Pulisci sessione corrotta
+            session_unset();
+            session_destroy();
+            
+            // Redirect al login
+            header('Location: ' . WEB_ROOT . '/login');
             exit;
         }
     }
