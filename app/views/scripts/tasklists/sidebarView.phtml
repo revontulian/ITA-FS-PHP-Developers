@@ -13,19 +13,9 @@
                         <?= htmlspecialchars($tasklist['name']) ?>
                     </a>
                 </span>
-                <form id="edit-form-<?= $tasklist['id'] ?>" action="<?= $this->baseUrl() ?>/tasklist/rename" method="post" class="hidden flex items-center space-x-2">
-                    <input type="hidden" name="id" value="<?= htmlspecialchars($tasklist['id']) ?>">
-                    <input type="text" name="name" value="<?= htmlspecialchars($tasklist['name']) ?>" class="border rounded px-2 py-1 w-32">
-                    <button type="submit" class="text-green-600 hover:text-green-800" title="Save">
-                        ✔
-                    </button>
-                    <button type="button" class="text-gray-500 hover:text-gray-700" onclick="toggleEdit(<?= $tasklist['id'] ?>, false)" title="Cancel">
-                        ✖
-                    </button>
-                </form>
                 <span class="flex space-x-2 ml-2">
                     <!-- Edit icon -->
-                    <a href="<?= $this->baseUrl() ?>/tasklist/edit?id=<?= urlencode($tasklist['id']) ?>" title="Edit">
+                    <a href="<?= $this->baseUrl() ?>/tasklists/edit?id=<?= urlencode($tasklist['id']) ?>" title="Edit">
                         <svg class="w-4 h-4 text-blue-500 hover:text-blue-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13z"></path>
                             <path d="M16 7l-1.5-1.5"></path>

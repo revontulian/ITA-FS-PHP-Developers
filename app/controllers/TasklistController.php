@@ -44,9 +44,9 @@ class TasklistController extends ApplicationController
         //Continuar aquí
         if ($tasklistId && $tasklists) {
             $this->jsonManager->update($tasklistId, $_POST);
-            header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
+            header('Location: ' . $this->view->baseUrl()  . '/task/mainPage');
         } else {
-            echo "Tasklist not found.";
+            throw new Exception("Tasklist not found.");
         }
     }
 
