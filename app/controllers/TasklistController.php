@@ -12,7 +12,6 @@ class TasklistController extends ApplicationController
     {
         $this->tasklistModel = new Tasklist();
         $this->jsonManager = new JsonCRUD('tasklists.json');
-
     }
 
     public function createAction(): void
@@ -20,7 +19,7 @@ class TasklistController extends ApplicationController
         $userId = $this->getCurrentUser()['id'] ?? null;
         $tasklistName = $_POST['tasklist_name'] ?? null;
 
-        if (!$this->tasklistModel->verifyTaskListDoesNotExist($tasklistName)) {
+        if (!$this->tasklistModel->verifyTaskListDoesNotExist($tasklistName, $userId)) {
             throw new Exception("Tasklist with this name already exists.");
             return;
         } else {
@@ -31,8 +30,14 @@ class TasklistController extends ApplicationController
             ]);
             $this->view->tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
             header('Location: ' . $this->view->baseUrl());
-
         }
+    }
+
+    public function selectAction(): void
+    {
+        $_SESSION['tasklistId'] = $_GET['id'] ?? null;
+        throw new Exception("Tasklist selected successfully.". " ID: " . $_SESSION['tasklistId']);
+        header('Location: ' . $this->view->baseUrl());
     }
 
     public function editAction(): void

@@ -27,5 +27,6 @@ $routes = array(
     '/tasks/filterStatus' => 'task#filterStatus',
     
     '/tasklists/create' => 'tasklist#create',
+    '/tasklist/select' => 'tasklist#select',
 
 );
