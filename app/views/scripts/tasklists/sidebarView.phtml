@@ -8,7 +8,7 @@
                 <span>
                     <a
                         href="<?= $this->baseUrl() ?>/tasklist/select?id=<?= urlencode($tasklist['id']) ?>"
-                        class="hover:font-bold"
+                        class="hover:font-bold <?= (isset($_SESSION['tasklistId']) && $_SESSION['tasklistId'] == $tasklist['id']) ? 'font-bold' : '' ?>"
                         title="View tasklist">
                         <?= htmlspecialchars($tasklist['name']) ?>
                     </a>
