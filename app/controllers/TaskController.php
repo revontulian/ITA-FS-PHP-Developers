@@ -17,6 +17,7 @@ class TaskController extends ApplicationController
         $tasks = $this->taskModel->getAll();
         $this->view->tasks = $tasks;
 
+        //Adding this part so we can handle mainPage view even though it pulls info from the Tasklist model
         $tasklistModel = new Tasklist();
         $currentUser = $this->getCurrentUser();
         $userId = $currentUser['id'] ?? null;
