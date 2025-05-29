@@ -33,19 +33,14 @@ class Tasklist extends Model
         return $userTasklists;
     }
 
-    public function verifyTaskListDoesNotExist(string $name): bool
+    public function verifyTaskListDoesNotExist(string $name, string $userId): bool
     {
-        $tasklists = $this->getAll();
+        $tasklists = $this->getTasklistsByUserId($userId);
         foreach ($tasklists as $tasklist) {
             if ($tasklist['name'] === $name) {
                 return false;
             }
         }
         return true;
-    }
-
-    public function getTasklistId()
-    {
-        
     }
 }
