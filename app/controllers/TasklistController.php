@@ -37,8 +37,11 @@ class TasklistController extends ApplicationController
 
     public function editAction(): void
     {
-        $tasklistId = $_GET['id'] ?? null;
-        $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
+        $tasklistId = $this->_getParam('id');
+        $userId = $this->getCurrentUser()['id'] ?? null;
+        $tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
+        
+        //Continuar aquí
         if ($tasklistId && $tasklists) {
             $this->jsonManager->update($tasklistId, $_POST);
             header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
