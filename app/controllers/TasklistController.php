@@ -5,36 +5,42 @@ require_once ROOT_PATH . '/lib/JsonCRUD.php';
 
 class TasklistController extends ApplicationController
 {
-    public function createAction(string $tasklistName, string $userId): void
+    private Tasklist $tasklistModel;
+    private JsonCRUD $jsonManager;
+
+    public function __construct()
+    {
+        $this->tasklistModel = new Tasklist();
+        $this->jsonManager = new JsonCRUD('tasklists.json');
+
+    }
+
+    public function createAction(): void
     {
         $userId = $this->getCurrentUser()['id'] ?? null;
-        $tasklistModel = new Tasklist();
-        $jsonManager = new JsonCRUD('tasklist.json');
-        $tasklists = $jsonManager->read();
-        $tasklistName = $_POST['name'] ?? null;
-        if ($tasklistName) {
-            // Check if the tasklist name already exists
-            if (!$tasklistModel->verifyTaskListDoesNotExist($tasklistName)) {
-                echo "Tasklist with this name already exists.";
-                return;
-            } else {
-                // If it doesn't exist, proceed to create a new tasklist
-                $tasklistModel->createTasklist($tasklistName, $userId);
-                header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
-            }
+        $tasklistName = $_POST['tasklist_name'] ?? null;
+
+        if (!$this->tasklistModel->verifyTaskListDoesNotExist($tasklistName)) {
+            throw new Exception("Tasklist with this name already exists.");
+            return;
         } else {
-            echo "Tasklist name is required.";
+            // If it doesn't exist, proceed to create a new tasklist
+            $this->jsonManager->create([
+                'name' => $tasklistName,
+                'user_id' => $userId,
+            ]);
+            $this->view->tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
+            header('Location: ' . $this->view->baseUrl());
+
         }
     }
 
     public function editAction(): void
     {
         $tasklistId = $_GET['id'] ?? null;
-        $tasklistModel = new Tasklist();
-        $jsonManager = new JsonCRUD('tasklist.json');
-        $tasklists = $tasklistModel->getTasklistsById($tasklistId);
+        $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
         if ($tasklistId && $tasklists) {
-            $jsonManager->update($tasklistId, $_POST);
+            $this->jsonManager->update($tasklistId, $_POST);
             header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
         } else {
             echo "Tasklist not found.";
@@ -45,13 +51,11 @@ class TasklistController extends ApplicationController
     {
         $tasklistId = $_GET['id'] ?? null;
         if ($tasklistId) {
-            $tasklistModel = new Tasklist();
-            $jsonManager = new JsonCRUD('tasklist.json');
-            $tasklists = $tasklistModel->getTasklistsById($tasklistId);
+            $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
             foreach ($tasklists as $key => $tasklist) {
                 if ($tasklist['id'] === $tasklistId) {
                     unset($tasklists[$key]);
-                    $jsonManager->delete($tasklistId);
+                    $this->jsonManager->delete($tasklistId);
                     break;
                 }
             }

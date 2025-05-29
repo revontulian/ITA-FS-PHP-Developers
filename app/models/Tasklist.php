@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 class Tasklist extends Model
 {
-    private string $file;
     private JsonCRUD $jsonCRUD;
 
     public function __construct()
@@ -22,15 +21,16 @@ class Tasklist extends Model
         return $this->jsonCRUD->read();
     }
 
-    public function getTasklistsById(string $userId): ?array
+    public function getTasklistsByUserId(string $userId): array
     {
         $tasklists = $this->getAll();
+        $userTasklists = [];
         foreach ($tasklists as $tasklist) {
-            if ($tasklist['id'] === $userId) {
-                return $tasklist;
+            if ($tasklist['user_id'] === $userId) {
+                $userTasklists[] = $tasklist;
             }
         }
-        return null;
+        return $userTasklists;
     }
 
     public function verifyTaskListDoesNotExist(string $name): bool
@@ -43,19 +43,9 @@ class Tasklist extends Model
         }
         return true;
     }
-    
-    public function createTasklist(string $name, string $userId): array
+
+    public function getTasklistId()
     {
-        $tasklists = $this->getAll();
-        $newTasklist = [
-            'id' => uniqid(),
-            'userId' => $userId, // Assuming you have a way to get the current user's ID
-            'name' => $name,
-            'tasks' => []
-        ];
-        $tasklists[] = $newTasklist;
-        $this->jsonCRUD->update($userId, $tasklists);
-        //file_put_contents($this->file, json_encode($tasklists, JSON_PRETTY_PRINT));
-        return $newTasklist;
+        
     }
 }

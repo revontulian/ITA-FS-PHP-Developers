@@ -1,10 +1,10 @@
 <?php
 
-class TaskController extends ApplicationController 
+class TaskController extends ApplicationController
 {
-    private TaskModel $taskModel; 
+    private TaskModel $taskModel;
 
-    public function init(): void 
+    public function init(): void
     {
         parent::init();
         $this->taskModel = new TaskModel();
@@ -25,8 +25,23 @@ class TaskController extends ApplicationController
     $this->view->tasks = $tasks;
     $this->view->currentStatus = $taskStatus;
         
+        $refresh = false;
+        $this->requireLogin();
+        $tasks = $this->taskModel->getAll();
+        $this->view->tasks = $tasks;
 
+        //Adding this part so we can handle mainPage view even though it pulls info from the Tasklist model
+        $tasklistModel = new Tasklist();
+        $currentUser = $this->getCurrentUser();
+        $userId = $currentUser['id'] ?? null;
 
+        if ($userId) {
+            $tasklists = $tasklistModel->getTasklistsByUserId($userId);
+        } else {
+            $tasklists = [];
+        }
+
+        $this->view->tasklists = $tasklists;
     }
 
     public function createAction(): void
@@ -39,7 +54,7 @@ class TaskController extends ApplicationController
             $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
             $description = $_POST['description'] ?? '';
             $startDate = $_POST['startDate'] ?? '';
-            $endDate = $_POST['endDate'] ?? null; 
+            $endDate = $_POST['endDate'] ?? '';
 
             $taskStatus = TaskStatus::from($taskStatusStr);
             $startDateObj = new DateTimeImmutable($startDate);
@@ -62,15 +77,16 @@ class TaskController extends ApplicationController
                 $_SESSION['success'] = "Tarea creada exitosamente";
                 //header('Location: ' . WEB_ROOT . '/tasks/mainPage');
                 // Redirige a la vista de tareas
-                $this->redirect('/tasks/mainPage');  
+                exit();
+                $this->redirect('/tasks/mainPage');
             } else {
                 $this->view->error = "Task already exists.";
             }
         }
     }
 
-        
-    
+
+
     public function deleteAction(): void
     {
         $this->requireLogin();
@@ -78,17 +94,17 @@ class TaskController extends ApplicationController
 
         $success = $this->taskModel->deleteTaskId($id);
         if ($success) {
-            $this->redirect('/tasks/mainPage');  
+            $this->redirect('/tasks/mainPage');
         } else {
             $this->view->error = "Task could not be deleted.";
         }
     }
-    
+
     public function updateAction(): void
     {
         $this->requireLogin();
         $id = $this->_getParam('id');
-        
+
         if (!$id) {
             $this->view->error = "Task ID not provided.";
             return;
@@ -129,22 +145,37 @@ class TaskController extends ApplicationController
             $success = $this->taskModel->updateTaskid($id, $newTask);
 
             if ($success) {
-                $this->redirect('/tasks/mainPage');  
+                $this->redirect('/tasks/mainPage');
             } else {
                 $this->view->error = "Error updating task.";
             }
         }
     }
 
-public function filterStatusAction(): void 
-{
-    $this->requireLogin();
-    //hacade el paramenter
-    $taskStatus = $this->_getParam('taskStatus', 'all');
-    //lo guarda en session para pasarcelo en mianAction()
-    $_SESSION['taskStatus'] = $taskStatus;
-    
-    // Redirigir a mainPage usando el método correcto
-    $this->redirect('/tasks/mainPage');
-}
+    public function filterStatusAction(): void
+    {
+        $this->requireLogin();
+
+        // Get filter status from GET parameters
+        $taskStatus = $_GET['taskStatus'] ?? 'all';
+
+        // Get filtered tasks
+        if ($taskStatus === 'all') {
+            $tasks = $this->taskModel->getAll();
+        } else {
+            try {
+                $taskStatusEnum = TaskStatus::from($taskStatus);
+                $tasks = $this->taskModel->filterStatus($taskStatusEnum);
+            } catch (ValueError $e) {
+                $tasks = $this->taskModel->getAll();
+            }
+        }
+
+        // Set view variables
+        $this->view->tasks = $tasks;
+        $this->view->currentStatus = $taskStatus;
+
+        // En lugar de hacer redirect, renderizamos la vista mainPage directamente
+        $this->view->render('task/mainPage.phtml');
+    }
 }
