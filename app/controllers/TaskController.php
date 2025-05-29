@@ -171,11 +171,24 @@ class TaskController extends ApplicationController
             }
         }
 
+        // ✅ CARICA LE TASKLIST (come nel mainPageAction)
+        $tasklistModel = new Tasklist();
+        $currentUser = $this->getCurrentUser();
+        $userId = $currentUser['id'] ?? null;
+
+        if ($userId) {
+            $tasklists = $tasklistModel->getTasklistsByUserId($userId);
+        } else {
+            $tasklists = [];
+        }
+
         // Set view variables
         $this->view->tasks = $tasks;
+        $this->view->tasklists = $tasklists;
         $this->view->currentStatus = $taskStatus;
 
-        // En lugar de hacer redirect, renderizamos la vista mainPage directamente
+        // ✅ SOLUZIONE CORRETTA: Disabilita solo il layout, non la vista
+        $this->view->disableLayout();
         $this->view->render('task/mainPage.phtml');
     }
 }
