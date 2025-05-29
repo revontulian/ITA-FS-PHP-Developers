@@ -36,7 +36,6 @@ class TasklistController extends ApplicationController
     public function selectAction(): void
     {
         $_SESSION['tasklistId'] = $_GET['id'] ?? null;
-        throw new Exception("Tasklist selected successfully.". " ID: " . $_SESSION['tasklistId']);
         header('Location: ' . $this->view->baseUrl());
     }
 
