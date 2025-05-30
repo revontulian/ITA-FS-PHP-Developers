@@ -80,12 +80,30 @@ class UserController extends ApplicationController
 
     public function logoutAction()
     {
-        $this->requireLogin();
-        $userName = $this->getCurrentUser()['name'] ?? 'User';
+        // ✅ PULIZIA COMPLETA DELLA SESSIONE
+        session_start(); // Assicurati che la sessione sia attiva
+        $_SESSION = array(); // Svuota l'array di sessione
+        
+        // ✅ DISTRUGGI IL COOKIE DI SESSIONE
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        
+        // ✅ DISTRUGGI LA SESSIONE
         session_destroy();
         
-        session_start();
-        $this->redirectWithSuccess('/login', 'Goodbye, ' . $userName . '! You have been successfully logged out.');
+        // ✅ HEADER ANTI-CACHE
+        header("Cache-Control: no-cache, no-store, must-revalidate");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        
+        // ✅ REDIRECT
+        header('Location: ' . WEB_ROOT . '/login');
+        exit;
     }
 
     public function editAction()
