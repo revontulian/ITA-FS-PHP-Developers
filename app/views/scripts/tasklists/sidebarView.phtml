@@ -7,9 +7,9 @@
             <li class="flex items-center justify-between pr-2">
                 <span>
                     <a
-                        href="<?= $this->baseUrl() ?>/tasklist/view?id=<?= urlencode($tasklist['id']) ?>"
-                        class="hover:font-bold"
-                        title="View tasklist">
+                        href="<?= $this->baseUrl() ?>/tasklists/select?id=<?= urlencode($tasklist['id']) ?>"
+                        class="hover:font-bold <?= (isset($_SESSION['tasklistId']) && $_SESSION['tasklistId'] == $tasklist['id']) ? 'font-bold' : '' ?>"
+                        title="Select tasklist">
                         <?= htmlspecialchars($tasklist['name']) ?>
                     </a>
                 </span>
@@ -22,7 +22,7 @@
                         </svg>
                     </a>
                     <!-- Delete icon -->
-                    <a href="<?= $this->baseUrl() ?>/tasklist/delete?id=<?= urlencode($tasklist['id']) ?>" title="Delete" onclick="return confirm('Are you sure you want to delete this tasklist?')">
+                    <a href="<?= $this->baseUrl() ?>/tasklists/delete?id=<?= urlencode($tasklist['id']) ?>" title="Delete" onclick="return confirm('Are you sure you want to delete this tasklist?')">
                         <svg class="w-4 h-4 text-red-500 hover:text-red-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
