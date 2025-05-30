@@ -34,6 +34,13 @@ class ApplicationController extends Controller
         return $_SESSION['user'] ?? null;
     }
 
+        protected function getCurrentList(): ?string {
+   
+        return $_SESSION['tasklistId'] ?? null; 
+    }
+
+
+
     protected function requireLogin(string $redirectTo = '/login'): void
     {
         if (!$this->isLoggedIn()) {
