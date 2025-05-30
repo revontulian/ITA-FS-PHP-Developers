@@ -11,43 +11,55 @@ class TaskController extends ApplicationController
     }
 
     public function mainPageAction(): void
-    {
-        //recibimos el filter  y no hay all 
-    $taskStatus = $_SESSION['taskStatus'] ?? 'all';
-    
-    if ($taskStatus === 'all') {
-        $tasks = $this->taskModel->getAll();
+{
+    $this->requireLogin();
+    $tasklistModel = new Tasklist();
+    $currentUser = $this->getCurrentUser();
+    $userId = $currentUser['id'] ?? null;
+
+    if ($userId) {
+        $tasklists = $tasklistModel->getTasklistsByUserId($userId);
     } else {
-        //aplica al filtro
-            $taskStatusEnum = TaskStatus::from($taskStatus);
-            $tasks = $this->taskModel->filterStatus($taskStatusEnum);
+        $tasklists = [];
     }
-    $this->view->tasks = $tasks;
-    $this->view->currentStatus = $taskStatus;
-        
-        $refresh = false;
-        $this->requireLogin();
-        $tasks = $this->taskModel->getAll();
-        $this->view->tasks = $tasks;
 
-        //Adding this part so we can handle mainPage view even though it pulls info from the Tasklist model
-        $tasklistModel = new Tasklist();
-        $currentUser = $this->getCurrentUser();
-        $userId = $currentUser['id'] ?? null;
+    $this->view->tasklists = $tasklists;
 
-        if ($userId) {
-            $tasklists = $tasklistModel->getTasklistsByUserId($userId);
+    $currentListId = $this->getCurrentList();
+    $this->view->currentListId = $currentListId;
+
+    // Obtener el filtro de estado si existe
+    $statusFilter = $_GET['taskStatus'] ?? 'all';
+    $this->view->currentStatus = $statusFilter;
+
+   $statusFilter = $_SESSION['taskStatus'] ?? 'all';
+    $this->view->currentStatus = $statusFilter;
+
+    if ($currentListId) {
+        if ($statusFilter === 'all') {
+            // Mostrar todas las tareas
+            $this->view->tasks = $this->taskModel->getTasksByTasklistId($currentListId);
         } else {
-            $tasklists = [];
+           
+                $taskStatus = TaskStatus::from($statusFilter);
+                $this->view->tasks = $this->taskModel->filterStatus($taskStatus, $currentListId);
+           
         }
-
-        $this->view->tasklists = $tasklists;
+    } else {
+        $this->view->tasks = [];
+        $this->view->error = "No hay lista seleccionada";
     }
+}
+
+    
+       
+
 
     public function createAction(): void
     {
         $this->requireLogin();
-        $this->view->tasks = $this->taskModel->getAll();
+        $currentListId = $this->getCurrentList();
+        $this->view->listid = $currentListId;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nameTask = $_POST['nameTask'] ?? '';
@@ -70,7 +82,8 @@ class TaskController extends ApplicationController
                 $taskStatus,
                 $startDateObj,
                 $description,
-                $endDateObj
+                $endDateObj,
+                $currentListId
             );
 
             if ($success) {
@@ -123,24 +136,24 @@ class TaskController extends ApplicationController
             $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
             $description = $_POST['description'] ?? '';
             $startDate = $_POST['startDate'] ?? '';
-            $endDate = $_POST['endDate'] ?? '';
+            $endDate = $_POST['endDate'] ?? null;
 
-            $taskStatus = TaskStatus::from($taskStatusStr);
-            $startDateObj = new DateTimeImmutable($startDate);
-            $endDateObj = $endDate ? new DateTimeImmutable($endDate) : $startDateObj;
+        $taskStatus = TaskStatus::from($taskStatusStr);
+        $startDateObj = new DateTimeImmutable($startDate);
+        $endDateObj = $endDate ? new DateTimeImmutable($endDate) : null;
 
-            if (empty($nameTask) || empty($startDate)) {
-                $this->view->error = "All fields are required.";
-                return;
-            }
+        if (empty($nameTask) || empty($startDate)) {
+            $this->view->error = "All fields are required.";
+            return;
+        }
 
-            $newTask = [
-                'nameTask' => $nameTask,
-                'taskStatus' => $taskStatus->value,
-                'startDate' => $startDateObj->format('Y-m-d'),
-                'description' => $description,
-                'endDate' => $endDateObj->format('Y-m-d'),
-            ];
+        $newTask = [
+            'nameTask' => $nameTask,
+            'taskStatus' => $taskStatus->value,
+            'startDate' => $startDateObj->format('Y-m-d'),
+            'description' => $description,
+            'endDate' => $endDateObj ? $endDateObj->format('Y-m-d') : null,
+        ];
 
             $success = $this->taskModel->updateTaskid($id, $newTask);
 
@@ -151,44 +164,31 @@ class TaskController extends ApplicationController
             }
         }
     }
-
-    public function filterStatusAction(): void
+   public function filterStatusAction(): void
     {
-        $this->requireLogin();
-
-        // Get filter status from GET parameters
-        $taskStatus = $_GET['taskStatus'] ?? 'all';
-
-        // Get filtered tasks
-        if ($taskStatus === 'all') {
-            $tasks = $this->taskModel->getAll();
-        } else {
-            try {
-                $taskStatusEnum = TaskStatus::from($taskStatus);
-                $tasks = $this->taskModel->filterStatus($taskStatusEnum);
-            } catch (ValueError $e) {
-                $tasks = $this->taskModel->getAll();
-            }
+         $this->requireLogin();
+    
+        // Obtener y guardar el filtro en sesión
+        $statusFilter = $_GET['taskStatus'] ?? 'all';
+        $_SESSION['taskStatus'] = $statusFilter;
+        
+        $currentListId = $this->getCurrentList();
+        
+        // Validar que existe una lista seleccionada
+        if (!$currentListId) {
+            $this->redirect('/tasks/mainPage?error=no_list');
+            return;
         }
-
-        // ✅ CARICA LE TASKLIST (come nel mainPageAction)
-        $tasklistModel = new Tasklist();
-        $currentUser = $this->getCurrentUser();
-        $userId = $currentUser['id'] ?? null;
-
-        if ($userId) {
-            $tasklists = $tasklistModel->getTasklistsByUserId($userId);
-        } else {
-            $tasklists = [];
-        }
-
-        // Set view variables
-        $this->view->tasks = $tasks;
-        $this->view->tasklists = $tasklists;
-        $this->view->currentStatus = $taskStatus;
-
-        // ✅ SOLUZIONE CORRETTA: Disabilita solo il layout, non la vista
-        $this->view->disableLayout();
-        $this->view->render('task/mainPage.phtml');
-    }
+        
+        // Redirigir a mainPage
+        $this->redirect('/tasks/mainPage');
 }
+
+    }
+
+
+    
+
+    
+    
+
