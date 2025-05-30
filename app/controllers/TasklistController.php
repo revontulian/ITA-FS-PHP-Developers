@@ -41,29 +41,33 @@ class TasklistController extends ApplicationController
 
     public function editAction(): void
     {
-        $tasklistId = $_GET['id'] ?? null;
-        $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
+        throw new Exception("This action is not implemented in TasklistController. Use TasklistEditorController instead.");
+        $tasklistId = $this->_getParam('id');
+        $userId = $this->getCurrentUser()['id'] ?? null;
+        $tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
+
+        //Continuar aquí
         if ($tasklistId && $tasklists) {
             $this->jsonManager->update($tasklistId, $_POST);
-            header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
+            header('Location: ' . $this->view->baseUrl()  . '/task/mainPage');
         } else {
-            echo "Tasklist not found.";
+            throw new Exception("Tasklist not found.");
         }
     }
 
     public function deleteAction(): void
     {
         $tasklistId = $_GET['id'] ?? null;
-        if ($tasklistId) {
-            $tasklists = $this->tasklistModel->getTasklistsByUserId($tasklistId);
-            foreach ($tasklists as $key => $tasklist) {
-                if ($tasklist['id'] === $tasklistId) {
-                    unset($tasklists[$key]);
-                    $this->jsonManager->delete($tasklistId);
-                    break;
-                }
+        $userId = $this->getCurrentUser()['id'] ?? null;
+        $userTasklists = $this->tasklistModel->getTasklistsByUserId($userId);
+
+        foreach ($userTasklists as $key => $tasklist) {
+            if ($tasklist['id'] === $tasklistId) {
+                unset($tasklists[$key]);
+                $this->jsonManager->delete($tasklistId);
+                break;
             }
         }
-        header('Location: ' . $this->view->baseUrl()  . '/index.php?controller=Tasklist&action=index');
+        header('Location: ' . $this->view->baseUrl());
     }
 }
