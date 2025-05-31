@@ -25,7 +25,6 @@ class TaskModel {
         ?DateTimeImmutable $endDate = null,
         ?string $currentListId=null
     ): bool {
-        $crud = $this->getAll();
 
       
 
@@ -34,7 +33,7 @@ class TaskModel {
             'taskStatus' => $taskStatus->value,
             'startDate' => $startTime->format('Y-m-d'),
             'description' => $description,
-            'endDate' => $endDateObj ? $endDateObj->format('Y-m-d') : null, 
+            'endDate' => $endDate ? $endDate->format('Y-m-d') : null, 
             'tasklist_id' => $currentListId 
         ]);
         
@@ -45,6 +44,7 @@ class TaskModel {
         foreach ($crud as $task) {
             return $task; 
             }
+            return null;
     }
 
     public function getTaskbyId(string $id):?array {
@@ -94,7 +94,22 @@ class TaskModel {
         return $tasksInList;
     }
 
+    public function deleteTasksForList(string $tasklistId){
+        $allTasksForlist = $this->getTasksByTasklistId($tasklistId);
+       
+        foreach($allTasksForlist as $task){
+             $this->crud->delete($task['id']);
+        }
+        
+        
+    }
     
-}
+
+
+    }
+
+ 
+        
+
    
 ?>

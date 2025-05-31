@@ -35,6 +35,7 @@ class TaskController extends ApplicationController
     $this->view->currentStatus = $statusFilter;
 
     if ($currentListId) {
+            
         if ($statusFilter === 'all') {
             $this->view->tasks = $this->taskModel->getTasksByTasklistId($currentListId);
         } else {
@@ -174,10 +175,10 @@ class TaskController extends ApplicationController
         }
         
         $this->redirect('/tasks/mainPage');
-}
-
     }
 
+
+}
 
     
 

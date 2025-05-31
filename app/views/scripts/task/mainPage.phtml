@@ -62,28 +62,37 @@
                                 <p class="text-sm text-gray-500">
                                    Status: <?= htmlspecialchars($task['taskStatus'] ?? 'No status') ?> </p>
                                 <h4>
-                                    <?= htmlspecialchars($task['nameTask'] ?? 'No name') . " "
+                                    Name: <?= htmlspecialchars($task['nameTask'] ?? 'No name') . " "
                                         . htmlspecialchars($task['description'] ?? 'No description')  ?>
                                 </h4>
+                                <p> Description:<?=htmlspecialchars($task['description'] ?? 'Sin descripción')  ?>
 
                             </div>
                             <div class="flex space-x-6">
-                                <div class="w-20 h-16 border-4 border-[#BFE3F9] flex items-center justify-center rounded">
-                                    <h2>
-                                        <?= htmlspecialchars($task['startDate'] ?? '') ?>
-                                    </h2>
+                               <div class="flex flex-col items-center">
+                                    <p class="text-sm font-medium text-black mb-2">
+                                        dataStart:
+                                    </p>
+                                    <div class="w-28 h-20 border-4 border-[#BFE3F9] flex items-center justify-center rounded bg-white">
+                                        <p class="text-sm text-center"><?= htmlspecialchars($task['startDate'] ?? '') ?></p>
+                                    </div>
                                 </div>
-                                <div class="w-20 h-16 border-4 border-[#BFE3F9] flex items-center justify-center rounded">
-                                    <h2>
-                                        <?= htmlspecialchars($task['endDate'] ?? '') ?>
-                                    </h2>
+                                <div class="flex flex-col items-center">
+                                    <p class="text-sm font-medium text-black mb-2">
+                                        EndDate:
+                                    </p>
+                                    <div class="w-28 h-20 border-4 border-[#BFE3F9] flex items-center justify-center rounded bg-white">
+                                        <p class="text-sm text-center"><?= htmlspecialchars($task['endDate'] ?? '') ?></p>
+                                    </div>
                                 </div>
+                                <div class ='flex flex-col space-y-2 justify-center'>
                                 <a href="<?php echo $this->baseUrl() ?>/tasks/delete/<?php echo $task['id'] ?>" class="text-red-500 hover:underline">
                                    Delete
                                 </a>
                                 <a href="<?php echo $this->baseUrl() ?>/tasks/update/<?php echo $task['id'] ?>" class="text-blue-500 hover:underline">
                                     Edit
                                 </a>
+                    </div>
                             </div>
                         </div>
                     <?php endforeach; ?>

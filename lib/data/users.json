@@ -1,50 +1,10 @@
 [
     {
-        "email": "axelpasquero@gmail.com",
-        "password": "$2y$10$3ULMvj74i\/YYV8kmvrZRJ.O1J0e3WMOAa5jC3PN4.MFn9z4ZezgX2",
-        "name": "alex",
-        "surname": "pasquero",
-        "date_of_birth": "1996-11-17",
-        "id": "6833247003889"
-    },
-    {
-        "email": "a@g.it",
-        "password": "$2y$10$b6P0UZrus9qWFpYs4Bz07On5bQfDtZHMZX18M5fpIhQvv9C\/muxMG",
-        "name": "ax",
-        "surname": "re",
-        "date_of_birth": "1111-11-11",
-        "id": "683332f686178"
-    },
-    {
-        "email": "pablo.canteria@gmail.com",
-        "password": "$2y$10$1xOoE36vL618B4n5wnjInuOrIxxahuzou\/3WlOcfzMJ2zRX8Ap2Nm",
-        "name": "Pablo",
-        "surname": "Canteria Pastor",
-        "date_of_birth": "1988-03-26",
-        "id": "6834ad9eb8f20"
-    },
-    {
-        "email": "lacereza7@gmail.com",
-        "password": "$2y$10$chucU4eoXS55aMUrpW5PheDjJXXzLyKi\/uLjxV4oTjgsWRGKFpqDW",
+        "email": "dime@gmail.como",
+        "password": "$2y$10$xfeu\/BEyJvkIIcWv9muN3O\/vmc8DbvgkeClJd1WCOG6.o7JvJ5Mfq",
         "name": "Sandra",
         "surname": "G",
-        "date_of_birth": "2025-04-29",
-        "id": "6834b3229720f"
-    },
-    {
-        "email": "sandrapablo@gmail.com",
-        "password": "$2y$10$5UH7oYmfO4K5Os4KStauq.Y\/3JGR90\/OwTTpXU53byI9Vqs1XpCOO",
-        "name": "sandra",
-        "surname": "pablo",
-        "date_of_birth": "1996-11-17",
-        "id": "683598d35189e"
-    },
-    {
-        "email": "alexpasquero@gmail.com",
-        "password": "$2y$10$ZmzTdWWI1rhukthTJE\/RBuxNHOY8Z8LM0tWNiEJhiIIP8Lslv3woS",
-        "name": "alex",
-        "surname": "pasquero",
-        "date_of_birth": "1996-11-17",
-        "id": "6838395b3f078"
+        "date_of_birth": "2025-01-01",
+        "id": "683acb3cf398e"
     }
 ]
