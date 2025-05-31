@@ -50,16 +50,7 @@ class TaskModel {
     public function getTaskbyId(string $id):?array {
       return $this->crud->read($id);
     }
-
-       
-    /**
-     * Update user data.
-     * @param string $id
-     * @param array $newData (nameTask, taskStatus, startDate, description, endDate )
-     * @return bool
-     */
-  
-
+    
     public function updateTaskid(string $id,array $newData):bool{
         $task =$this->crud->update($id, $newData);
         if ($task) {

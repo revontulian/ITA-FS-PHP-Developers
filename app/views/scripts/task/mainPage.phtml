@@ -1,12 +1,11 @@
 <section class="bg-[#BFE3F9] min-h-screen w-full">
-    <script src="https://cdn.tailwindcss.com"></script>
 
-
+    <!-- SIDE BAR-->
     <aside class="fixed top-0 left-0 h-screen w-80 bg-gradient-to-b from-[#BFE3F9] via-[#9ACCE6] to-[#6097BA]">
         <h1 class="font-sans text-2xl font-semibold text-black text-center mt-10 border-b-4 border-black pb-2">
-            List of Tasks
+            Lists
         </h1>
-
+        
         <?php
         $tasklists = $this->tasklists ?? [];
         $baseUrl = $this->baseUrl();
@@ -38,19 +37,20 @@
         </div>
     </aside>
 
+     <!-- TASK PAGE -->
     <main class="ml-[22rem] min-h-screen border-4 border-[#BFE3F9] rounded-lg m-6 p-2 bg-white">
         <div class="px-8 py-6">
             <form action="<?php echo $this->baseUrl() ?>/tasks/filterStatus" method="GET" class="mb-4 flex items-center space-x-4">
                     <input type="hidden" name="listId" value="<?php echo $this->currentListId ?>">
 
-                <label for="taskStatus" class="text-blue-500 hover:underline">Filtrar tareas por estado</label>
+                <label for="taskStatus" class="text-blue-500 hover:underline">Filter tasks by status</label>
                 <select name="taskStatus" id="taskStatus" class="border border-gray-300 rounded p-2">
                     <option value="all" <?php echo ($this->currentStatus ?? '') === 'all' ? 'selected' : ''; ?>>All</option>
-                    <option value="pending" <?php echo ($this->currentStatus ?? '') === 'pending' ? 'selected' : ''; ?>>PENDIENTE</option>
-                    <option value="in_progress" <?php echo ($this->currentStatus ?? '') === 'in_progress' ? 'selected' : ''; ?>>EN PROGRESO</option>
-                    <option value="completed" <?php echo ($this->currentStatus ?? '') === 'completed' ? 'selected' : ''; ?>>COMPLETADA</option>
+                    <option value="pending" <?php echo ($this->currentStatus ?? '') === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                    <option value="in_progress" <?php echo ($this->currentStatus ?? '') === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>
+                    <option value="completed" <?php echo ($this->currentStatus ?? '') === 'completed' ? 'selected' : ''; ?>>Completed</option>
                 </select>
-                <input type="submit" value="Filtrar" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
+                <input type="submit" value="Filter" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
             </form>
             <?php if (is_array($this->tasks) && count($this->tasks) > 0): ?>
 
@@ -60,10 +60,10 @@
                         <div class="flex items-center justify-between border-b border-black pb-2 m-2">
                             <div class="flex-grow">
                                 <p class="text-sm text-gray-500">
-                                    Estado: <?= htmlspecialchars($task['taskStatus'] ?? 'Sin estado') ?> </p>
+                                   Status: <?= htmlspecialchars($task['taskStatus'] ?? 'No status') ?> </p>
                                 <h4>
-                                    <?= htmlspecialchars($task['nameTask'] ?? 'Sin nombre') . " "
-                                        . htmlspecialchars($task['description'] ?? 'Sin descripción')  ?>
+                                    <?= htmlspecialchars($task['nameTask'] ?? 'No name') . " "
+                                        . htmlspecialchars($task['description'] ?? 'No description')  ?>
                                 </h4>
 
                             </div>
@@ -79,10 +79,10 @@
                                     </h2>
                                 </div>
                                 <a href="<?php echo $this->baseUrl() ?>/tasks/delete/<?php echo $task['id'] ?>" class="text-red-500 hover:underline">
-                                    Eliminar
+                                   Delete
                                 </a>
                                 <a href="<?php echo $this->baseUrl() ?>/tasks/update/<?php echo $task['id'] ?>" class="text-blue-500 hover:underline">
-                                    Editar
+                                    Edit
                                 </a>
                             </div>
                         </div>
@@ -101,11 +101,11 @@
                     <button
                         class="mt-4 w-40 h-12 border-4 border-[#BFE3F9] flex items-center justify-center rounded bg-white hover:bg-[#BFE3F9] transition"
                         onclick="Refrescar()">
-                        Refrescar Página
+                        Refresh
                     </button>
                 </div>
             <?php else: ?>
-                <p class="text-center text-gray-500 py-10">No hay tareas registradas.</p>
+                <p class="text-center text-gray-500 py-10">There are no tasks registered.</p>
                 <details id="creaTask" class="flex items-center justify-between border-b border-black pb-2 m-2">
                     <summary class="cursor-pointer text-blue-500 hover:underline">+</summary>
                     <div class="p-6 bg-gray-100 rounded">
@@ -119,7 +119,7 @@
                 </details>
             <?php endif; ?>
         </div>
-    </main> <!-- Cambiar </div> por </main> -->
+    </main>
 </section>
 <script>
     function Refrescar() {
@@ -129,9 +129,7 @@
     function RefrescarIframe() {
         let detailsElement = document.getElementById('creaTask');
 
-        // Primero verifica si está abierto
         if (detailsElement.hasAttribute('open')) {
-            // Cierra el elemento details y recarga
             detailsElement.removeAttribute('open');
             location.reload();
         }

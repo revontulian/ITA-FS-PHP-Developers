@@ -80,11 +80,8 @@ class UserController extends ApplicationController
 
     public function logoutAction()
     {
-        // ✅ PULIZIA COMPLETA DELLA SESSIONE
-        session_start(); // Assicurati che la sessione sia attiva
-        $_SESSION = array(); // Svuota l'array di sessione
-        
-        // ✅ DISTRUGGI IL COOKIE DI SESSIONE
+        session_start(); 
+        $_SESSION = array(); 
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(session_name(), '', time() - 42000,
@@ -92,16 +89,12 @@ class UserController extends ApplicationController
                 $params["secure"], $params["httponly"]
             );
         }
-        
-        // ✅ DISTRUGGI LA SESSIONE
         session_destroy();
         
-        // ✅ HEADER ANTI-CACHE
         header("Cache-Control: no-cache, no-store, must-revalidate");
         header("Pragma: no-cache");
         header("Expires: 0");
-        
-        // ✅ REDIRECT
+
         header('Location: ' . WEB_ROOT . '/login');
         exit;
     }
@@ -157,7 +150,6 @@ class UserController extends ApplicationController
             $success = $userModel->updateUser($user['id'], $newData);
 
             if ($success) {
-                // Update session
                 $updatedUsers = $userModel->getAll();
                 foreach ($updatedUsers as $u) {
                     if ($u['id'] === $user['id']) {
@@ -189,7 +181,8 @@ class UserController extends ApplicationController
         if ($success) {
             session_destroy();
             session_start();
-            $this->redirectWithSuccess('/login', 'Account deleted successfully. We\'re sorry to see you go, ' . $userName . '. Thank you for using our service.');
+            $this->redirectWithSuccess('/login', 'Account deleted successfully. We\'re sorry to see you go, ' .
+                                       $userName . '. Thank you for using our service.');
         } else {
             $this->redirectWithError('/profile', 'Error deleting account. Please try again or contact support.');
         }

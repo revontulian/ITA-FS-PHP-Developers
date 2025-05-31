@@ -19,15 +19,15 @@ try {
     assert($result === true, 'Should create task successfully');
     echo "   ✓ Task creation test passed - Name: $taskName\n";
     
-    // ✅ Test 2: Get All Tasks
-    echo "✅ Test 2: Get All Tasks\n";
+    
+    echo "Test 2: Get All Tasks\n";
     $tasks = $taskModel->getAll();
     assert(is_array($tasks), 'Should return array');
     assert(count($tasks) > 0, 'Should have at least one task');
     echo "   ✓ Get all tasks test passed - Found " . count($tasks) . " tasks\n";
     
-    // ✅ Test 3: Prevent Duplicate Task Names
-    echo "✅ Test 3: Duplicate Task Name Prevention\n";
+   
+    echo "Test 3: Duplicate Task Name Prevention\n";
     $duplicateResult = $taskModel->addTask(
         $taskName, // Same name
         TaskStatus::IN_PROGRESS,
@@ -37,8 +37,8 @@ try {
     assert($duplicateResult === false, 'Should not create task with duplicate name');
     echo "   ✓ Duplicate task name prevention test passed\n";
     
-    // ✅ Test 4: Filter by Status
-    echo "✅ Test 4: Filter Tasks by Status\n";
+    
+    echo "Test 4: Filter Tasks by Status\n";
     $pendingTasks = $taskModel->filterStatus(TaskStatus::PENDING);
     assert(is_array($pendingTasks), 'Should return array');
     
@@ -47,8 +47,8 @@ try {
     }
     echo "   ✓ Filter status test passed - Found " . count($pendingTasks) . " pending tasks\n";
     
-    // ✅ Test 5: Get Task by ID
-    echo "✅ Test 5: Get Task by ID\n";
+    
+    echo "Test 5: Get Task by ID\n";
     if (!empty($tasks)) {
         $firstTask = $tasks[0];
         $foundTask = $taskModel->getTaskbyId($firstTask['id']);
@@ -56,8 +56,7 @@ try {
         assert($foundTask['id'] === $firstTask['id'], 'IDs should match');
         echo "   ✓ Get task by ID test passed - Found task: " . $foundTask['nameTask'] . "\n";
         
-        // ✅ Test 6: Update Task
-        echo "✅ Test 6: Update Task\n";
+        echo "Test 6: Update Task\n";
         $updateData = [
             'nameTask' => 'Updated Task Name',
             'taskStatus' => 'completed',
@@ -67,22 +66,22 @@ try {
         assert($updateResult === true, 'Should update task successfully');
         echo "   ✓ Update task test passed\n";
         
-        // ✅ Test 7: Delete Task
-        echo "✅ Test 7: Delete Task\n";
+       
+        echo "Test 7: Delete Task\n";
         $deleteResult = $taskModel->deleteTaskId($firstTask['id']);
         assert($deleteResult === true, 'Should delete task successfully');
         
-        // Verify deletion
+    
         $deletedTask = $taskModel->getTaskbyId($firstTask['id']);
         assert($deletedTask === null, 'Task should not exist after deletion');
         echo "   ✓ Delete task test passed\n";
     }
     
-    echo "🎉 TaskModel tests completed successfully!\n\n";
+    echo "TaskModel tests completed successfully!\n\n";
     
 } catch (Exception $e) {
-    echo "❌ TaskModel Test Failed: " . $e->getMessage() . "\n";
+    echo "TaskModel Test Failed: " . $e->getMessage() . "\n";
 } catch (AssertionError $e) {
-    echo "❌ Assertion Failed: " . $e->getMessage() . "\n";
+    echo "Assertion Failed: " . $e->getMessage() . "\n";
 }
 ?>

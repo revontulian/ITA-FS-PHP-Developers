@@ -23,7 +23,6 @@ class TasklistController extends ApplicationController
             throw new Exception("Tasklist with this name already exists.");
             return;
         } else {
-            // If it doesn't exist, proceed to create a new tasklist
             $this->jsonManager->create([
                 'name' => $tasklistName,
                 'user_id' => $userId,
@@ -46,7 +45,6 @@ class TasklistController extends ApplicationController
         $userId = $this->getCurrentUser()['id'] ?? null;
         $tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
 
-        //Continuar aquí
         if ($tasklistId && $tasklists) {
             $this->jsonManager->update($tasklistId, $_POST);
             header('Location: ' . $this->view->baseUrl()  . '/task/mainPage');
