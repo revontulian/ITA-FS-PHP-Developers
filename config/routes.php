@@ -31,4 +31,5 @@ $routes = array(
     '/tasklist/delete' => 'tasklist#delete',
     
     '/tasklist/edit' => 'tasklisteditor#edit',
+    '/tasklisteditor/edit' => 'tasklisteditor#edit',
 );
