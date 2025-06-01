@@ -1,7 +1,4 @@
-
-
-    
-    <form action="<?php echo $this->baseUrl();?>/tasks/update/<?php echo $this->task['id'];?>" method="POST">
+<form action="<?php echo $this->baseUrl();?>/tasks/update/<?php echo $this->task['id'];?>" method="POST">
 <section class="flex flex-col justify-center items-center min-h-screen">
 
      
@@ -36,7 +33,7 @@
                 <div class="rounded p-3 ">
                     <label for="endDate" class="font-sans text-base font-bold">End date</label>
                     <input type="date" id="endDate" name="endDate" class="form-control w-full border border-gray-300 rounded p-3"
-                           value="<?php echo htmlspecialchars($this->task['startDate'])??""?>">
+                           value="<?php echo htmlspecialchars($this->task['endDate'])??""?>">
                 </div>              <button type="submit" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded">Crear Tarea</button>
                 </form>     </div>
     </section>
