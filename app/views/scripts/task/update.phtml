@@ -1,0 +1,39 @@
+<form action="<?php echo $this->baseUrl();?>/tasks/update/<?php echo $this->task['id'];?>" method="POST">
+<section class="flex flex-col justify-center items-center min-h-screen">
+
+     
+<div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
+    <h1 class="text-2xl font-bold mb-6">Edit task</h1>
+        <form action="<?php echo $this->baseUrl(); ?>/tasks/create" method="POST">
+            <div class="rounded p-3">
+                <label for="nameTask" class="font-sans text-base font-bold">Task name*</label>
+                <input type="text" id="nameTask" name="nameTask" value="<?php echo htmlspecialchars($this->task['nameTask']);?>" class="form-control w-full border border-gray-300 rounded p-3" required>
+                </div>
+
+                <div class="rounded p-3">
+                    <label for="taskStatus" class="font-sans text-base font-bold">Status*</label>
+                    <select id="taskStatus" name="taskStatus" class="form-control w-full border border-gray-300 rounded" required>
+                        <option value="pending" <?php echo ($this->task['taskStatus'] == 'pending'); ?>>Pending</option>
+                        <option value="in_progress" <?php echo ($this->task['taskStatus'] == 'in_progress');?>>In Progress</option>
+                        <option value="completed" <?php echo ($this->task['taskStatus'] == 'completed');?>>Completed</option>
+                    </select>
+                </div>
+
+                <div class="rounded p-3">
+                    <label for="description" class="font-sans text-base font-bold">Description</label>
+                    <input type="text" id="description" name="description" value="<?php echo htmlspecialchars($this->task['description']); ?>" class="form-control w-full border border-gray-300 rounded p-3"> 
+                </div>
+
+                <div class="rounded p-3 ">
+                    <label for="startDate" class="font-sans text-base font-bold">Start date*</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control w-full border border-gray-300 rounded p-3" required
+                           value="<?php echo htmlspecialchars($this->task['startDate'])?>">
+                </div>
+
+                <div class="rounded p-3 ">
+                    <label for="endDate" class="font-sans text-base font-bold">End date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control w-full border border-gray-300 rounded p-3"
+                           value="<?php echo htmlspecialchars($this->task['endDate'])??""?>">
+                </div>              <button type="submit" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded">Crear Tarea</button>
+                </form>     </div>
+    </section>

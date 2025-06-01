@@ -1,19 +1,60 @@
-<?php $user = $this->user ?? null; ?>
-<div class="profile-container">
-    <h2>Your Profile</h2>
-    <div class="card">
-        <div class="card-body">
-            <div class="user-info">
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
-                <p><strong>Password (hashed):</strong> <?php echo htmlspecialchars($user['password'] ?? ''); ?></p>
-                <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name'] ?? ''); ?></p>
-                <p><strong>Surname:</strong> <?php echo htmlspecialchars($user['surname'] ?? ''); ?></p>
-                <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($user['date_of_birth'] ?? ''); ?></p>
-            </div>
-            <div class="mt-4">
-                <a href="<?php echo $this->baseUrl(); ?>/edit-profile" class="btn btn-secondary">Edit Profile</a>
-                <a href="<?php echo $this->baseUrl(); ?>/logout" class="btn btn-danger">Logout</a>
-            </div>
+<div class="w-full max-w-xl bg-white rounded-lg shadow-lg p-8">
+    <h2 class="text-2xl font-bold mb-6 text-center">Your Profile</h2>
+    
+    <!-- MESSAGES -->
+    <?php if (!empty($this->_data['successMessage'])): ?>
+        <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+             <?php echo htmlspecialchars($this->_data['successMessage']); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($this->_data['errorMessage'])): ?>
+        <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+             <?php echo htmlspecialchars($this->_data['errorMessage']); ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="space-y-4">
+        <p><span class="font-semibold">Email:</span> <?php echo htmlspecialchars($this->user['email'] ?? ''); ?></p>
+        <p><span class="font-semibold">Name:</span> <?php echo htmlspecialchars($this->user['name'] ?? ''); ?></p>
+        <p><span class="font-semibold">Surname:</span> <?php echo htmlspecialchars($this->user['surname'] ?? ''); ?></p>
+        <p><span class="font-semibold">Date of Birth:</span> <?php echo htmlspecialchars($this->user['date_of_birth'] ?? ''); ?></p>
+    </div>
+    
+    
+    <div class="flex flex-wrap justify-center gap-3 mt-8">
+        <a href="<?php echo $this->baseUrl(); ?>/tasks/mainPage" 
+           class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+            </svg>
+            Go to Tasks
+        </a>
+        
+        <a href="<?php echo $this->baseUrl(); ?>/edit-profile" 
+           class="bg-blue-400 hover:bg-blue-500 text-white font-semibold px-4 py-2 rounded">
+            Edit Profile
+        </a>
+    
+        <a href="<?php echo $this->baseUrl(); ?>/logout" 
+           class="bg-red-400 hover:bg-red-500 text-white font-semibold px-4 py-2 rounded">
+            Logout
+        </a>
+        
+        <button type="button" 
+                class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded" 
+                onclick="document.getElementById('deleteModal').style.display='block'">
+            Delete Account
+        </button>
+    </div>
+    
+    <div id="deleteModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+        <div class="bg-white mx-auto mt-40 p-6 rounded shadow-lg w-80 text-center">
+            <p class="mb-4">Are you sure you want to delete your account?</p>
+            <form method="POST" action="<?php echo $this->baseUrl(); ?>/delete-account">
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded mr-2">Yes, delete</button>
+                <button type="button" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded" onclick="document.getElementById('deleteModal').style.display='none'">No, cancel</button>
+            </form>
         </div>
     </div>
 </div>
