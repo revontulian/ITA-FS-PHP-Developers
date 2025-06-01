@@ -26,9 +26,9 @@ $routes = array(
 
     '/tasks/filterStatus' => 'task#filterStatus',
 
-    '/tasklists/create' => 'tasklist#create',
-    '/tasklists/select' => 'tasklist#select',
-  
-    '/tasklists/delete' => 'tasklist#delete',
-
+    '/tasklist/create' => 'tasklist#create',
+    '/tasklist/select' => 'tasklist#select',
+    '/tasklist/delete' => 'tasklist#delete',
+    
+    '/tasklist/edit' => 'tasklisteditor#edit',
 );
