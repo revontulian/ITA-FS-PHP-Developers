@@ -11,11 +11,6 @@ class Tasklist extends Model
         $this->jsonCRUD = new JsonCRUD('tasklists.json');
     }
 
-    /**
-     * Get all tasklists from the JSON file.
-     * @return array
-     */
-
     protected function getAll(): array
     {
         return $this->jsonCRUD->read();

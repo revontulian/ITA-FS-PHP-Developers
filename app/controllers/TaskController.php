@@ -28,7 +28,6 @@ class TaskController extends ApplicationController
     $currentListId = $this->getCurrentList();
     $this->view->currentListId = $currentListId;
 
-    // Obtener el filtro de estado si existe
     $statusFilter = $_GET['taskStatus'] ?? 'all';
     $this->view->currentStatus = $statusFilter;
 
@@ -37,7 +36,6 @@ class TaskController extends ApplicationController
 
     if ($currentListId) {
         if ($statusFilter === 'all') {
-            // Mostrar todas las tareas
             $this->view->tasks = $this->taskModel->getTasksByTasklistId($currentListId);
         } else {
            
@@ -47,7 +45,7 @@ class TaskController extends ApplicationController
         }
     } else {
         $this->view->tasks = [];
-        $this->view->error = "No hay lista seleccionada";
+        $this->view->error = "No list selected";
     }
 }
 
@@ -87,9 +85,7 @@ class TaskController extends ApplicationController
             );
 
             if ($success) {
-                $_SESSION['success'] = "Tarea creada exitosamente";
-                //header('Location: ' . WEB_ROOT . '/tasks/mainPage');
-                // Redirige a la vista de tareas
+                $_SESSION['success'] = "Task created successfully";
                 exit();
                 $this->redirect('/tasks/mainPage');
             } else {
@@ -167,20 +163,16 @@ class TaskController extends ApplicationController
    public function filterStatusAction(): void
     {
          $this->requireLogin();
-    
-        // Obtener y guardar el filtro en sesión
         $statusFilter = $_GET['taskStatus'] ?? 'all';
         $_SESSION['taskStatus'] = $statusFilter;
         
         $currentListId = $this->getCurrentList();
         
-        // Validar que existe una lista seleccionada
         if (!$currentListId) {
             $this->redirect('/tasks/mainPage?error=no_list');
             return;
         }
         
-        // Redirigir a mainPage
         $this->redirect('/tasks/mainPage');
 }
 

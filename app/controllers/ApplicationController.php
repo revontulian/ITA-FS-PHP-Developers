@@ -62,6 +62,7 @@ class ApplicationController extends Controller
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
+    //Change input for security
     protected function sanitizeInput(string $input): string
     {
         return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
