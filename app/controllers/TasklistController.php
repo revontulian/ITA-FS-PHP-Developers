@@ -58,9 +58,13 @@ class TasklistController extends ApplicationController
         $tasklistId = $_GET['id'] ?? null;
         $userId = $this->getCurrentUser()['id'] ?? null;
         $userTasklists = $this->tasklistModel->getTasklistsByUserId($userId);
+        $taskModel = new TaskModel();// hi eso para que acede a mis matareas
+
 
         foreach ($userTasklists as $key => $tasklist) {
             if ($tasklist['id'] === $tasklistId) {
+                $taskModel->deleteTasksForList($tasklistId);// he añadido eso que  lo que hace llamo una funcion del taskmodel que su funcion es eliminar las tascas de ese lista 
+
                 unset($tasklists[$key]);
                 $this->jsonManager->delete($tasklistId);
                 break;
