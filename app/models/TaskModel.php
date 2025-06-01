@@ -94,9 +94,22 @@ class TaskModel {
         return $tasksInList;
     }
 
+    public function deleteTasksForList(string $tasklistId){
+        $allTasksForlist = $this->getTasksByTasklistId($tasklistId);
+       
+        foreach($allTasksForlist as $task){
+             $this->crud->delete($task['id']);
+        }
+        
+        
+    }
+    
+
+
     }
 
-    
+ 
+        
 
    
 ?>
