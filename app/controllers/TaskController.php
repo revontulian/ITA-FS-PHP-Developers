@@ -22,78 +22,97 @@ class TaskController extends ApplicationController
     } else {
         $tasklists = [];
     }
-
     $this->view->tasklists = $tasklists;
+
+    if (empty($tasklists)) {
+        $this->view->noTasklists = true; 
+        $this->view->tasks = [];
+        $this->view->currentListId = null;
+        return;
+    } else {
+        $this->view->noTasklists = false; 
+    }
 
     $currentListId = $this->getCurrentList();
     $this->view->currentListId = $currentListId;
 
-    $statusFilter = $_GET['taskStatus'] ?? 'all';
+
+    $statusFilter = $_SESSION['taskStatus'] ?? $_GET['taskStatus'] ?? 'all';
+    if (isset($_GET['taskStatus'])) {
+        $_SESSION['taskStatus'] = $statusFilter;
+    }
     $this->view->currentStatus = $statusFilter;
 
-   $statusFilter = $_SESSION['taskStatus'] ?? 'all';
-    $this->view->currentStatus = $statusFilter;
+    
 
     if ($currentListId) {
-            
         if ($statusFilter === 'all') {
             $this->view->tasks = $this->taskModel->getTasksByTasklistId($currentListId);
         } else {
-           
-                $taskStatus = TaskStatus::from($statusFilter);
-                $this->view->tasks = $this->taskModel->filterStatus($taskStatus, $currentListId);
-           
+            $taskStatus = TaskStatus::from($statusFilter);
+            $this->view->tasks = $this->taskModel->filterStatus($taskStatus, $currentListId);
         }
     } else {
         $this->view->tasks = [];
-        $this->view->error = "No list selected";
+        
     }
 }
 
-    
-       
+public function createAction(): void
+{
+    $this->requireLogin();
+    $currentListId = $this->getCurrentList();
 
+   
+    if (!$currentListId) {
+        $_SESSION['error'] = 'You must select a tasklist before creating tasks.';
+        $this->redirect('/tasks/mainPage'); 
+        return; 
+    }
+  
 
-    public function createAction(): void
-    {
-        $this->requireLogin();
-        $currentListId = $this->getCurrentList();
-        $this->view->listid = $currentListId;
+    $this->view->listid = $currentListId;
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nameTask = $_POST['nameTask'] ?? '';
-            $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
-            $description = $_POST['description'] ?? '';
-            $startDate = $_POST['startDate'] ?? '';
-            $endDate = $_POST['endDate'] ?? '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nameTask = $_POST['nameTask'] ?? '';
+        $taskStatusStr = $_POST['taskStatus'] ?? 'pending';
+        $description = $_POST['description'] ?? '';
+        $startDate = $_POST['startDate'] ?? '';
+        $endDate = $_POST['endDate'] ?? '';
 
-            $taskStatus = TaskStatus::from($taskStatusStr);
-            $startDateObj = new DateTimeImmutable($startDate);
-            $endDateObj = !empty($endDate) ? new DateTimeImmutable($endDate) : null;
+        $taskStatus = TaskStatus::from($taskStatusStr);
+        $startDateObj = new DateTimeImmutable($startDate);
+        $endDateObj = !empty($endDate) ? new DateTimeImmutable($endDate) : null;
 
-            if (empty($nameTask) || empty($startDate)) {
-                $this->view->error = "All fields are required.";
-                return;
-            }
+        if (empty($nameTask) || empty($startDate)) {
+            $this->view->error = "All fields are required."; 
+            return;
+        }
+        
+        if ($endDateObj && $endDateObj < $startDateObj) {
+            $this->view->error = "End date cannot be before start date.";
+            return;
+        }
 
-            $success = $this->taskModel->addTask(
-                $nameTask,
-                $taskStatus,
-                $startDateObj,
-                $description,
-                $endDateObj,
-                $currentListId
-            );
+        $success = $this->taskModel->addTask(
+            $nameTask,
+            $taskStatus,
+            $startDateObj,
+            $description,
+            $endDateObj,
+            $currentListId
+        );
 
-            if ($success) {
-                $_SESSION['success'] = "Task created successfully";
-                exit();
-                $this->redirect('/tasks/mainPage');
-            } else {
-                $this->view->error = "Task already exists.";
-            }
+        if ($success) {
+            $_SESSION['success'] = "Task created successfully";
+            $this->redirect('/tasks/mainPage');
+        } else {
+          
+            $this->view->error = "Error creating task. 
+                                It might already exist or there was a data issue.";
         }
     }
+}
 
 
 
@@ -165,23 +184,15 @@ class TaskController extends ApplicationController
     {
          $this->requireLogin();
         $statusFilter = $_GET['taskStatus'] ?? 'all';
-        $_SESSION['taskStatus'] = $statusFilter;
-        
-        $currentListId = $this->getCurrentList();
-        
-        if (!$currentListId) {
-            $this->redirect('/tasks/mainPage?error=no_list');
-            return;
-        }
-        
+        $_SESSION['taskStatus'] = $statusFilter; 
         $this->redirect('/tasks/mainPage');
     }
 
 
 }
 
-    
 
-    
-    
+
+
+
 

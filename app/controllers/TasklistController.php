@@ -16,26 +16,50 @@ class TasklistController extends ApplicationController
 
     public function createAction(): void
     {
+        $this->requireLogin();
         $userId = $this->getCurrentUser()['id'] ?? null;
-        $tasklistName = $_POST['tasklist_name'] ?? null;
+        $tasklistName = trim($_POST['tasklist_name'] ?? ''); 
+
+        if (empty($tasklistName)) {
+            $_SESSION['error'] = "Tasklist name cannot be empty.";
+            header('Location: ' . $this->view->baseUrl() . '/tasks/mainPage'); 
+            exit();
+        }
+
+        if (!$userId) {
+            $_SESSION['error'] = "User not identified. Please login again.";
+            header('Location: ' . $this->view->baseUrl() . '/user/login');
+            exit();
+        }
 
         if (!$this->tasklistModel->verifyTaskListDoesNotExist($tasklistName, $userId)) {
-            throw new Exception("Tasklist with this name already exists.");
-            return;
+            throw new Exception("Tasklist with this name already exists for this user.");
         } else {
-            $this->jsonManager->create([
+            $newListData = [
                 'name' => $tasklistName,
                 'user_id' => $userId,
-            ]);
-            $this->view->tasklists = $this->tasklistModel->getTasklistsByUserId($userId);
-            header('Location: ' . $this->view->baseUrl());
+            ];
+            $createdTasklist = $this->jsonManager->create($newListData); 
+
+            if ($createdTasklist && isset($createdTasklist['id'])) {
+                $_SESSION['tasklistId'] = $createdTasklist['id']; 
+                $_SESSION['success'] = "Tasklist '" . htmlspecialchars($tasklistName) . "' created and selected.";
+            } else {
+                $_SESSION['error'] = "Could not create the tasklist properly.";
+            }
+            
+            header('Location: ' . $this->view->baseUrl() . '/tasks/mainPage');
+            exit();
         }
     }
 
     public function selectAction(): void
     {
+        $this->requireLogin();
         $_SESSION['tasklistId'] = $_GET['id'] ?? null;
-        header('Location: ' . $this->view->baseUrl());
+        unset($_SESSION['taskStatus']); 
+        header('Location: ' . $this->view->baseUrl() . '/tasks/mainPage');
+        exit();
     }
 
     public function editAction(): void
@@ -58,12 +82,12 @@ class TasklistController extends ApplicationController
         $tasklistId = $_GET['id'] ?? null;
         $userId = $this->getCurrentUser()['id'] ?? null;
         $userTasklists = $this->tasklistModel->getTasklistsByUserId($userId);
-        $taskModel = new TaskModel();// hi eso para que acede a mis matareas
+        $taskModel = new TaskModel();
 
 
         foreach ($userTasklists as $key => $tasklist) {
             if ($tasklist['id'] === $tasklistId) {
-                $taskModel->deleteTasksForList($tasklistId);// he añadido eso que  lo que hace llamo una funcion del taskmodel que su funcion es eliminar las tascas de ese lista 
+                $taskModel->deleteTasksForList($tasklistId); 
 
                 unset($tasklists[$key]);
                 $this->jsonManager->delete($tasklistId);
