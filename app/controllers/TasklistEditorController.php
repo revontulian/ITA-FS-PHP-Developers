@@ -17,9 +17,8 @@ class TasklistEditorController extends ApplicationController
     public function editAction()
     {
         $this->requireLogin();
-        
+
         $tasklistId = $this->_getParam('id');
-        
 
         if (!$tasklistId) {
             $this->redirectWithError('/tasks/mainPage', 'Tasklist ID not provided.');
@@ -28,7 +27,6 @@ class TasklistEditorController extends ApplicationController
 
         // Obtain the tasklist from the JSON file
         $tasklist = $this->jsonManager->read($tasklistId);
-
 
         if (!$tasklist) {
             $this->redirectWithError('/tasks/mainPage', 'Tasklist not found.');
@@ -41,29 +39,29 @@ class TasklistEditorController extends ApplicationController
             $this->redirectWithError('/tasks/mainPage', 'Access denied.');
             return;
         }
-        
-        
+
+
         $this->view->tasklist = $tasklist;
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newName = $this->sanitizeInput($_POST['name'] ?? '');
-            throw new Exception('Tasklist to be changed to: ' . $newName);
-            
+
             if (empty($newName)) {
                 $this->view->errorMessage = 'Tasklist name is required.';
                 return;
             }
 
-            // Verifica che il nuovo nome non esista già
-            if ($newName !== $tasklist['name'] && 
-                !$this->tasklistModel->verifyTaskListDoesNotExist($newName, $currentUser['id'])) {
+            // Verify that the new name doesn't already exist
+            if (
+                $newName !== $tasklist['name'] &&
+                !$this->tasklistModel->verifyTaskListDoesNotExist($newName, $currentUser['id'])
+            ) {
                 $this->view->errorMessage = 'A tasklist with this name already exists.';
                 return;
             }
 
             $success = $this->jsonManager->update($tasklistId, ['name' => $newName]);
-            $this->view->tasklist = $tasklist;
-            
+
             if ($success) {
                 $this->redirectWithSuccess('/tasks/mainPage', 'Tasklist updated successfully!');
             } else {
@@ -71,7 +69,4 @@ class TasklistEditorController extends ApplicationController
             }
         }
     }
-        
-        
-    
 }
